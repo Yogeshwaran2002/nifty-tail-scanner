@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NIFTY Tail-Risk Scanner</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>NIFTY Tail-Risk Scanner</h1>
+    <div class="sub">
+      Cornwall-Capital-style tail-risk scan on NSE end-of-day data ·
+      deterministic signals · manual execution · <span id="asof">loading…</span>
+    </div>
+  </header>
+
+  <main>
+    <div id="banner"></div>
+
+    <section class="section">
+      <div class="grid" id="tiles"></div>
+    </section>
+
+    <section class="section">
+      <h2>Volatility regime</h2>
+      <div class="card">
+        <div class="muted" style="font-size:13px">India VIX percentile vs its 1-year range (left = calm, right = fearful)</div>
+        <div class="marker-track"><div class="rail"></div><div class="pin" id="vixpin" style="left:0%"></div></div>
+        <div id="vixnote" class="muted" style="font-size:13px"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Candidates</h2>
+      <div class="card" id="candcard">
+        <div id="candbody"></div>
+        <div class="warn-note" id="spreadnote" style="display:none">
+          ⚠️ End-of-day data has <b>no live bid-ask spread</b>. Always check the live spread and
+          premium in your Groww app before placing any order — far-OTM strikes can be wide.
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Paper journal</h2>
+      <div class="card">
+        <div id="budget"></div>
+        <div id="journalbody" style="margin-top:12px"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Backtest (archived days)</h2>
+      <div class="card" id="backtestcard">
+        <div id="backtestbody"></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Learn the mechanics</h2>
+      <div class="card">
+        <div class="lesson"><h3>Fat tails</h3><p>Option models assume a bell curve, so they underprice rare crashes. Real markets crash far more often than "normal" math predicts — that gap is the opportunity.</p></div>
+        <div class="lesson"><h3>Theta (time decay)</h3><p>An out-of-the-money option loses value every day nothing happens. Monthly options bleed slower than weeklies — that's why this scan targets 30–60 days to expiry.</p></div>
+        <div class="lesson"><h3>Vega (volatility)</h3><p>You can profit from a <i>fear spike</i> without any crash: when VIX jumps, your option's implied volatility reprices it up. The exit rule sells into that panic.</p></div>
+        <div class="lesson"><h3>Skew</h3><p>Index puts further from the money carry <i>higher</i> implied vol because institutions constantly buy crash insurance. So far-OTM puts are rarely "dirt cheap" — the scanner measures skew instead of assuming it away.</p></div>
+      </div>
+    </section>
+
+    <div class="disclaimer" id="disclaimer"></div>
+  </main>
+
+  <footer>Educational / personal research. Not investment advice. Data: NSE end-of-day (free).</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

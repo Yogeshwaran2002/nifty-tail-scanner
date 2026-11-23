@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+
+# Local scratch
+*.log
+.DS_Store
+
+# Raw downloaded archives are kept under data/eod/ (committed on purpose to grow
+# the backtest dataset), but ignore any loose zips elsewhere.
+/tmp/
+*.zip
+!data/eod/**/*.zip

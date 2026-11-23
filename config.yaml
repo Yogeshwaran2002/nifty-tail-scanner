@@ -1,0 +1,77 @@
+# ───────────────────────────────────────────────────────────────────────────
+# NIFTY Tail-Risk Scanner — configuration
+#
+# Every threshold lives here. Nothing in the signal path is hardcoded, so you
+# can tune the strategy and re-run the backtest without touching code.
+#
+# IMPORTANT: these are STARTING parameters, not proven edges. idea.md is explicit
+# that the "buy puts when VIX is low" rule is a heuristic to be TESTED, not a
+# fact. Treat every number below as a hypothesis the backtest/paper phase must
+# validate. See README "Honest framing".
+# ───────────────────────────────────────────────────────────────────────────
+
+market:
+  underlying: "NIFTY"
+  lot_size: 65            # NIFTY lot size since Jan 2026 (was 75). Verify on NSE.
+  risk_free_rate: 0.065   # annual, used for Black-Scholes implied-vol inversion
+  dividend_yield: 0.012   # NIFTY 50 approx annual dividend yield
+  trading_days_year: 252
+
+# Which contracts the scanner looks at
+universe:
+  expiry: "monthly"       # monthly | weekly  (strategy wants monthly: slow theta)
+  dte_min: 30             # days-to-expiry lower bound
+  dte_max: 60             # days-to-expiry upper bound
+  otm_min_pct: 5.0        # puts this % below spot ...
+  otm_max_pct: 10.0       # ... up to this % below spot
+
+# Entry gates — ALL must pass for a strike to become a candidate.
+# Each gate is deterministic and auditable.
+entry_gates:
+  vix_percentile_max: 30.0    # only act when VIX is in the calmer part of its 1y range
+  skew_max: 6.0               # (OTM-put IV − ATM IV) in vol points; reject over-inflated crash insurance
+  iv_rv_ratio_max: 1.30       # ATM IV / realized vol; reject options that are rich vs realized moves
+  min_open_interest: 500      # liquidity floor (contracts)
+  min_volume: 100             # traded volume floor (contracts, EOD)
+  max_cost_per_lot: 3000      # ₹ cap per lot (lot_size × premium)
+
+# Realized-volatility estimation
+realized_vol:
+  window_days: 20         # trailing NIFTY sessions for realized vol
+
+# VIX percentile window
+vix:
+  lookback_days: 252      # ~1 year of sessions
+
+# Exit rules — evaluated daily against every OPEN paper position.
+# Fixed in advance: exit discipline is the whole strategy.
+exit_rules:
+  take_profit_mult: 3.0       # premium ≥ entry × this → take profit
+  vix_spike_percentile: 70.0  # VIX percentile rises above this → exit into the panic
+  time_stop_dte: 14           # days-to-expiry ≤ this → exit (theta accelerates)
+  force_close_dte: 1          # never hold into expiry (STT on exercised ITM options)
+
+# Paper-trading discipline
+paper:
+  enabled: true
+  starting_capital: 20000     # ₹ sandbox (idea.md blueprint). Money you can fully lose.
+  loss_budget: 20000          # cumulative realized loss that LOCKS the journal
+  default_lots_per_trade: 1   # position sizing kept tiny by design
+
+# Costs (so backtest/paper P&L is honest)
+costs:
+  stt_sell_pct: 0.15          # % of premium on SELL (since Apr 2026)
+  brokerage_per_order: 20     # ₹ flat per order (buy + sell = 2 orders)
+  slippage_pct: 2.0           # assumed % slippage vs EOD mid (EOD has no live spread)
+
+output:
+  signals_dir: "data/signals"
+  dashboard_data_dir: "docs/data"
+  history_keep_days: 180
+
+disclaimer: >
+  Educational / personal-research tool. NOT investment advice. SEBI FY26 data:
+  ~87.7% of individual F&O traders lost money and option BUYERS lost the most.
+  This strategy is option buying. Trade paper only until results earn trust, and
+  never risk more than the loss budget. EOD data has no live bid-ask spread —
+  always check the live spread in your broker app before placing any order.
