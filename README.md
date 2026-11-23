@@ -89,7 +89,7 @@ grows and survives transient failures.
 1. **Create a public repo** on github.com and push this folder (public = free
    Actions + free GitHub Pages).
 2. **Enable Pages**: Settings → Pages → Source = *Deploy from a branch* →
-   `main` / `/docs`. Your dashboard: `https://<username>.github.io/nifty-tail-scanner/`.
+   `main` / `/docs`. Your dashboard: `https://Yogeshwaran2002.github.io/nifty-tail-scanner/`.
 3. **Telegram alerts** (optional but recommended):
    - Message **@BotFather** → `/newbot` → copy the **bot token**.
    - Message your new bot once, then open
