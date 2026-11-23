@@ -1,6 +1,6 @@
 {
   "date": "2026-11-23",
-  "generated_at": "2026-11-23T16:29:49.953252Z",
+  "generated_at": "2026-11-23T18:22:30.063789Z",
   "fired": false,
   "spot": 25349.65,
   "vix": null,
@@ -15,8 +15,8 @@
   "exit_signals": [],
   "errors": [],
   "warnings": [
-    "VIX: GET failed after 3 tries (https://www.nseindia.com/api/historical/vixhistory): HTTP 503",
-    "NIFTY index: GET failed after 3 tries (https://www.nseindia.com/api/historical/indicesHistory): HTTP 503"
+    "VIX: India VIX history did not return JSON.",
+    "NIFTY index: NIFTY index history did not return expected JSON."
   ],
   "all_evaluated": [
     {

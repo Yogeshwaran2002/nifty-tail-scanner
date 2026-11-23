@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "reason": "Only 1 archived day(s). Need more history \u2014 the daily scan grows it, or seed with fetch_history.py.",
+  "days_available": 1
+}
