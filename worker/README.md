@@ -33,18 +33,21 @@ layer).
 3. **Set secrets** (run from this `worker/` folder):
    ```bash
    wrangler secret put TELEGRAM_BOT_TOKEN   # paste the BotFather token
-   wrangler secret put WEBHOOK_SECRET       # any random string you invent
-   wrangler secret put ALLOWED_CHAT_ID      # your numeric chat id (keeps the bot private)
+   wrangler secret put WEBHOOK_SECRET       # any random string (letters/digits/_/- only, no @)
+   # ALLOWED_CHAT_ID is OPTIONAL — set it only if you want to lock the bot to one chat:
+   # wrangler secret put ALLOWED_CHAT_ID    # send the bot /id to get this value
    ```
 4. **Deploy:**
    ```bash
    wrangler deploy
    ```
    Copy the deployed URL, e.g. `https://nifty-tail-bot.<you>.workers.dev`.
-5. **Register the webhook** with Telegram (pass the same `WEBHOOK_SECRET`):
-   ```bash
-   curl "https://api.telegram.org/bot<token>/setWebhook?url=https://nifty-tail-bot.<you>.workers.dev&secret_token=<WEBHOOK_SECRET>"
+5. **Register the webhook** — just open this in any browser (the Worker calls
+   Telegram from Cloudflare's network, so your own network/IP doesn't matter):
    ```
+   https://nifty-tail-bot.<you>.workers.dev/setup?key=<WEBHOOK_SECRET>
+   ```
+   Expect `{"ok":true,"result":true,...}`. (To remove it later: `/delete?key=<WEBHOOK_SECRET>`.)
 6. Message your bot `/today`. Done.
 
 ## Notes

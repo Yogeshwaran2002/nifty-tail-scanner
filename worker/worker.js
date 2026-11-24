@@ -18,7 +18,30 @@ const DEFAULT_MODEL = "@cf/meta/llama-3.1-8b-instruct";
 
 export default {
   async fetch(request, env) {
-    if (request.method !== "POST") return new Response("nifty-tail-bot up", { status: 200 });
+    const url = new URL(request.url);
+
+    // GET /setup?key=<WEBHOOK_SECRET> — register the Telegram webhook FROM
+    // Cloudflare's network (bypasses any office-IP throttle on api.telegram.org).
+    // GET /delete?key=... removes it. Any other GET is a health check.
+    if (request.method === "GET") {
+      if (url.pathname === "/setup" || url.pathname === "/delete") {
+        if (!env.WEBHOOK_SECRET || url.searchParams.get("key") !== env.WEBHOOK_SECRET) {
+          return new Response("forbidden (append ?key=<your WEBHOOK_SECRET>)", { status: 403 });
+        }
+        const base = `${url.protocol}//${url.host}`;
+        const method = url.pathname === "/setup" ? "setWebhook" : "deleteWebhook";
+        const body = url.pathname === "/setup"
+          ? { url: base, secret_token: env.WEBHOOK_SECRET, drop_pending_updates: true }
+          : { drop_pending_updates: true };
+        const r = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/${method}`, {
+          method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body),
+        });
+        return new Response(await r.text(), { status: 200, headers: { "content-type": "application/json" } });
+      }
+      return new Response("nifty-tail-bot up — visit /setup?key=<WEBHOOK_SECRET> to register the webhook", { status: 200 });
+    }
+
+    if (request.method !== "POST") return new Response("ok", { status: 200 });
 
     // Telegram sends this header when the webhook was registered with a secret.
     if (env.WEBHOOK_SECRET &&
