@@ -41,7 +41,7 @@ export default {
 
     let reply;
     try {
-      reply = await handle(env, msg.text.trim());
+      reply = await handle(env, msg.text.trim(), chatId);
     } catch (e) {
       reply = "Something went wrong reading the scan data: " + (e && e.message ? e.message : e);
     }
@@ -59,12 +59,14 @@ async function getJSON(env, name) {
   return r.json();
 }
 
-async function handle(env, text) {
+async function handle(env, text, chatId) {
   const cmd = text.split(/\s+/)[0].toLowerCase().replace(/@.*$/, "");
   switch (cmd) {
     case "/start":
     case "/help":
       return help();
+    case "/id":
+      return `Your chat id is <code>${chatId}</code>\n\nSet it as the bot's ALLOWED_CHAT_ID secret to keep the bot private:\n<code>wrangler secret put ALLOWED_CHAT_ID</code>`;
     case "/today": return fmtToday(await getJSON(env, "latest.json"));
     case "/why": return fmtWhy(await getJSON(env, "latest.json"));
     case "/journal": return fmtJournal(await getJSON(env, "latest.json"));
@@ -84,6 +86,7 @@ function help() {
     "/journal — paper trades + loss budget",
     "/backtest — backtest stats",
     "/skew — volatility smile + risk premium",
+    "/id — show your Telegram chat id",
     "",
     "Ask anything else in plain English and I'll explain the numbers.",
     "",
