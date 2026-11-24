@@ -64,3 +64,43 @@ def iv_rv_ratio(atm_iv: float | None, rv: float | None) -> float | None:
     if atm_iv is None or rv is None or rv <= 0:
         return None
     return atm_iv / rv
+
+
+def vol_risk_premium(atm_iv: float | None, rv: float | None) -> float | None:
+    """Volatility Risk Premium in VOL POINTS: (ATM IV − realized vol) × 100.
+
+    Positive = options price in MORE movement than actually happens (the usual
+    state; buyers pay a premium). Low or negative = options are genuinely cheap
+    vs realized moves — the real "cheap" condition idea.md wanted, as opposed to
+    just "VIX is low".
+    """
+    if atm_iv is None or rv is None:
+        return None
+    return (atm_iv - rv) * 100.0
+
+
+def trade_stats(pnls: Sequence[float]) -> dict:
+    """Summary stats over a list of realized P&L numbers. Pure; used by backtest.
+
+    For a tail-risk strategy, judge by `expectancy` and `payoff_ratio`, not
+    `hit_rate_pct` — a low hit rate with a high payoff ratio is the expected,
+    healthy shape.
+    """
+    pnls = list(pnls)
+    n = len(pnls)
+    wins = [p for p in pnls if p > 0]
+    losses = [p for p in pnls if p <= 0]
+    avg_win = sum(wins) / len(wins) if wins else 0.0
+    avg_loss = sum(losses) / len(losses) if losses else 0.0
+    return {
+        "total": n,
+        "wins": len(wins),
+        "losses": len(losses),
+        "hit_rate_pct": round(100.0 * len(wins) / n, 1) if n else 0.0,
+        "avg_win": round(avg_win, 2),
+        "avg_loss": round(avg_loss, 2),
+        "expectancy": round(sum(pnls) / n, 2) if n else 0.0,
+        "payoff_ratio": round(avg_win / abs(avg_loss), 2) if wins and losses else None,
+        "best": round(max(pnls), 2) if pnls else 0.0,
+        "worst": round(min(pnls), 2) if pnls else 0.0,
+    }

@@ -1,0 +1,16 @@
+name = "nifty-tail-bot"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+# Free open-source LLM via Cloudflare Workers AI — no external API key, no Anthropic.
+[ai]
+binding = "AI"
+
+[vars]
+DATA_BASE_URL = "https://yogeshwaran2002.github.io/nifty-tail-scanner/data"
+LLM_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+
+# Secrets are NOT stored here. Set them with:
+#   wrangler secret put TELEGRAM_BOT_TOKEN
+#   wrangler secret put WEBHOOK_SECRET
+#   wrangler secret put ALLOWED_CHAT_ID

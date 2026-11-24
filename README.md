@@ -63,6 +63,7 @@ Gates **fail closed**: if VIX or realized vol can't be fetched, no signal fires.
 | `scripts/run_backtest.py` | backtest entrypoint |
 | `scripts/fetch_history.py` | best-effort archive seeding |
 | `docs/` | static dashboard (GitHub Pages) |
+| `worker/` | Phase 2 Telegram bot (Cloudflare Worker + free Llama) |
 | `data/eod/` | archived daily snapshots — grows the backtest dataset |
 | `.github/workflows/daily-scan.yml` | the free daily cron |
 
@@ -71,6 +72,7 @@ Gates **fail closed**: if VIX or realized vol can't be fetched, no signal fires.
 ```bash
 pip install -r requirements.txt
 python -m scripts.run_scan            # scan for today → writes docs/data/latest.json
+python -m scripts.run_scan 2026-11-23 # or a specific completed trading day
 python -m scripts.run_backtest        # replay archived days → docs/data/backtest.json
 python -m pytest tests/ -q            # verify the deterministic core
 
@@ -78,11 +80,11 @@ python -m pytest tests/ -q            # verify the deterministic core
 cd docs && python -m http.server 8899   # open http://localhost:8899
 ```
 
-NSE's historical JSON APIs (VIX, index) can return **503 from datacenter/corporate
-IPs** (the archive host is more reliable). If the cron keeps failing on those,
-run `scripts/run_scan.py` from your home machine and commit — the result is
-identical. VIX/index history is cached under `data/` so the percentile window
-grows and survives transient failures.
+VIX and NIFTY history come from **Yahoo Finance** (keyless, datacenter-friendly);
+NSE's `/api/historical/*` JSON APIs are only a fallback because they anti-bot
+datacenter IPs. All history is cached under `data/` so the percentile window
+grows and survives transient failures. Run a scan only for a **completed trading
+day** — today's bhavcopy isn't published until after the NSE close (~18:00 IST).
 
 ## Deploy (free)
 
@@ -113,12 +115,26 @@ slippage), and the paper loss budget. Change a value, re-run the backtest, compa
 
 ## Roadmap
 
-- **Phase 1 (this repo):** daily scanner, dashboard, Telegram **push** alerts,
+- **Phase 1 (done):** daily scanner, dashboard, Telegram **push** alerts,
   paper journal, backtest harness.
-- **Phase 2:** interactive Telegram commands (`/today`, `/why`, `/journal`) — needs
-  a small always-on host; the read-only conversational agent lives here.
-- **Later:** live bid-ask spread check, richer skew surface, alert when a setup is
-  cheap in implied-vs-realized terms (not just when VIX is low).
+- **Phase 2 (done):** interactive Telegram bot — `/today`, `/why`, `/journal`,
+  `/backtest`, `/skew`, plus free-text Q&A via a free **open-source Llama** model
+  (Cloudflare Workers AI). Read-only; never advises or trades. See
+  [`worker/`](worker/).
+- **Advanced (done):** volatility **smile/skew curve** on the dashboard,
+  **volatility risk premium** (IV − realized vol) metric + "genuinely cheap"
+  flag, backtest **expectancy / payoff ratio / drawdown** analytics.
+- **Still open:** live bid-ask spread (needs a paid broker quote feed — EOD data
+  has none, so every alert tells you to check Groww manually).
+
+## Data sources
+
+- **Option chain:** NSE F&O bhavcopy (UDiFF) — the `nsearchives` host, reliable
+  everywhere.
+- **India VIX + NIFTY index history:** **Yahoo Finance** chart API (`^INDIAVIX`,
+  `^NSEI`) — keyless and datacenter-friendly. NSE's own `/api/historical/*` JSON
+  APIs anti-bot datacenter IPs (including GitHub Actions runners), so they are
+  only a fallback. Values are cached under `data/` to bridge transient failures.
 
 ## Verify before you trust a number
 - Confirm the **NIFTY lot size** and **expiry calendar** on NSE (they change).

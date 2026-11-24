@@ -47,6 +47,28 @@ class TestMetrics(unittest.TestCase):
         # OTM put IV higher than ATM → positive skew in vol points
         self.assertAlmostEqual(mx.put_skew(0.15, 0.20), 5.0, places=6)
 
+    def test_vol_risk_premium(self):
+        # IV 18%, RV 12% → +6 vol points premium
+        self.assertAlmostEqual(mx.vol_risk_premium(0.18, 0.12), 6.0, places=6)
+        self.assertIsNone(mx.vol_risk_premium(None, 0.12))
+
+    def test_trade_stats_tail_shape(self):
+        # 9 small losses, 1 big win — classic tail-risk payoff
+        pnls = [-100] * 9 + [5000]
+        s = mx.trade_stats(pnls)
+        self.assertEqual(s["total"], 10)
+        self.assertEqual(s["wins"], 1)
+        self.assertEqual(s["hit_rate_pct"], 10.0)
+        self.assertEqual(s["expectancy"], 410.0)        # (5000 - 900) / 10
+        self.assertEqual(s["payoff_ratio"], 50.0)        # 5000 / 100
+        self.assertEqual(s["best"], 5000)
+        self.assertEqual(s["worst"], -100)
+
+    def test_trade_stats_empty(self):
+        s = mx.trade_stats([])
+        self.assertEqual(s["total"], 0)
+        self.assertIsNone(s["payoff_ratio"])
+
 
 class TestRules(unittest.TestCase):
     def setUp(self):

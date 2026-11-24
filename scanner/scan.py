@@ -181,6 +181,21 @@ def run_scan(cfg: dict, on: date | None = None, *, archive: bool = True) -> dict
     if not passing:
         signal["reasons"] = _failure_reasons(candidates)
 
+    # Volatility smile / skew curve + volatility risk premium (for the dashboard
+    # and the "genuinely cheap?" judgement — idea.md's central correction).
+    signal["atm_iv"] = atm_iv
+    signal["atm_strike"] = atm_strike
+    signal["vrp"] = mx.vol_risk_premium(atm_iv, rv)
+    curve = []
+    for p in sorted(exp_puts, key=lambda x: x["strike"]):
+        if not (spot * 0.80 <= p["strike"] <= spot * 1.05):
+            continue
+        iv = bs.implied_vol_put(p["close"], spot, p["strike"], T, r, q)
+        if iv is not None:
+            curve.append({"strike": p["strike"], "moneyness": round(p["strike"] / spot, 4),
+                          "iv": round(iv, 4)})
+    signal["skew_curve"] = curve
+
     # 7) Journal: mark open trades, run exits, auto-open top candidate
     _update_journal(signal, cfg, exp_puts_by_strike={p["strike"]: p for p in exp_puts},
                     all_puts=puts, on=on, dte_lookup=lambda e: (e - on).days)

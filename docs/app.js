@@ -35,11 +35,14 @@ function renderBanner(s) {
 
 function renderTiles(s) {
   const rv = s.realized_vol ? s.realized_vol * 100 : null;
+  const atmIv = (s.atm_iv !== null && s.atm_iv !== undefined) ? s.atm_iv * 100 : null;
   el("tiles").innerHTML = [
     tile(fmt(s.spot, 0), "NIFTY spot"),
     tile(fmt(s.vix, 2), "India VIX"),
     tile(s.vix_percentile === null ? "n/a" : fmt(s.vix_percentile, 0), "VIX percentile (1y)"),
     tile(rv === null ? "n/a" : pct(rv), "Realized vol (annual)"),
+    tile(atmIv === null ? "n/a" : pct(atmIv), "ATM implied vol"),
+    tile(s.vrp === null || s.vrp === undefined ? "n/a" : fmt(s.vrp, 1) + " pts", "Vol risk premium (IV−RV)"),
   ].join("");
 }
 
@@ -84,6 +87,45 @@ function renderCandidates(s) {
   }
 }
 
+function renderSkew(s) {
+  const curve = s.skew_curve || [];
+  const note = el("skewnote");
+  if (curve.length < 2) {
+    el("skewchart").innerHTML = `<p class="muted" style="font-size:13px">No skew curve for this scan (needs option IVs).</p>`;
+    note.textContent = "";
+    return;
+  }
+  const W = 960, H = 240, padL = 44, padR = 20, padT = 20, padB = 34;
+  const xs = curve.map(p => p.strike), ys = curve.map(p => p.iv * 100);
+  const minX = Math.min(...xs), maxX = Math.max(...xs);
+  const minY = Math.max(0, Math.min(...ys) - 2), maxY = Math.max(...ys) + 2;
+  const sx = v => padL + (W - padL - padR) * ((v - minX) / ((maxX - minX) || 1));
+  const sy = v => H - padB - (H - padT - padB) * ((v - minY) / ((maxY - minY) || 1));
+  const d = curve.map((p, i) => `${i ? "L" : "M"}${sx(p.strike).toFixed(1)},${sy(p.iv * 100).toFixed(1)}`).join(" ");
+  // ATM marker
+  const atm = s.atm_strike;
+  const atmX = atm ? sx(atm) : null;
+  const yticks = [minY, (minY + maxY) / 2, maxY].map(v =>
+    `<text x="6" y="${(sy(v) + 4).toFixed(1)}" fill="var(--ink-muted)" font-size="10">${v.toFixed(0)}%</text>
+     <line class="axis" x1="${padL}" y1="${sy(v).toFixed(1)}" x2="${W - padR}" y2="${sy(v).toFixed(1)}" stroke-dasharray="3 5" opacity="0.4"/>`).join("");
+  const xticks = [minX, (minX + maxX) / 2, maxX].map(v =>
+    `<text x="${sx(v).toFixed(1)}" y="${H - 12}" fill="var(--ink-muted)" font-size="10" text-anchor="middle">${v.toFixed(0)}</text>`).join("");
+  const dots = curve.map(p =>
+    `<circle class="dot" cx="${sx(p.strike).toFixed(1)}" cy="${sy(p.iv * 100).toFixed(1)}" r="2.5"><title>${p.strike} PE — IV ${(p.iv*100).toFixed(1)}% (moneyness ${(p.moneyness*100).toFixed(0)}%)</title></circle>`).join("");
+  el("skewchart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="Implied volatility by strike">
+    ${yticks}${xticks}
+    ${atmX !== null ? `<line x1="${atmX.toFixed(1)}" y1="${padT}" x2="${atmX.toFixed(1)}" y2="${H - padB}" stroke="var(--ink-muted)" stroke-dasharray="4 4"/>
+      <text x="${atmX.toFixed(1)}" y="${padT - 6}" fill="var(--ink-muted)" font-size="10" text-anchor="middle">ATM ${atm}</text>` : ""}
+    <path class="line" d="${d}"/>${dots}
+    <text x="${padL}" y="14" fill="var(--ink-muted)" font-size="11">Implied vol (%) vs strike</text>
+  </svg>`;
+  if (s.vrp !== null && s.vrp !== undefined) {
+    note.innerHTML = `Volatility risk premium (ATM IV − realized vol) = <b>${fmt(s.vrp, 1)} vol points</b>. ` +
+      (s.vrp <= 0 ? "Options look genuinely cheap vs realized moves — a real tail-buying signal."
+                  : "Options price in more movement than has occurred — the usual premium buyers pay.");
+  } else { note.textContent = ""; }
+}
+
 function renderBudget(s) {
   const b = s.budget;
   if (!b) { el("budget").innerHTML = ""; return; }
@@ -122,6 +164,10 @@ function renderBacktest(bt) {
       ${tile(bt.total_trades, "Trades")}
       ${tile(pct(bt.hit_rate_pct), "Hit rate")}
       ${tile(inr(bt.net_pnl), "Net P&L")}
+      ${tile(inr(bt.expectancy), "Expectancy / trade")}
+      ${tile(bt.payoff_ratio === null || bt.payoff_ratio === undefined ? "n/a" : fmt(bt.payoff_ratio, 2) + "×", "Payoff ratio")}
+      ${tile(inr(bt.best_trade), "Best trade")}
+      ${tile(inr(bt.max_drawdown), "Max drawdown")}
     </div>
     <p class="muted" style="font-size:13px">${bt.note}</p>
     ${equitySVG(bt.equity_curve)}`;
@@ -156,6 +202,7 @@ function equitySVG(curve) {
   renderBanner(s);
   renderTiles(s);
   renderVix(s);
+  renderSkew(s);
   renderCandidates(s);
   renderBudget(s);
   renderJournal(s);

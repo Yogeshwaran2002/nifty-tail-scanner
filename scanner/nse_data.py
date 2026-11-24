@@ -31,6 +31,13 @@ FO_BHAV_URL = (
 VIX_HIST_API = NSE_HOME + "/api/historical/vixhistory"
 INDEX_HIST_API = NSE_HOME + "/api/historical/indicesHistory"
 
+# Yahoo Finance chart API — keyless, datacenter-friendly (works from GitHub
+# Actions runners, unlike NSE's /api/historical/* which anti-bots datacenter IPs).
+# Primary source for VIX + NIFTY history; NSE is the fallback.
+YF_CHART = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
+YF_VIX = "%5EINDIAVIX"   # ^INDIAVIX
+YF_NIFTY = "%5ENSEI"     # ^NSEI
+
 _HEADERS = {
     "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                    "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"),
@@ -150,7 +157,65 @@ def _parse_date(s) -> date | None:
     return None
 
 
+def _range_for_days(days: int) -> str:
+    if days > 200:
+        return "1y"
+    if days > 120:
+        return "6mo"
+    return "3mo"
+
+
+def yahoo_history(session: requests.Session, symbol: str, rng: str) -> list[tuple[date, float]]:
+    """Daily closes from Yahoo Finance's chart API. Keyless; works from
+    datacenter IPs. Returns [(date, close), ...] sorted ascending."""
+    url = YF_CHART.format(symbol=symbol)
+    r = _get(session, url, params={"range": rng, "interval": "1d"})
+    try:
+        chart = r.json().get("chart", {})
+        if chart.get("error"):
+            raise DataUnavailable(f"Yahoo error for {symbol}: {chart['error']}")
+        result = chart.get("result") or []
+        if not result:
+            raise DataUnavailable(f"Yahoo returned no result for {symbol}.")
+        node = result[0]
+        stamps = node.get("timestamp") or []
+        closes = (node.get("indicators", {}).get("quote") or [{}])[0].get("close") or []
+    except (ValueError, AttributeError, KeyError, IndexError) as e:
+        raise DataUnavailable(f"Yahoo JSON parse failed for {symbol}: {e}")
+    out = []
+    for ts, c in zip(stamps, closes):
+        if c is None:
+            continue
+        out.append((datetime.utcfromtimestamp(ts).date(), float(c)))
+    out.sort(key=lambda t: t[0])
+    if not out:
+        raise DataUnavailable(f"Yahoo returned zero usable closes for {symbol}.")
+    return out
+
+
 def get_vix_history(session: requests.Session, days: int = 260) -> list[tuple[date, float]]:
+    """India VIX daily closes. Yahoo first (datacenter-friendly), NSE fallback."""
+    try:
+        return yahoo_history(session, YF_VIX, _range_for_days(days))
+    except DataUnavailable as yf_err:
+        try:
+            return _vix_history_nse(session, days)
+        except DataUnavailable as nse_err:
+            raise DataUnavailable(f"VIX unavailable — Yahoo: {yf_err} | NSE: {nse_err}")
+
+
+def get_nifty_history(session: requests.Session, days: int = 40) -> list[tuple[date, float]]:
+    """NIFTY 50 daily closes. Yahoo first (datacenter-friendly), NSE fallback."""
+    try:
+        return yahoo_history(session, YF_NIFTY, _range_for_days(days))
+    except DataUnavailable as yf_err:
+        try:
+            return _nifty_history_nse(session, days)
+        except DataUnavailable as nse_err:
+            raise DataUnavailable(f"NIFTY index unavailable — Yahoo: {yf_err} | NSE: {nse_err}")
+
+
+def _vix_history_nse(session: requests.Session, days: int = 260) -> list[tuple[date, float]]:
     """India VIX closes for roughly `days` calendar days back. Best-effort."""
     to = date.today()
     frm = to - timedelta(days=int(days * 1.6))  # pad for weekends/holidays
@@ -179,7 +244,7 @@ def get_vix_history(session: requests.Session, days: int = 260) -> list[tuple[da
     return out
 
 
-def get_nifty_history(session: requests.Session, days: int = 40) -> list[tuple[date, float]]:
+def _nifty_history_nse(session: requests.Session, days: int = 40) -> list[tuple[date, float]]:
     """NIFTY 50 index closes for realized-vol estimation. Best-effort."""
     to = date.today()
     frm = to - timedelta(days=int(days * 1.8))

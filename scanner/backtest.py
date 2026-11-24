@@ -156,11 +156,9 @@ def _locked(realized, cfg):
 
 
 def _summarize(trades, equity_curve, realized, n_days, cfg):
-    wins = [t for t in trades if t["pnl"] > 0]
-    losses = [t for t in trades if t["pnl"] <= 0]
+    stats = mx.trade_stats([t["pnl"] for t in trades])
     peak = 0.0
     max_dd = 0.0
-    run = 0.0
     for pt in equity_curve:
         run = pt["realized_pnl"]
         peak = max(peak, run)
@@ -168,16 +166,20 @@ def _summarize(trades, equity_curve, realized, n_days, cfg):
     return {
         "ok": True,
         "days_tested": n_days,
-        "total_trades": len(trades),
-        "wins": len(wins),
-        "losses": len(losses),
-        "hit_rate_pct": round(100.0 * len(wins) / len(trades), 1) if trades else 0.0,
+        "total_trades": stats["total"],
+        "wins": stats["wins"],
+        "losses": stats["losses"],
+        "hit_rate_pct": stats["hit_rate_pct"],
         "net_pnl": round(realized, 2),
-        "avg_win": round(sum(t["pnl"] for t in wins) / len(wins), 2) if wins else 0.0,
-        "avg_loss": round(sum(t["pnl"] for t in losses) / len(losses), 2) if losses else 0.0,
+        "avg_win": stats["avg_win"],
+        "avg_loss": stats["avg_loss"],
+        "expectancy": stats["expectancy"],
+        "payoff_ratio": stats["payoff_ratio"],
+        "best_trade": stats["best"],
+        "worst_trade": stats["worst"],
         "max_drawdown": round(max_dd, 2),
         "trades": trades,
         "equity_curve": equity_curve,
-        "note": "Tail-risk expects a LOW hit rate with rare large wins. Judge by net "
-                "P&L and payoff ratio, not win %.",
+        "note": "Tail-risk expects a LOW hit rate with rare large wins. Judge by "
+                "expectancy and payoff ratio, not win %.",
     }
