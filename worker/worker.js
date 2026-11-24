@@ -38,6 +38,16 @@ export default {
         });
         return new Response(await r.text(), { status: 200, headers: { "content-type": "application/json" } });
       }
+      // GET /check?key=... — diagnostic: who is the token? (getMe from Cloudflare)
+      // ok:true + username = fresh/valid token. 401 = revoked. 429 = token is
+      // globally rate-limited (still the abused/old token).
+      if (url.pathname === "/check") {
+        if (!env.WEBHOOK_SECRET || url.searchParams.get("key") !== env.WEBHOOK_SECRET) {
+          return new Response("forbidden (append ?key=<your WEBHOOK_SECRET>)", { status: 403 });
+        }
+        const r = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/getMe`);
+        return new Response(await r.text(), { status: 200, headers: { "content-type": "application/json" } });
+      }
       return new Response("nifty-tail-bot up — visit /setup?key=<WEBHOOK_SECRET> to register the webhook", { status: 200 });
     }
 
