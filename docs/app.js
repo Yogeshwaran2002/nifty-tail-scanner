@@ -404,7 +404,34 @@ function renderPlaybook(s, st) {
   } else {
     cards.push(pbCard("ETF momentum (buy)", "WAIT", "no ETF data", "—"));
   }
+  // Turn-of-the-Month
+  const t = st && st.turn_of_month;
+  if (t && t.fired) {
+    cards.push(pbCard("Turn-of-the-Month (buy)", "ACT", `Hold <b>${t.etf}</b> — in the turn-of-month window`,
+      "sell after the first few trading days of next month (back to cash)"));
+  } else if (t) {
+    cards.push(pbCard("Turn-of-the-Month (buy)", "WAIT", `in cash — next window starts <b>${t.next_window_start || "?"}</b>`,
+      "buy the index ETF when the window opens"));
+  }
   el("playbook").innerHTML = cards.join("");
+}
+
+function renderTom(st) {
+  const el2 = el("strat-tom");
+  const t = st && st.turn_of_month;
+  if (!t || !t.backtest) { el2.innerHTML = `<p class="muted">${(t && t.reasons || ["unavailable"]).join("; ")}</p>`; return; }
+  const b = t.backtest;
+  el2.innerHTML = `
+    <h2 style="margin-top:0">Turn-of-the-Month ${badge(t.fired)}</h2>
+    <p style="margin:0 0 6px">${t.fired ? `🟢 <b>In the window today</b> — hold <b>${t.etf}</b>.` : `⚪ In cash — next window starts <b>${t.next_window_start||"?"}</b>.`}</p>
+    <p class="muted" style="font-size:13px;margin:0 0 12px">Window: ${t.window}. In the market only <b>${fmt(t.in_market_pct,0)}%</b> of days.</p>
+    <div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">${b.days}-day NIFTY backtest — ToM vs buy &amp; hold</div>
+    <table><thead><tr><th>Metric</th><th>Turn-of-Month ★</th><th>Buy &amp; hold NIFTY</th></tr></thead><tbody>
+      <tr><td>Total return</td><td><b>${fmt(b.tom.total_return_pct,1)}%</b></td><td>${fmt(b.buyhold.total_return_pct,1)}%</td></tr>
+      <tr><td>CAGR</td><td>${fmt(b.tom.cagr_pct,1)}%</td><td>${fmt(b.buyhold.cagr_pct,1)}%</td></tr>
+      <tr><td><b>Max drawdown</b></td><td style="color:var(--good)"><b>${fmt(b.tom.max_drawdown_pct,1)}%</b></td><td style="color:var(--critical)">${fmt(b.buyhold.max_drawdown_pct,1)}%</td></tr>
+    </tbody></table>
+    <p class="muted" style="font-size:12px;margin-top:8px">${t.note}</p>`;
 }
 
 function renderPositions(s, st) {
@@ -509,6 +536,7 @@ function wireLogForm() {
   renderSkew(s);
   renderCandidates(s);
   renderStrategies(strat);
+  renderTom(strat);
   renderBacktest(bt);
   el("disclaimer").textContent = s.disclaimer ||
     "Educational only. Not investment advice. SEBI FY26: ~87.7% of F&O traders lost money; option buyers lost most. Paper-trade until results earn trust.";

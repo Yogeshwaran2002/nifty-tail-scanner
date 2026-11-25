@@ -300,6 +300,76 @@ def _g(name, passed, value, threshold, detail):
     return {"name": name, "passed": bool(passed), "value": value, "threshold": threshold, "detail": detail}
 
 
+def tom_window_dates(dates, last_days, first_days):
+    """Given a sorted list of trading dates, return the set that falls in a
+    turn-of-the-month window: the last `last_days` of each month plus the first
+    `first_days` of each month. Pure + testable."""
+    by_month = {}
+    for d in sorted(dates):
+        by_month.setdefault((d.year, d.month), []).append(d)
+    win = set()
+    for ds in by_month.values():
+        for d in ds[:first_days]:
+            win.add(d)
+        for d in ds[-last_days:]:
+            win.add(d)
+    return win
+
+
+def turn_of_month(session, cfg, on):
+    """Turn-of-the-Month timing on a broad index ETF. In the ~4-day window →
+    hold the ETF; otherwise cash. Backtested on NIFTY itself (India proof)."""
+    t = cfg["turn_of_month"]
+    try:
+        hist = nse.yahoo_history(session, t["index_symbol"], "2y")
+    except nse.DataUnavailable as e:
+        return {"fired": False, "reasons": [str(e)]}
+    dates = [d for d, _ in hist]
+    closes = [c for _, c in hist]
+    win = tom_window_dates(dates, t["last_days"], t["first_days"])
+
+    in_today = on in win
+    future_win = sorted(d for d in win if d > on)
+    next_start = future_win[0].isoformat() if future_win else None
+
+    cash_d = (1 + t.get("cash_annual_yield_pct", 6.0) / 100.0) ** (1 / 252.0) - 1
+    eq_tom, eq_bh = 1.0, 1.0
+    cur_tom, cur_bh = [1.0], [1.0]
+    in_days = 0
+    for i in range(len(closes) - 1):
+        r = closes[i + 1] / closes[i] - 1
+        if dates[i] in win:
+            eq_tom *= (1 + r); in_days += 1
+        else:
+            eq_tom *= (1 + cash_d)
+        eq_bh *= (1 + r)
+        cur_tom.append(eq_tom); cur_bh.append(eq_bh)
+    n = len(closes) - 1
+
+    def stats(curve, equity):
+        peak = dd = 0.0
+        for v in curve:
+            peak = max(peak, v); dd = min(dd, v / peak - 1)
+        yrs = n / 252.0 if n else 1
+        cagr = equity ** (1 / yrs) - 1 if yrs > 0 else 0
+        return {"total_return_pct": round((equity - 1) * 100, 1),
+                "cagr_pct": round(cagr * 100, 1), "max_drawdown_pct": round(dd * 100, 1)}
+
+    return {
+        "fired": in_today,
+        "etf": t["etf_symbol"],
+        "window": f"last {t['last_days']} + first {t['first_days']} trading days of the month",
+        "in_market_pct": round(100.0 * in_days / n, 1) if n else 0,
+        "next_window_start": next_start,
+        "backtest": {"days": n, "tom": stats(cur_tom, eq_tom), "buyhold": stats(cur_bh, eq_bh),
+                     "equity_curve": [{"i": i, "equity": round(v, 4)} for i, v in enumerate(cur_tom) if i % 3 == 0]},
+        "note": "Hold the index ETF only in the window, cash otherwise. ToM is a documented "
+                "global seasonal effect (Lakonishok & Smidt 1988); backtest here is on NIFTY. "
+                "In the market only ~4 days/month → small drawdown. Not advice.",
+        "reasons": [] if in_today else [f"outside the window; next starts {next_start}"],
+    }
+
+
 def etf_momentum_backtest(session, cfg):
     """Monthly-rebalance momentum backtest over ~2y of Yahoo ETF history, run
     twice: plain momentum vs momentum + absolute-momentum trend filter (hold a
@@ -421,6 +491,12 @@ def run_strategies(cfg, on: date | None = None) -> dict:
         out["etf_backtest"] = etf_momentum_backtest(session, cfg)
     except Exception as e:
         out["etf_backtest"] = {"ok": False, "reason": f"etf backtest error: {e}"}
+
+    # Turn-of-the-Month (seasonal index timing)
+    try:
+        out["turn_of_month"] = turn_of_month(session, cfg, on)
+    except Exception as e:
+        out["turn_of_month"] = {"fired": False, "reasons": [f"tom error: {e}"]}
 
     # Option strategies need the chain
     try:

@@ -129,6 +129,18 @@ class TestMetrics(unittest.TestCase):
         self.assertEqual(s["total"], 0)
         self.assertIsNone(s["payoff_ratio"])
 
+    def test_tom_window_dates(self):
+        import datetime as dt
+        # two months of weekday "trading" dates
+        days = [dt.date(2026, 1, d) for d in range(1, 31)] + [dt.date(2026, 2, d) for d in range(1, 29)]
+        win = strat.tom_window_dates(days, last_days=1, first_days=3)
+        # first 3 of Jan + last of Jan + first 3 of Feb + last of Feb
+        self.assertIn(dt.date(2026, 1, 1), win)
+        self.assertIn(dt.date(2026, 1, 3), win)
+        self.assertIn(dt.date(2026, 1, 30), win)   # last of Jan in list
+        self.assertIn(dt.date(2026, 2, 1), win)
+        self.assertNotIn(dt.date(2026, 1, 15), win)  # mid-month not in window
+
 
 class TestRules(unittest.TestCase):
     def setUp(self):

@@ -77,6 +77,7 @@ paid data.
 | **Put credit spread** | Sell premium | Volatility risk premium + theta. The statistically winning side. Defined max loss. | ~₹5–6k defined | "Other strategies" + `/credit` |
 | **Calendar spread** | Vol term structure | Sell rich near-dated IV, buy cheaper far-dated. | low (debit) | "Other strategies" + `/calendar` |
 | **ETF sector momentum** | Buy ETFs | Momentum + **200-SMA trend filter** (else cash) + **low-vol tilt** (inverse-vol weighting). No leverage. | lowest (₹ you choose) | "ETF sector momentum" card + `/etf` |
+| **Turn-of-the-Month** | Buy index ETF | Documented seasonal effect (Lakonishok & Smidt 1988, 30+ markets). Hold NIFTYBEES only ~4 days/month, cash otherwise → tiny drawdown. **NIFTY-backtested here.** | lowest | "Turn-of-the-Month" card + `/tom` |
 
 Each shows **● SETUP/ACT** (green) when its rules fire, or **○ wait** when they
 don't — with the exact reason. "Wait" is the normal, correct state most days.
@@ -106,6 +107,7 @@ Message your bot:
 - `/why` — gate breakdown (why it did/didn't fire)
 - `/skew` — volatility smile + VRP
 - `/etf` — ETF momentum ranking, weighted plan + backtest
+- `/tom` — turn-of-the-month seasonal (NIFTY-backtested)
 - `/holdings` — your real ETF positions + live P&L
 - `/credit` — put credit spread setup
 - `/calendar` — calendar spread

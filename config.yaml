@@ -93,6 +93,17 @@ credit_spread:
 calendar:
   front_rich_threshold_pts: 1.5   # (front ATM IV − next ATM IV) in vol points
 
+# Turn-of-the-Month (ToM) — a documented seasonal effect (Lakonishok & Smidt 1988;
+# present in 30+ global equity indexes). Hold a broad index ETF only across the
+# last trading day of the month + first few of the next; sit in cash otherwise.
+# Buy-only, in the market only ~4 days/month → tiny drawdown. Loss-averse friendly.
+turn_of_month:
+  etf_symbol: NIFTYBEES       # broad index ETF to hold during the window
+  index_symbol: "%5ENSEI"     # Yahoo ^NSEI, used to detect trading days + backtest
+  last_days: 1                # include the last N trading days of the month
+  first_days: 3               # + the first N trading days of the next month
+  cash_annual_yield_pct: 6.0  # assumed cash yield off-window (backtest only)
+
 # ETF sector momentum — buy-only, no leverage, lowest capital. Rank a basket by
 # blended 3m/6m return, hold the top N, rebalance monthly. Documented factor.
 etf_momentum:

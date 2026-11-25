@@ -21,6 +21,7 @@ layer).
 - `/etf` — ETF sector momentum (buy-only, lowest capital)
 - `/credit` — put credit spread (sell premium, defined risk)
 - `/calendar` — volatility term-structure spread
+- `/tom` — turn-of-the-month seasonal (NIFTY-backtested)
 - `/id` — your Telegram chat id
 - `/help`
 - Any other text → the Llama explainer (strictly grounded on the scan JSON; it

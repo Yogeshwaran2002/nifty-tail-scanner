@@ -193,6 +193,7 @@ async function handle(env, text, chatId) {
     case "/holdings": return fmtHoldings(await getJSON(env, "strategies.json").catch(() => null));
     case "/credit": return fmtCredit(await getJSON(env, "strategies.json").catch(() => null));
     case "/calendar": return fmtCalendar(await getJSON(env, "strategies.json").catch(() => null));
+    case "/tom": return fmtTom(await getJSON(env, "strategies.json").catch(() => null));
     default:
       return askLLM(env, text, await getJSON(env, "latest.json").catch(() => null));
   }
@@ -212,6 +213,7 @@ function help() {
     "/holdings — your real-money ETF holdings + P&L",
     "/credit — put credit spread (sell premium, defined risk)",
     "/calendar — volatility term-structure spread",
+    "/tom — turn-of-the-month seasonal (NIFTY-proven)",
     "/id — show your Telegram chat id",
     "",
     "Ask anything else in plain English and I'll explain the numbers.",
@@ -242,6 +244,11 @@ function fmtPlaybook(s, st) {
   if (e && (e.trade_plan || []).length) {
     const act = e.trade_plan.map(p => `${p.symbol}${p.weight_pct != null ? " " + n(p.weight_pct,0) + "%" : ""}`).join(" · ");
     L.push(`🟢 <b>ETF momentum</b>: HOLD ${act} — rebalance monthly, <200-SMA→cash, −${e.trailing_stop_pct}% trail`);
+  }
+  const t = st && st.turn_of_month;
+  if (t && t.backtest) {
+    L.push(t.fired ? `🟢 <b>Turn-of-Month</b>: HOLD ${t.etf} (in window) — exit after first days of next month`
+                   : `⚪ <b>Turn-of-Month</b>: cash — next window ${t.next_window_start || "?"}`);
   }
   L.push("\n<i>Not advice. Check live prices in Groww before any order.</i>");
   return L.join("\n");
@@ -379,6 +386,20 @@ function fmtCredit(st) {
     c.fired
       ? "\n✓ Options rich enough to sell. Max loss is capped — check live prices in Groww."
       : "\n○ Not firing — " + (c.reasons || []).join("; ") + " (premium not rich; no edge in selling).",
+  ].join("\n");
+}
+
+function fmtTom(st) {
+  const t = st && st.turn_of_month;
+  if (!t || !t.backtest) return "Turn-of-month: " + ((t && t.reasons) || ["unavailable"]).join("; ");
+  const b = t.backtest;
+  return [
+    `<b>Turn-of-the-Month</b> ${t.fired ? "● IN WINDOW" : "○ cash"}`,
+    t.fired ? `Hold <b>${t.etf}</b> now — sell after the first few days of next month.`
+            : `In cash — next window starts <b>${t.next_window_start || "?"}</b>.`,
+    `In market only ${n(t.in_market_pct, 0)}% of days.`,
+    `\n<b>${b.days}d NIFTY backtest</b>: ToM ${n(b.tom.total_return_pct,0)}% ret / ${n(b.tom.max_drawdown_pct,1)}% DD  vs  buy&amp;hold ${n(b.buyhold.total_return_pct,0)}% / ${n(b.buyhold.max_drawdown_pct,1)}% DD`,
+    "\n<i>Documented seasonal effect; backtest on NIFTY. Not advice.</i>",
   ].join("\n");
 }
 
