@@ -102,7 +102,7 @@ turn_of_month:
   index_symbol: "%5ENSEI"     # Yahoo ^NSEI, used to detect trading days + backtest
   last_days: 1                # include the last N trading days of the month
   first_days: 3               # + the first N trading days of the next month
-  cash_annual_yield_pct: 6.0  # assumed cash yield off-window (backtest only)
+  cash_annual_yield_pct: 0.0  # 0 = honest price-only backtest (no assumed cash yield)
 
 # ETF sector momentum — buy-only, no leverage, lowest capital. Rank a basket by
 # blended 3m/6m return, hold the top N, rebalance monthly. Documented factor.

@@ -395,8 +395,11 @@ def turn_of_month(session, cfg, on):
         "backtest": {"days": n, "tom": stats(cur_tom, eq_tom), "buyhold": stats(cur_bh, eq_bh),
                      "equity_curve": [{"i": i, "equity": round(v, 4)} for i, v in enumerate(cur_tom) if i % 3 == 0]},
         "note": "Hold the index ETF only in the window, cash otherwise. ToM is a documented "
-                "global seasonal effect (Lakonishok & Smidt 1988); backtest here is on NIFTY. "
-                "In the market only ~4 days/month → small drawdown. Not advice.",
+                "global seasonal effect (Lakonishok & Smidt 1988); this backtest is PRICE-ONLY "
+                "on real NIFTY (no assumed cash yield). On NIFTY, in-window days average ~+0.14%/day "
+                "vs ~-0.02% out. ⚠️ It trades ~24×/year — on tiny capital, flat brokerage (~₹20/order) "
+                "can erase the edge; use more capital or zero-brokerage delivery. In market ~20% of "
+                "days. In-sample 2y — a hypothesis, not a promise. Not advice.",
         "reasons": [] if in_today else [f"outside the window; next starts {next_start}"],
     }
 
