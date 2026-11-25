@@ -8,7 +8,7 @@ binding = "AI"
 
 [vars]
 DATA_BASE_URL = "https://yogeshwaran2002.github.io/nifty-tail-scanner/data"
-LLM_MODEL = "@cf/meta/llama-3.1-8b-instruct"
+LLM_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
 GH_REPO = "Yogeshwaran2002/nifty-tail-scanner"
 
 # Secrets are NOT stored here. Set them with:

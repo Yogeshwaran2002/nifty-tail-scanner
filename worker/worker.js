@@ -14,7 +14,7 @@
  * Vars (wrangler.toml): DATA_BASE_URL, LLM_MODEL
  */
 
-const DEFAULT_MODEL = "@cf/meta/llama-3.1-8b-instruct";
+const DEFAULT_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 
 export default {
   async fetch(request, env) {
