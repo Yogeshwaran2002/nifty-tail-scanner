@@ -158,6 +158,7 @@ async function handle(env, text, chatId) {
     case "/backtest": return fmtBacktest(await getJSON(env, "backtest.json").catch(() => null));
     case "/skew": return fmtSkew(await getJSON(env, "latest.json"));
     case "/etf": return fmtEtf(await getJSON(env, "strategies.json").catch(() => null));
+    case "/holdings": return fmtHoldings(await getJSON(env, "strategies.json").catch(() => null));
     case "/credit": return fmtCredit(await getJSON(env, "strategies.json").catch(() => null));
     case "/calendar": return fmtCalendar(await getJSON(env, "strategies.json").catch(() => null));
     default:
@@ -175,6 +176,7 @@ function help() {
     "/backtest — backtest stats",
     "/skew — volatility smile + risk premium",
     "/etf — ETF sector momentum (buy-only, low capital)",
+    "/holdings — your real-money ETF holdings + P&L",
     "/credit — put credit spread (sell premium, defined risk)",
     "/calendar — volatility term-structure spread",
     "/id — show your Telegram chat id",
@@ -286,6 +288,18 @@ function fmtEtf(st) {
     lines.push(`Cadence: ${r.cadence || ""}`);
   }
   lines.push("\n<i>Buy-only, no leverage — lowest capital. Not advice.</i>");
+  return lines.join("\n");
+}
+
+function fmtHoldings(st) {
+  const h = st && st.etf_momentum && st.etf_momentum.holdings;
+  if (!h || !h.rows || !h.rows.length) return "No ETF holdings logged yet.";
+  const lines = ["<b>Your ETF holdings (real money)</b>"];
+  for (const x of h.rows) {
+    const pnl = x.pnl === null ? "n/a" : `${inr(x.pnl)} (${n(x.pnl_pct, 1)}%)`;
+    lines.push(`• ${x.symbol}: ${x.units}u @ ${inr(x.buy_price)} → now ${x.now === null ? "n/a" : inr(x.now)} | ${pnl}`);
+  }
+  lines.push(`\nInvested <b>${inr(h.total_cost)}</b> · now <b>${inr(h.total_value)}</b> · P&L <b>${inr(h.total_pnl)} (${n(h.total_pnl_pct, 1)}%)</b>`);
   return lines.join("\n");
 }
 

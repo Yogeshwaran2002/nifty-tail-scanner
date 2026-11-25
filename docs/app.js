@@ -217,8 +217,23 @@ function renderStrategies(st) {
     const plan = (e.trade_plan || []).map(p =>
       `<tr><td>${p.symbol}</td><td>${inr(p.price)}</td><td><b>${p.units}</b> units</td><td>${inr(p.cost)}</td><td>${inr(p.stop_price)}</td></tr>`).join("");
     const rules = e.rules || {};
+    const h = e.holdings;
+    let holdingsHtml = "";
+    if (h && h.rows && h.rows.length) {
+      const hr = h.rows.map(x => {
+        const pnlColor = x.pnl === null ? "" : x.pnl >= 0 ? "color:var(--good)" : "color:var(--critical)";
+        return `<tr><td>${x.symbol}</td><td>${x.units}</td><td>${inr(x.buy_price)}</td><td>${x.now===null?"n/a":inr(x.now)}</td><td>${x.value===null?"n/a":inr(x.value)}</td><td style="${pnlColor}">${x.pnl===null?"n/a":inr(x.pnl)+" ("+fmt(x.pnl_pct,1)+"%)"}</td></tr>`;
+      }).join("");
+      const tColor = h.total_pnl >= 0 ? "color:var(--good)" : "color:var(--critical)";
+      holdingsHtml = `<div style="margin:4px 0 14px;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2)">
+        <div style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);margin-bottom:6px">Your holdings (real money)</div>
+        <table><thead><tr><th>ETF</th><th>Qty</th><th>Buy</th><th>Now</th><th>Value</th><th>P&L</th></tr></thead><tbody>${hr}</tbody></table>
+        <div style="margin-top:8px;font-size:14px">Invested <b>${inr(h.total_cost)}</b> · now <b>${inr(h.total_value)}</b> · <b style="${tColor}">${inr(h.total_pnl)} (${fmt(h.total_pnl_pct,1)}%)</b></div>
+      </div>`;
+    }
     etf.innerHTML = `
       <h2>ETF sector momentum ${badge(e.fired)} <span class="muted" style="font-weight:400">— buy-only, lowest capital</span></h2>
+      ${holdingsHtml}
       <p style="margin:0 0 10px">Hold (equal weight, rebalance monthly): <b>${(e.hold||[]).join(", ")}</b></p>
       <table><thead><tr><th>ETF</th><th>Price</th><th>3m</th><th>6m</th><th>Momentum</th></tr></thead><tbody>${rows}</tbody></table>
       ${plan ? `<div style="margin-top:14px"><div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Trade plan — ₹${e.budget_inr} budget, equal split</div>

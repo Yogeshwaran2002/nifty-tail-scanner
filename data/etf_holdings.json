@@ -1,0 +1,9 @@
+{
+  "currency": "INR",
+  "note": "REAL money (not paper). Buy prices approximate — sum to ~₹978. Correct with exact Groww fills if needed.",
+  "holdings": [
+    { "symbol": "PSUBNKBEES", "units": 1, "buy_price": 107.0, "buy_date": "2026-11-25" },
+    { "symbol": "BANKBEES", "units": 1, "buy_price": 662.0, "buy_date": "2026-11-25" },
+    { "symbol": "PHARMABEES", "units": 7, "buy_price": 29.86, "buy_date": "2026-11-25" }
+  ]
+}

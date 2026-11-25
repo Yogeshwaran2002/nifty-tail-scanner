@@ -183,6 +183,7 @@ def etf_momentum(session, cfg):
         "trade_plan": plan,
         "budget_inr": budget,
         "trailing_stop_pct": ts,
+        "holdings": _mark_holdings({r["symbol"]: r["last"] for r in rows}),
         "rules": {
             "buy": "Use a LIMIT order near the shown price (ETFs can have wide spreads — avoid market orders). Buy whole units, equal rupee split.",
             "sizing": "ETFs trade in single units — there is NO F&O lot. Quantity = budget ÷ top_n ÷ price, rounded down.",
@@ -202,6 +203,49 @@ def _ret(closes, lookback):
     if past <= 0:
         return None
     return round(100.0 * (closes[-1] / past - 1.0), 2)
+
+
+def _mark_holdings(price_map, path="data/etf_holdings.json"):
+    """Load real-money ETF holdings and mark them to market with live prices.
+
+    `price_map` is {symbol: last_price} from the momentum fetch. Returns a dict
+    with per-holding P&L and a summary, or None if there are no holdings.
+    """
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as f:
+            data = json.load(f)
+    except json.JSONDecodeError:
+        return None
+    rows, cost_t, value_t = [], 0.0, 0.0
+    for h in data.get("holdings", []):
+        sym, units, buy = h["symbol"], h["units"], h["buy_price"]
+        now = price_map.get(sym)
+        cost = units * buy
+        value = units * now if now is not None else None
+        pnl = (value - cost) if value is not None else None
+        rows.append({
+            "symbol": sym, "units": units, "buy_price": round(buy, 2),
+            "now": round(now, 2) if now is not None else None,
+            "cost": round(cost, 2), "value": round(value, 2) if value is not None else None,
+            "pnl": round(pnl, 2) if pnl is not None else None,
+            "pnl_pct": round(100.0 * pnl / cost, 2) if (pnl is not None and cost) else None,
+            "buy_date": h.get("buy_date"),
+        })
+        cost_t += cost
+        if value is not None:
+            value_t += value
+    if not rows:
+        return None
+    pnl_t = value_t - cost_t
+    return {
+        "rows": rows,
+        "total_cost": round(cost_t, 2), "total_value": round(value_t, 2),
+        "total_pnl": round(pnl_t, 2),
+        "total_pnl_pct": round(100.0 * pnl_t / cost_t, 2) if cost_t else None,
+        "note": data.get("note", ""),
+    }
 
 
 def _g(name, passed, value, threshold, detail):

@@ -1,6 +1,6 @@
 {
   "date": "2026-11-23",
-  "generated_at": "2026-11-25T05:29:40.198417Z",
+  "generated_at": "2026-11-25T05:43:29.260602Z",
   "etf_momentum": {
     "fired": true,
     "top_n": 3,
@@ -19,66 +19,66 @@
       },
       {
         "symbol": "BANKBEES",
-        "last": 661.51,
-        "ret_3m_pct": 10.66,
-        "ret_6m_pct": 18.21,
-        "momentum_pct": 14.435
+        "last": 662.33,
+        "ret_3m_pct": 10.8,
+        "ret_6m_pct": 18.35,
+        "momentum_pct": 14.575000000000001
       },
       {
         "symbol": "PHARMABEES",
-        "last": 29.54,
-        "ret_3m_pct": 9.08,
-        "ret_6m_pct": 17.08,
-        "momentum_pct": 13.079999999999998
+        "last": 29.53,
+        "ret_3m_pct": 9.05,
+        "ret_6m_pct": 17.04,
+        "momentum_pct": 13.045
       },
       {
         "symbol": "ITBEES",
-        "last": 35.92,
-        "ret_3m_pct": 6.05,
-        "ret_6m_pct": 12.18,
-        "momentum_pct": 9.115
+        "last": 36.06,
+        "ret_3m_pct": 6.47,
+        "ret_6m_pct": 12.62,
+        "momentum_pct": 9.545
       },
       {
         "symbol": "NIFTYBEES",
-        "last": 294.89,
-        "ret_3m_pct": 6.55,
-        "ret_6m_pct": 9.58,
-        "momentum_pct": 8.065
+        "last": 295.33,
+        "ret_3m_pct": 6.71,
+        "ret_6m_pct": 9.75,
+        "momentum_pct": 8.23
       },
       {
         "symbol": "CONSUMBEES",
-        "last": 138.59,
-        "ret_3m_pct": 3.44,
-        "ret_6m_pct": 10.52,
-        "momentum_pct": 6.9799999999999995
+        "last": 138.66,
+        "ret_3m_pct": 3.49,
+        "ret_6m_pct": 10.57,
+        "momentum_pct": 7.03
       },
       {
         "symbol": "INFRABEES",
-        "last": 995.46,
-        "ret_3m_pct": 2.67,
-        "ret_6m_pct": 3.24,
-        "momentum_pct": 2.955
+        "last": 996.88,
+        "ret_3m_pct": 2.82,
+        "ret_6m_pct": 3.39,
+        "momentum_pct": 3.105
       },
       {
         "symbol": "JUNIORBEES",
-        "last": 788.95,
-        "ret_3m_pct": -1.41,
-        "ret_6m_pct": 4.72,
-        "momentum_pct": 1.6549999999999998
+        "last": 789.4,
+        "ret_3m_pct": -1.36,
+        "ret_6m_pct": 4.78,
+        "momentum_pct": 1.71
       },
       {
         "symbol": "MON100",
-        "last": 301.67,
-        "ret_3m_pct": -8.73,
-        "ret_6m_pct": -9.17,
-        "momentum_pct": -8.95
+        "last": 301.5,
+        "ret_3m_pct": -8.78,
+        "ret_6m_pct": -9.22,
+        "momentum_pct": -9.0
       },
       {
         "symbol": "GOLDBEES",
-        "last": 100.59,
-        "ret_3m_pct": -23.4,
-        "ret_6m_pct": -22.92,
-        "momentum_pct": -23.16
+        "last": 100.29,
+        "ret_3m_pct": -23.63,
+        "ret_6m_pct": -23.15,
+        "momentum_pct": -23.39
       }
     ],
     "trade_plan": [
@@ -91,21 +91,63 @@
       },
       {
         "symbol": "BANKBEES",
-        "price": 661.51,
+        "price": 662.33,
         "units": 3,
-        "cost": 1984.53,
-        "stop_price": 582.13
+        "cost": 1986.99,
+        "stop_price": 582.85
       },
       {
         "symbol": "PHARMABEES",
-        "price": 29.54,
+        "price": 29.53,
         "units": 67,
-        "cost": 1979.18,
-        "stop_price": 26.0
+        "cost": 1978.51,
+        "stop_price": 25.99
       }
     ],
     "budget_inr": 6000,
     "trailing_stop_pct": 12,
+    "holdings": {
+      "rows": [
+        {
+          "symbol": "PSUBNKBEES",
+          "units": 1,
+          "buy_price": 107.0,
+          "now": 107.37,
+          "cost": 107.0,
+          "value": 107.37,
+          "pnl": 0.37,
+          "pnl_pct": 0.35,
+          "buy_date": "2026-11-25"
+        },
+        {
+          "symbol": "BANKBEES",
+          "units": 1,
+          "buy_price": 662.0,
+          "now": 662.33,
+          "cost": 662.0,
+          "value": 662.33,
+          "pnl": 0.33,
+          "pnl_pct": 0.05,
+          "buy_date": "2026-11-25"
+        },
+        {
+          "symbol": "PHARMABEES",
+          "units": 7,
+          "buy_price": 29.86,
+          "now": 29.53,
+          "cost": 209.02,
+          "value": 206.71,
+          "pnl": -2.31,
+          "pnl_pct": -1.11,
+          "buy_date": "2026-11-25"
+        }
+      ],
+      "total_cost": 978.02,
+      "total_value": 976.41,
+      "total_pnl": -1.61,
+      "total_pnl_pct": -0.16,
+      "note": "REAL money (not paper). Buy prices approximate \u2014 sum to ~\u20b9978. Correct with exact Groww fills if needed."
+    },
     "rules": {
       "buy": "Use a LIMIT order near the shown price (ETFs can have wide spreads \u2014 avoid market orders). Buy whole units, equal rupee split.",
       "sizing": "ETFs trade in single units \u2014 there is NO F&O lot. Quantity = budget \u00f7 top_n \u00f7 price, rounded down.",
@@ -132,20 +174,20 @@
     "capital_at_risk": 5343.0,
     "breakeven": 24532.2,
     "prob_profit_pct": 78.2,
-    "vrp": -1.5147688673360193,
-    "iv_rv_ratio": 0.907,
+    "vrp": -1.6959276967502794,
+    "iv_rv_ratio": 0.897,
     "gates": [
       {
         "name": "vrp",
         "passed": false,
-        "value": -1.5147688673360193,
+        "value": -1.6959276967502794,
         "threshold": 2.0,
         "detail": "Only sell when options are genuinely rich (ATM IV \u2212 realized vol)"
       },
       {
         "name": "iv_rv_ratio",
         "passed": false,
-        "value": 0.9073618700421422,
+        "value": 0.8974193076783618,
         "threshold": 1.1,
         "detail": "Options must be rich vs realized to collect premium"
       },
@@ -179,8 +221,8 @@
       }
     ],
     "reasons": [
-      "vrp: -1.5147688673360193 vs 2.0",
-      "iv_rv_ratio: 0.9073618700421422 vs 1.1",
+      "vrp: -1.6959276967502794 vs 2.0",
+      "iv_rv_ratio: 0.8974193076783618 vs 1.1",
       "credit_to_width: 0.178 vs 0.18"
     ]
   },
