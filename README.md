@@ -7,6 +7,9 @@ against events the bell curve calls impossible") adapted to Indian retail with
 dashboard, and pushes a Telegram alert when (and only when) a setup passes every
 gate.
 
+> 📘 **New here? Read the step-by-step [Operator Guide (DOCS.md)](DOCS.md)** —
+> architecture, every strategy, what to check where, and your daily/monthly routine.
+
 > ### Honest framing — read this first
 > This is an **educational / personal-research experiment, not investment advice.**
 > SEBI's FY26 study: **~87.7% of individual F&O traders lost money**, and **option

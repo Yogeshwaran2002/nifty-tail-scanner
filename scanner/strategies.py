@@ -252,6 +252,77 @@ def _g(name, passed, value, threshold, detail):
     return {"name": name, "passed": bool(passed), "value": value, "threshold": threshold, "detail": detail}
 
 
+def etf_momentum_backtest(session, cfg):
+    """Monthly-rebalance momentum backtest over ~2y of Yahoo ETF history.
+
+    At each monthly step: rank the basket by blended 3m/6m return, hold the top
+    N equal-weight for the next month, record the realized return, chain into an
+    equity curve. Always produces an actionable result (unlike the very selective
+    option strategies)."""
+    e = cfg["etf_momentum"]
+    l3, l6, topn = e["lookback_3m_days"], e["lookback_6m_days"], e["top_n"]
+    series = {}
+    for sym in e["basket"]:
+        try:
+            series[sym.replace(".NS", "")] = {d: c for d, c in nse.yahoo_history(session, sym, "2y")}
+        except nse.DataUnavailable:
+            continue
+    if len(series) < topn:
+        return {"ok": False, "reason": "Not enough ETF history for a backtest."}
+
+    # align on dates present in every series
+    common = set.intersection(*[set(s.keys()) for s in series.values()])
+    dates = sorted(common)
+    if len(dates) < l6 + 25:
+        return {"ok": False, "reason": f"Only {len(dates)} aligned days — need ~{l6 + 25}."}
+
+    step = 21  # ~1 trading month
+    equity = 1.0
+    curve = [{"date": dates[l6].isoformat(), "equity": 1.0}]
+    rets, held_log = [], []
+    i = l6
+    while i + step < len(dates):
+        di, dnext = dates[i], dates[i + step]
+        ranked = []
+        for sym, s in series.items():
+            c_now, c3, c6 = s[di], s[dates[i - l3]], s[dates[i - l6]]
+            mom = ((c_now / c3 - 1) + (c_now / c6 - 1)) / 2 if c3 > 0 and c6 > 0 else None
+            if mom is not None:
+                ranked.append((sym, mom))
+        ranked.sort(key=lambda x: x[1], reverse=True)
+        held = [sym for sym, _ in ranked[:topn]]
+        port = sum(series[sym][dnext] / series[sym][di] - 1 for sym in held) / len(held) if held else 0.0
+        equity *= (1 + port)
+        rets.append(port)
+        held_log.append({"date": di.isoformat(), "held": held, "ret_pct": round(port * 100, 2)})
+        curve.append({"date": dnext.isoformat(), "equity": round(equity, 4)})
+        i += step
+
+    if not rets:
+        return {"ok": False, "reason": "No rebalances computed."}
+    total = equity - 1
+    peak = dd = 0.0
+    for pt in curve:
+        peak = max(peak, pt["equity"])
+        dd = min(dd, pt["equity"] / peak - 1)
+    wins = sum(1 for r in rets if r > 0)
+    cagr = (equity ** (12.0 / len(rets)) - 1) if len(rets) else 0.0
+    return {
+        "ok": True,
+        "months": len(rets),
+        "total_return_pct": round(total * 100, 1),
+        "cagr_pct": round(cagr * 100, 1),
+        "best_month_pct": round(max(rets) * 100, 1),
+        "worst_month_pct": round(min(rets) * 100, 1),
+        "max_drawdown_pct": round(dd * 100, 1),
+        "win_rate_pct": round(100.0 * wins / len(rets), 1),
+        "equity_curve": curve,
+        "recent": held_log[-3:],
+        "note": "Monthly rebalance, top-N equal weight, buy-only. Past performance "
+                "is not a promise — judge the method, size small.",
+    }
+
+
 # ── Orchestrator ────────────────────────────────────────────────────────────
 
 def run_strategies(cfg, on: date | None = None) -> dict:
@@ -268,6 +339,12 @@ def run_strategies(cfg, on: date | None = None) -> dict:
         out["etf_momentum"] = etf_momentum(session, cfg)
     except Exception as e:  # keep the file writing even if one strategy fails
         out["etf_momentum"] = {"fired": False, "reasons": [f"etf error: {e}"]}
+
+    # ETF momentum backtest (buy-only, always produces an equity curve)
+    try:
+        out["etf_backtest"] = etf_momentum_backtest(session, cfg)
+    except Exception as e:
+        out["etf_backtest"] = {"ok": False, "reason": f"etf backtest error: {e}"}
 
     # Option strategies need the chain
     try:

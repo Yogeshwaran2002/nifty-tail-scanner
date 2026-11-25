@@ -1,0 +1,730 @@
+{
+  "date": "2026-09-07",
+  "spot": 23779.15,
+  "vix": 11.15999984741211,
+  "expiry": "2026-10-27",
+  "put_count": 103,
+  "puts": [
+    {
+      "strike": 22550.0,
+      "close": 41.0,
+      "open_interest": 3120.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22400.0,
+      "close": 36.8,
+      "open_interest": 46150.0,
+      "volume": 440.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24100.0,
+      "close": 422.6,
+      "open_interest": 185380.0,
+      "volume": 1611.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24150.0,
+      "close": 449.4,
+      "open_interest": 24635.0,
+      "volume": 51.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25050.0,
+      "close": 1094.95,
+      "open_interest": 325.0,
+      "volume": 1.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25250.0,
+      "close": 883.6,
+      "open_interest": 130.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26100.0,
+      "close": 1960.3,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26900.0,
+      "close": 2631.85,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23250.0,
+      "close": 127.75,
+      "open_interest": 3575.0,
+      "volume": 86.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23900.0,
+      "close": 323.0,
+      "open_interest": 153400.0,
+      "volume": 1914.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24050.0,
+      "close": 399.0,
+      "open_interest": 12090.0,
+      "volume": 78.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24250.0,
+      "close": 509.95,
+      "open_interest": 17355.0,
+      "volume": 9.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25300.0,
+      "close": 1150.0,
+      "open_interest": 585.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26300.0,
+      "close": 2121.9,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 27000.0,
+      "close": 2973.85,
+      "open_interest": 141570.0,
+      "volume": 525.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22350.0,
+      "close": 31.95,
+      "open_interest": 2145.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22450.0,
+      "close": 43.05,
+      "open_interest": 845.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26400.0,
+      "close": 2204.4,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26250.0,
+      "close": 2081.05,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25700.0,
+      "close": 1260.0,
+      "open_interest": 325.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23800.0,
+      "close": 284.55,
+      "open_interest": 436865.0,
+      "volume": 6064.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23750.0,
+      "close": 261.5,
+      "open_interest": 12090.0,
+      "volume": 248.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23150.0,
+      "close": 327.65,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22950.0,
+      "close": 274.9,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22900.0,
+      "close": 262.65,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23600.0,
+      "close": 214.95,
+      "open_interest": 166400.0,
+      "volume": 1652.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23400.0,
+      "close": 159.35,
+      "open_interest": 111150.0,
+      "volume": 1658.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 27200.0,
+      "close": 2898.55,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 27150.0,
+      "close": 2853.65,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26850.0,
+      "close": 2588.1,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26550.0,
+      "close": 2330.1,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24950.0,
+      "close": 676.9,
+      "open_interest": 3900.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24700.0,
+      "close": 808.95,
+      "open_interest": 146120.0,
+      "volume": 66.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24650.0,
+      "close": 735.0,
+      "open_interest": 5135.0,
+      "volume": 1.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24200.0,
+      "close": 475.1,
+      "open_interest": 266175.0,
+      "volume": 1868.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23650.0,
+      "close": 232.05,
+      "open_interest": 6630.0,
+      "volume": 90.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26950.0,
+      "close": 2675.85,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25500.0,
+      "close": 1520.4,
+      "open_interest": 259740.0,
+      "volume": 291.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25400.0,
+      "close": 996.5,
+      "open_interest": 780.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25150.0,
+      "close": 974.25,
+      "open_interest": 260.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25100.0,
+      "close": 928.1,
+      "open_interest": 5525.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24900.0,
+      "close": 819.45,
+      "open_interest": 77870.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24600.0,
+      "close": 737.5,
+      "open_interest": 96135.0,
+      "volume": 186.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23000.0,
+      "close": 87.1,
+      "open_interest": 1283555.0,
+      "volume": 8843.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22750.0,
+      "close": 228.35,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22600.0,
+      "close": 47.95,
+      "open_interest": 51805.0,
+      "volume": 540.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22150.0,
+      "close": 123.6,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22300.0,
+      "close": 33.5,
+      "open_interest": 102505.0,
+      "volume": 993.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23500.0,
+      "close": 185.95,
+      "open_interest": 1080625.0,
+      "volume": 10840.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25350.0,
+      "close": 865.7,
+      "open_interest": 260.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25950.0,
+      "close": 1842.3,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26150.0,
+      "close": 1657.0,
+      "open_interest": 130.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25900.0,
+      "close": 1231.5,
+      "open_interest": 65.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25750.0,
+      "close": 1659.3,
+      "open_interest": 325.0,
+      "volume": 1.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22850.0,
+      "close": 250.85,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22800.0,
+      "close": 63.45,
+      "open_interest": 62335.0,
+      "volume": 1401.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22650.0,
+      "close": 52.6,
+      "open_interest": 5590.0,
+      "volume": 17.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22250.0,
+      "close": 33.05,
+      "open_interest": 362245.0,
+      "volume": 5107.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26750.0,
+      "close": 2501.2,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23350.0,
+      "close": 387.65,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23300.0,
+      "close": 135.9,
+      "open_interest": 307060.0,
+      "volume": 1944.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23050.0,
+      "close": 301.35,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24750.0,
+      "close": 546.9,
+      "open_interest": 1235.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23950.0,
+      "close": 345.45,
+      "open_interest": 24830.0,
+      "volume": 500.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24000.0,
+      "close": 371.4,
+      "open_interest": 1343875.0,
+      "volume": 11881.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24550.0,
+      "close": 690.75,
+      "open_interest": 8710.0,
+      "volume": 4.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25450.0,
+      "close": 1058.8,
+      "open_interest": 130.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25650.0,
+      "close": 1057.4,
+      "open_interest": 130.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26500.0,
+      "close": 2304.0,
+      "open_interest": 8320.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22100.0,
+      "close": 116.95,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22500.0,
+      "close": 41.8,
+      "open_interest": 1015885.0,
+      "volume": 7425.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26200.0,
+      "close": 2040.5,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26350.0,
+      "close": 2163.0,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26700.0,
+      "close": 2458.1,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23200.0,
+      "close": 116.5,
+      "open_interest": 107445.0,
+      "volume": 1764.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23700.0,
+      "close": 246.85,
+      "open_interest": 239005.0,
+      "volume": 3871.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24450.0,
+      "close": 624.2,
+      "open_interest": 17940.0,
+      "volume": 71.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25800.0,
+      "close": 1820.0,
+      "open_interest": 325.0,
+      "volume": 2.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26050.0,
+      "close": 1920.65,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26600.0,
+      "close": 2372.55,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26000.0,
+      "close": 2001.35,
+      "open_interest": 283140.0,
+      "volume": 668.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25600.0,
+      "close": 1280.0,
+      "open_interest": 130.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25200.0,
+      "close": 1220.0,
+      "open_interest": 12415.0,
+      "volume": 1.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25000.0,
+      "close": 1069.65,
+      "open_interest": 589160.0,
+      "volume": 751.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24850.0,
+      "close": 638.95,
+      "open_interest": 1820.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24800.0,
+      "close": 888.55,
+      "open_interest": 144885.0,
+      "volume": 110.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24300.0,
+      "close": 534.45,
+      "open_interest": 166400.0,
+      "volume": 637.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23450.0,
+      "close": 170.55,
+      "open_interest": 50830.0,
+      "volume": 226.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23100.0,
+      "close": 99.95,
+      "open_interest": 150410.0,
+      "volume": 1497.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22200.0,
+      "close": 130.55,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 27100.0,
+      "close": 2808.9,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 27050.0,
+      "close": 2764.35,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26800.0,
+      "close": 2544.55,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26650.0,
+      "close": 2415.2,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 26450.0,
+      "close": 2246.05,
+      "open_interest": 0.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25850.0,
+      "close": 1093.8,
+      "open_interest": 65.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 25550.0,
+      "close": 1144.0,
+      "open_interest": 130.0,
+      "volume": 0.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24500.0,
+      "close": 664.85,
+      "open_interest": 615485.0,
+      "volume": 1864.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24400.0,
+      "close": 600.2,
+      "open_interest": 166660.0,
+      "volume": 557.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 24350.0,
+      "close": 560.0,
+      "open_interest": 15405.0,
+      "volume": 47.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23850.0,
+      "close": 302.8,
+      "open_interest": 5980.0,
+      "volume": 132.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 23550.0,
+      "close": 196.2,
+      "open_interest": 4810.0,
+      "volume": 79.0,
+      "expiry": "2026-10-27"
+    },
+    {
+      "strike": 22700.0,
+      "close": 55.6,
+      "open_interest": 104130.0,
+      "volume": 932.0,
+      "expiry": "2026-10-27"
+    }
+  ]
+}

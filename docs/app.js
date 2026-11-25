@@ -218,6 +218,21 @@ function renderStrategies(st) {
       `<tr><td>${p.symbol}</td><td>${inr(p.price)}</td><td><b>${p.units}</b> units</td><td>${inr(p.cost)}</td><td>${inr(p.stop_price)}</td></tr>`).join("");
     const rules = e.rules || {};
     const h = e.holdings;
+    const bt = st.etf_backtest;
+    let btHtml = "";
+    if (bt && bt.ok) {
+      btHtml = `<div style="margin-top:14px">
+        <div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">2-year backtest (monthly rebalance)</div>
+        <div class="grid">
+          ${tile(fmt(bt.total_return_pct,1)+"%", "Total return")}
+          ${tile(fmt(bt.cagr_pct,1)+"%", "CAGR")}
+          ${tile(fmt(bt.win_rate_pct,0)+"%", "Win rate (months)")}
+          ${tile(fmt(bt.max_drawdown_pct,1)+"%", "Max drawdown")}
+        </div>
+        ${etfEquitySVG(bt.equity_curve)}
+        <p class="muted" style="font-size:12px;margin-top:6px">${bt.note}</p>
+      </div>`;
+    }
     let holdingsHtml = "";
     if (h && h.rows && h.rows.length) {
       const hr = h.rows.map(x => {
@@ -244,7 +259,8 @@ function renderStrategies(st) {
         <li><b>Stop-loss:</b> ${rules.stop || ""}</li>
         <li><b>Sell:</b> ${rules.sell || ""}</li>
         <li><b>Cadence:</b> ${rules.cadence || ""}</li>
-      </ul>`;
+      </ul>
+      ${btHtml}`;
   } else {
     etf.innerHTML = `<h2>ETF sector momentum ${badge(false)}</h2><p class="muted">${(e.reasons||["unavailable"]).join("; ")}</p>`;
   }
@@ -295,6 +311,22 @@ function renderBacktest(bt) {
     </div>
     <p class="muted" style="font-size:13px">${bt.note}</p>
     ${equitySVG(bt.equity_curve)}`;
+}
+
+function etfEquitySVG(curve) {
+  if (!curve || curve.length < 2) return "";
+  const W = 960, H = 160, pad = 30;
+  const ys = curve.map(p => p.equity);
+  const minY = Math.min(...ys), maxY = Math.max(...ys);
+  const sx = i => pad + (W - 2 * pad) * (i / (curve.length - 1));
+  const sy = v => H - pad - (H - 2 * pad) * ((v - minY) / ((maxY - minY) || 1));
+  const d = curve.map((p, i) => `${i ? "L" : "M"}${sx(i).toFixed(1)},${sy(p.equity).toFixed(1)}`).join(" ");
+  const base = sy(1.0);
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img" aria-label="ETF momentum equity curve">
+    <line class="axis" x1="${pad}" y1="${base}" x2="${W - pad}" y2="${base}" stroke-dasharray="4 4"/>
+    <path class="line" d="${d}"/>
+    <text x="${pad}" y="14" fill="var(--ink-muted)" font-size="11">Growth of ₹1 (dashed = starting value)</text>
+  </svg>`;
 }
 
 function equitySVG(curve) {

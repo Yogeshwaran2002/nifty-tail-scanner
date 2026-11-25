@@ -12,6 +12,12 @@ import yaml
 
 from scanner.backtest import run_backtest
 
+import sys
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except Exception:
+    pass
+
 
 def main() -> int:
     with open("config.yaml", encoding="utf-8") as f:
