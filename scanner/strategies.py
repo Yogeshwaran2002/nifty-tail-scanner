@@ -142,6 +142,9 @@ def calendar(all_puts, spot, today, r, q, cfg):
 
 def etf_momentum(session, cfg):
     e = cfg["etf_momentum"]
+    sma_days = e.get("trend_sma_days", 200)
+    use_trend = e.get("trend_filter", True)
+    cash_sym = e.get("cash_symbol", "LIQUIDBEES")
     rows = []
     for sym in e["basket"]:
         try:
@@ -149,49 +152,71 @@ def etf_momentum(session, cfg):
         except nse.DataUnavailable:
             continue
         closes = [c for _, c in hist]
-        if len(closes) < e["lookback_6m_days"] + 1:
-            # still usable for 3m if long enough
-            pass
         last = closes[-1]
         r3 = _ret(closes, e["lookback_3m_days"])
         r6 = _ret(closes, e["lookback_6m_days"])
         parts = [x for x in (r3, r6) if x is not None]
         blended = sum(parts) / len(parts) if parts else None
+        sma = sum(closes[-sma_days:]) / sma_days if len(closes) >= sma_days else None
+        trend = None if sma is None else ("up" if last > sma else "down")
         rows.append({"symbol": sym.replace(".NS", ""), "last": round(last, 2),
-                     "ret_3m_pct": r3, "ret_6m_pct": r6, "momentum_pct": blended})
+                     "ret_3m_pct": r3, "ret_6m_pct": r6, "momentum_pct": blended,
+                     "sma200": round(sma, 2) if sma is not None else None, "trend": trend})
     ranked = sorted([r for r in rows if r["momentum_pct"] is not None],
                     key=lambda x: x["momentum_pct"], reverse=True)
     top = ranked[: e["top_n"]]
 
-    # Concrete trade plan: equal-rupee split, whole units, trailing stop.
+    # cash instrument price (for down-trend slices)
+    cash_price = None
+    try:
+        cash_price = nse.yahoo_history(session, cash_sym + ".NS", "3mo")[-1][1]
+    except nse.DataUnavailable:
+        pass
+
     budget = e.get("budget_inr", 0)
     ts = e.get("trailing_stop_pct", 12)
     alloc = (budget / len(top)) if top else 0
-    plan = []
+    plan, hold, in_cash = [], [], 0
     for r in top:
-        units = int(alloc // r["last"]) if r["last"] > 0 else 0
-        plan.append({
-            "symbol": r["symbol"], "price": r["last"], "units": units,
-            "cost": round(units * r["last"], 2),
-            "stop_price": round(r["last"] * (1 - ts / 100.0), 2),
-        })
+        downtrend = use_trend and r["trend"] == "down"
+        if downtrend:
+            in_cash += 1
+            units = int(alloc // cash_price) if cash_price else 0
+            plan.append({"symbol": cash_sym, "price": round(cash_price, 2) if cash_price else None,
+                         "units": units, "cost": round(units * cash_price, 2) if cash_price else None,
+                         "stop_price": None, "cash": True, "replaces": r["symbol"]})
+            hold.append(f"{cash_sym} (cash — {r['symbol']} is below its {sma_days}-SMA)")
+        else:
+            units = int(alloc // r["last"]) if r["last"] > 0 else 0
+            plan.append({"symbol": r["symbol"], "price": r["last"], "units": units,
+                         "cost": round(units * r["last"], 2),
+                         "stop_price": round(r["last"] * (1 - ts / 100.0), 2), "cash": False})
+            hold.append(r["symbol"])
+
+    price_map = {r["symbol"]: r["last"] for r in rows}
+    if cash_price:
+        price_map[cash_sym] = cash_price
     return {
         "fired": bool(top),
         "top_n": e["top_n"],
-        "hold": [r["symbol"] for r in top],
+        "trend_filter": use_trend,
+        "trend_sma_days": sma_days,
+        "in_cash_slots": in_cash,
+        "hold": hold,
         "ranked": ranked,
         "trade_plan": plan,
         "budget_inr": budget,
         "trailing_stop_pct": ts,
-        "holdings": _mark_holdings({r["symbol"]: r["last"] for r in rows}),
+        "holdings": _mark_holdings(price_map),
         "rules": {
             "buy": "Use a LIMIT order near the shown price (ETFs can have wide spreads — avoid market orders). Buy whole units, equal rupee split.",
             "sizing": "ETFs trade in single units — there is NO F&O lot. Quantity = budget ÷ top_n ÷ price, rounded down.",
-            "stop": f"Optional trailing stop: exit a name if it drops {ts}% from your entry (or its recent high). Caps drawdown between rebalances.",
-            "sell": "Primary exit is the MONTHLY rebalance: re-check /etf on the 1st trading day; if a holding fell out of the top " + str(e["top_n"]) + ", sell it and rotate into the new leader.",
+            "stop": f"Optional trailing stop: exit a name if it drops {ts}% from your entry (or its recent high).",
+            "trend": f"Trend filter ON: a top-ranked ETF is only held while it's above its {sma_days}-day SMA; otherwise that slice sits in {cash_sym} (cash). This is what caps drawdowns.",
+            "sell": "Primary exit is the MONTHLY rebalance: re-check /etf on the 1st trading day; sell anything that fell out of the top " + str(e["top_n"]) + " or dropped below its " + str(sma_days) + "-SMA.",
             "cadence": "Momentum is a monthly strategy — do NOT watch or trade it daily.",
         },
-        "note": "Buy-only, equal-weight the top names, rebalance monthly. No leverage.",
+        "note": "Buy-only, equal-weight the top names (cash when a name is down-trending), rebalance monthly. No leverage.",
         "reasons": [] if top else ["No ETF price data available."],
     }
 
@@ -253,14 +278,14 @@ def _g(name, passed, value, threshold, detail):
 
 
 def etf_momentum_backtest(session, cfg):
-    """Monthly-rebalance momentum backtest over ~2y of Yahoo ETF history.
-
-    At each monthly step: rank the basket by blended 3m/6m return, hold the top
-    N equal-weight for the next month, record the realized return, chain into an
-    equity curve. Always produces an actionable result (unlike the very selective
-    option strategies)."""
+    """Monthly-rebalance momentum backtest over ~2y of Yahoo ETF history, run
+    twice: plain momentum vs momentum + absolute-momentum trend filter (hold a
+    top-N name only while above its SMA, else that slice earns cash). Returns
+    both so the drawdown reduction from the filter is visible."""
     e = cfg["etf_momentum"]
     l3, l6, topn = e["lookback_3m_days"], e["lookback_6m_days"], e["top_n"]
+    sma_days = e.get("trend_sma_days", 200)
+    cash_m = (1 + e.get("cash_annual_yield_pct", 6.0) / 100.0) ** (1 / 12.0) - 1
     series = {}
     for sym in e["basket"]:
         try:
@@ -269,57 +294,68 @@ def etf_momentum_backtest(session, cfg):
             continue
     if len(series) < topn:
         return {"ok": False, "reason": "Not enough ETF history for a backtest."}
-
-    # align on dates present in every series
     common = set.intersection(*[set(s.keys()) for s in series.values()])
     dates = sorted(common)
-    if len(dates) < l6 + 25:
-        return {"ok": False, "reason": f"Only {len(dates)} aligned days — need ~{l6 + 25}."}
+    start = max(l6, sma_days)
+    if len(dates) < start + 25:
+        return {"ok": False, "reason": f"Only {len(dates)} aligned days — need ~{start + 25}."}
 
-    step = 21  # ~1 trading month
-    equity = 1.0
-    curve = [{"date": dates[l6].isoformat(), "equity": 1.0}]
-    rets, held_log = [], []
-    i = l6
-    while i + step < len(dates):
-        di, dnext = dates[i], dates[i + step]
-        ranked = []
-        for sym, s in series.items():
-            c_now, c3, c6 = s[di], s[dates[i - l3]], s[dates[i - l6]]
-            mom = ((c_now / c3 - 1) + (c_now / c6 - 1)) / 2 if c3 > 0 and c6 > 0 else None
-            if mom is not None:
-                ranked.append((sym, mom))
-        ranked.sort(key=lambda x: x[1], reverse=True)
-        held = [sym for sym, _ in ranked[:topn]]
-        port = sum(series[sym][dnext] / series[sym][di] - 1 for sym in held) / len(held) if held else 0.0
-        equity *= (1 + port)
-        rets.append(port)
-        held_log.append({"date": di.isoformat(), "held": held, "ret_pct": round(port * 100, 2)})
-        curve.append({"date": dnext.isoformat(), "equity": round(equity, 4)})
-        i += step
+    def sim(filtered):
+        step = 21
+        equity = 1.0
+        curve = [{"date": dates[start].isoformat(), "equity": 1.0}]
+        rets = []
+        i = start
+        while i + step < len(dates):
+            di, dnext = dates[i], dates[i + step]
+            ranked = []
+            for sym, s in series.items():
+                cn, c3, c6 = s[di], s[dates[i - l3]], s[dates[i - l6]]
+                mom = ((cn / c3 - 1) + (cn / c6 - 1)) / 2 if c3 > 0 and c6 > 0 else None
+                if mom is not None:
+                    ranked.append((sym, mom))
+            ranked.sort(key=lambda x: x[1], reverse=True)
+            held = [sym for sym, _ in ranked[:topn]]
+            slice_rets = []
+            for sym in held:
+                s = series[sym]
+                if filtered:
+                    sma = sum(s[dates[j]] for j in range(i - sma_days + 1, i + 1)) / sma_days
+                    if s[di] <= sma:        # down-trend → cash
+                        slice_rets.append(cash_m)
+                        continue
+                slice_rets.append(s[dnext] / s[di] - 1)
+            port = sum(slice_rets) / len(slice_rets) if slice_rets else 0.0
+            equity *= (1 + port)
+            rets.append(port)
+            curve.append({"date": dnext.isoformat(), "equity": round(equity, 4)})
+            i += step
+        peak = dd = 0.0
+        for pt in curve:
+            peak = max(peak, pt["equity"])
+            dd = min(dd, pt["equity"] / peak - 1)
+        wins = sum(1 for r in rets if r > 0)
+        cagr = (equity ** (12.0 / len(rets)) - 1) if rets else 0.0
+        return {
+            "months": len(rets),
+            "total_return_pct": round((equity - 1) * 100, 1),
+            "cagr_pct": round(cagr * 100, 1),
+            "best_month_pct": round(max(rets) * 100, 1) if rets else 0,
+            "worst_month_pct": round(min(rets) * 100, 1) if rets else 0,
+            "max_drawdown_pct": round(dd * 100, 1),
+            "win_rate_pct": round(100.0 * wins / len(rets), 1) if rets else 0,
+            "equity_curve": curve,
+        }
 
-    if not rets:
-        return {"ok": False, "reason": "No rebalances computed."}
-    total = equity - 1
-    peak = dd = 0.0
-    for pt in curve:
-        peak = max(peak, pt["equity"])
-        dd = min(dd, pt["equity"] / peak - 1)
-    wins = sum(1 for r in rets if r > 0)
-    cagr = (equity ** (12.0 / len(rets)) - 1) if len(rets) else 0.0
+    plain = sim(filtered=False)
+    filtered = sim(filtered=True)
     return {
         "ok": True,
-        "months": len(rets),
-        "total_return_pct": round(total * 100, 1),
-        "cagr_pct": round(cagr * 100, 1),
-        "best_month_pct": round(max(rets) * 100, 1),
-        "worst_month_pct": round(min(rets) * 100, 1),
-        "max_drawdown_pct": round(dd * 100, 1),
-        "win_rate_pct": round(100.0 * wins / len(rets), 1),
-        "equity_curve": curve,
-        "recent": held_log[-3:],
-        "note": "Monthly rebalance, top-N equal weight, buy-only. Past performance "
-                "is not a promise — judge the method, size small.",
+        "plain": plain,
+        "filtered": filtered,
+        "note": f"Trend filter holds a top-{topn} ETF only while above its {sma_days}-day SMA, "
+                "else cash. Compare max drawdown: the filter trades a little return for a much "
+                "smoother ride. Past performance is not a promise — judge the method, size small.",
     }
 
 

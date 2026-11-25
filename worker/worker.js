@@ -280,12 +280,19 @@ function fmtEtf(st) {
   if (e.trade_plan && e.trade_plan.length) {
     lines.push(`\n<b>Plan</b> (₹${e.budget_inr} budget, equal split):`);
     for (const p of e.trade_plan) {
-      lines.push(`• ${p.symbol}: buy <b>${p.units}</b> units @ limit ≈${inr(p.price)} (${inr(p.cost)}), stop ${inr(p.stop_price)}`);
+      const tag = p.cash ? " (cash)" : "";
+      lines.push(`• ${p.symbol}${tag}: buy <b>${p.units}</b> units @ limit ≈${inr(p.price)} (${inr(p.cost)})${p.stop_price ? ", stop " + inr(p.stop_price) : ""}`);
     }
     const r = e.rules || {};
-    lines.push(`\nSell: ${r.sell || ""}`);
-    lines.push(`Stop: ${r.stop || ""}`);
+    lines.push(`\nTrend: ${r.trend || ""}`);
+    lines.push(`Sell: ${r.sell || ""}`);
     lines.push(`Cadence: ${r.cadence || ""}`);
+  }
+  const bt = st.etf_backtest;
+  if (bt && bt.ok && bt.plain && bt.filtered) {
+    lines.push(`\n<b>2y backtest</b> (plain → trend-filtered):`);
+    lines.push(`• Return ${n(bt.plain.total_return_pct, 0)}% → ${n(bt.filtered.total_return_pct, 0)}%`);
+    lines.push(`• Max drawdown ${n(bt.plain.max_drawdown_pct, 1)}% → <b>${n(bt.filtered.max_drawdown_pct, 1)}%</b> (smoother)`);
   }
   lines.push("\n<i>Buy-only, no leverage — lowest capital. Not advice.</i>");
   return lines.join("\n");

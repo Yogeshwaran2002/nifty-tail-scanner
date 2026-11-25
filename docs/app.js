@@ -209,28 +209,40 @@ function renderStrategies(st) {
   // ETF momentum
   const e = st.etf_momentum || {};
   if (e.ranked && e.ranked.length) {
-    const rows = e.ranked.map((r,i) => `<tr${i < e.top_n ? ' style="font-weight:600"' : ''}>
+    const rows = e.ranked.map((r,i) => {
+      const tr = r.trend === "up" ? `<span style="color:var(--good)">▲ up</span>`
+               : r.trend === "down" ? `<span style="color:var(--critical)">▼ down</span>` : "n/a";
+      return `<tr${i < e.top_n ? ' style="font-weight:600"' : ''}>
       <td>${i < e.top_n ? "★ " : ""}${r.symbol}</td><td>${inr(r.last)}</td>
       <td>${r.ret_3m_pct===null?"n/a":fmt(r.ret_3m_pct,1)+"%"}</td>
       <td>${r.ret_6m_pct===null?"n/a":fmt(r.ret_6m_pct,1)+"%"}</td>
-      <td>${fmt(r.momentum_pct,1)}%</td></tr>`).join("");
+      <td>${fmt(r.momentum_pct,1)}%</td><td>${tr}</td></tr>`;
+    }).join("");
     const plan = (e.trade_plan || []).map(p =>
-      `<tr><td>${p.symbol}</td><td>${inr(p.price)}</td><td><b>${p.units}</b> units</td><td>${inr(p.cost)}</td><td>${inr(p.stop_price)}</td></tr>`).join("");
+      `<tr><td>${p.symbol}${p.cash ? " <span style='color:var(--ink-muted)'>(cash)</span>" : ""}</td><td>${p.price===null?"—":inr(p.price)}</td><td><b>${p.units}</b> units</td><td>${p.cost===null?"—":inr(p.cost)}</td><td>${p.stop_price===null?"—":inr(p.stop_price)}</td></tr>`).join("");
     const rules = e.rules || {};
     const h = e.holdings;
     const bt = st.etf_backtest;
     let btHtml = "";
-    if (bt && bt.ok) {
+    if (bt && bt.ok && bt.plain && bt.filtered) {
+      const P = bt.plain, F = bt.filtered;
       btHtml = `<div style="margin-top:14px">
-        <div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">2-year backtest (monthly rebalance)</div>
-        <div class="grid">
-          ${tile(fmt(bt.total_return_pct,1)+"%", "Total return")}
-          ${tile(fmt(bt.cagr_pct,1)+"%", "CAGR")}
-          ${tile(fmt(bt.win_rate_pct,0)+"%", "Win rate (months)")}
-          ${tile(fmt(bt.max_drawdown_pct,1)+"%", "Max drawdown")}
-        </div>
-        ${etfEquitySVG(bt.equity_curve)}
-        <p class="muted" style="font-size:12px;margin-top:6px">${bt.note}</p>
+        <div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">2-year backtest — plain vs trend-filtered</div>
+        <table><thead><tr><th>Metric</th><th>Plain momentum</th><th>+ Trend filter ★</th></tr></thead><tbody>
+          <tr><td>Total return</td><td>${fmt(P.total_return_pct,1)}%</td><td>${fmt(F.total_return_pct,1)}%</td></tr>
+          <tr><td>CAGR</td><td>${fmt(P.cagr_pct,1)}%</td><td>${fmt(F.cagr_pct,1)}%</td></tr>
+          <tr><td>Win rate (months)</td><td>${fmt(P.win_rate_pct,0)}%</td><td>${fmt(F.win_rate_pct,0)}%</td></tr>
+          <tr><td><b>Max drawdown</b></td><td style="color:var(--critical)">${fmt(P.max_drawdown_pct,1)}%</td><td style="color:var(--good)"><b>${fmt(F.max_drawdown_pct,1)}%</b></td></tr>
+          <tr><td>Worst month</td><td>${fmt(P.worst_month_pct,1)}%</td><td>${fmt(F.worst_month_pct,1)}%</td></tr>
+        </tbody></table>
+        <div class="muted" style="font-size:12px;margin-top:8px">Trend-filtered equity (recommended):</div>
+        ${etfEquitySVG(F.equity_curve)}
+        <p class="muted" style="font-size:12px;margin-top:6px">${
+          Math.abs(F.max_drawdown_pct - P.max_drawdown_pct) < 1
+            ? "The trend filter was <b>dormant</b> this window (markets trended up), so returns are identical — it cost nothing. Its job is to move to cash and cut losses in the next sustained downturn (free downside insurance for a loss-averse plan)."
+            : `The trend filter cut max drawdown from ${fmt(P.max_drawdown_pct,1)}% to ${fmt(F.max_drawdown_pct,1)}% — a smoother ride for a small return trade-off.`
+        }</p>
+        <p class="muted" style="font-size:12px;margin-top:4px">${bt.note}</p>
       </div>`;
     }
     let holdingsHtml = "";
@@ -250,12 +262,13 @@ function renderStrategies(st) {
       <h2>ETF sector momentum ${badge(e.fired)} <span class="muted" style="font-weight:400">— buy-only, lowest capital</span></h2>
       ${holdingsHtml}
       <p style="margin:0 0 10px">Hold (equal weight, rebalance monthly): <b>${(e.hold||[]).join(", ")}</b></p>
-      <table><thead><tr><th>ETF</th><th>Price</th><th>3m</th><th>6m</th><th>Momentum</th></tr></thead><tbody>${rows}</tbody></table>
+      <table><thead><tr><th>ETF</th><th>Price</th><th>3m</th><th>6m</th><th>Momentum</th><th>Trend</th></tr></thead><tbody>${rows}</tbody></table>
       ${plan ? `<div style="margin-top:14px"><div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Trade plan — ₹${e.budget_inr} budget, equal split</div>
         <table><thead><tr><th>Buy</th><th>Limit ≈</th><th>Qty</th><th>Cost</th><th>Stop (−${e.trailing_stop_pct}%)</th></tr></thead><tbody>${plan}</tbody></table></div>` : ""}
       <ul class="muted" style="font-size:13px;margin:12px 0 0;padding-left:18px">
         <li><b>Buy:</b> ${rules.buy || ""}</li>
         <li><b>Quantity:</b> ${rules.sizing || ""}</li>
+        <li><b>Trend filter:</b> ${rules.trend || ""}</li>
         <li><b>Stop-loss:</b> ${rules.stop || ""}</li>
         <li><b>Sell:</b> ${rules.sell || ""}</li>
         <li><b>Cadence:</b> ${rules.cadence || ""}</li>

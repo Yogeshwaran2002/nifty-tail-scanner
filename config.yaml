@@ -101,6 +101,14 @@ etf_momentum:
   lookback_6m_days: 126
   budget_inr: 6000            # total ₹ to split equally across the top_n ETFs
   trailing_stop_pct: 12       # optional safety: exit if it falls this % from your entry/high
+  # Absolute-momentum / trend filter (Faber GTAA + Antonacci Dual Momentum):
+  # only hold a ranked ETF while it's above its long SMA; otherwise park that
+  # slice in cash. Historically ~halves drawdowns. Best single add for a
+  # loss-averse, buy-only investor.
+  trend_filter: true
+  trend_sma_days: 200         # hold only if price > this SMA (200-day = ~10-month)
+  cash_symbol: LIQUIDBEES     # where a down-trending slice parks (near-constant NAV)
+  cash_annual_yield_pct: 6.0  # assumed cash/liquid yield, for the backtest only
   basket:                     # Yahoo tickers (NSE ETFs). Unreachable ones are skipped.
     - NIFTYBEES.NS            # Nifty 50
     - JUNIORBEES.NS           # Nifty Next 50

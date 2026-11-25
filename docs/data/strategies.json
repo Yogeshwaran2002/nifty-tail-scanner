@@ -1,9 +1,12 @@
 {
   "date": "2026-11-23",
-  "generated_at": "2026-11-25T05:53:39.389273Z",
+  "generated_at": "2026-11-25T06:15:51.228544Z",
   "etf_momentum": {
     "fired": true,
     "top_n": 3,
+    "trend_filter": true,
+    "trend_sma_days": 200,
+    "in_cash_slots": 0,
     "hold": [
       "PSUBNKBEES",
       "BANKBEES",
@@ -12,96 +15,119 @@
     "ranked": [
       {
         "symbol": "PSUBNKBEES",
-        "last": 107.32,
-        "ret_3m_pct": 12.0,
-        "ret_6m_pct": 19.75,
-        "momentum_pct": 15.875
+        "last": 107.57,
+        "ret_3m_pct": 12.26,
+        "ret_6m_pct": 20.03,
+        "momentum_pct": 16.145,
+        "sma200": 95.7,
+        "trend": "up"
       },
       {
         "symbol": "BANKBEES",
-        "last": 662.23,
-        "ret_3m_pct": 10.79,
-        "ret_6m_pct": 18.34,
-        "momentum_pct": 14.565
+        "last": 663.41,
+        "ret_3m_pct": 10.98,
+        "ret_6m_pct": 18.55,
+        "momentum_pct": 14.765,
+        "sma200": 587.16,
+        "trend": "up"
       },
       {
         "symbol": "PHARMABEES",
-        "last": 29.53,
-        "ret_3m_pct": 9.05,
-        "ret_6m_pct": 17.04,
-        "momentum_pct": 13.045
+        "last": 29.56,
+        "ret_3m_pct": 9.16,
+        "ret_6m_pct": 17.16,
+        "momentum_pct": 13.16,
+        "sma200": 25.63,
+        "trend": "up"
       },
       {
         "symbol": "ITBEES",
-        "last": 36.05,
-        "ret_3m_pct": 6.44,
-        "ret_6m_pct": 12.59,
-        "momentum_pct": 9.515
+        "last": 35.93,
+        "ret_3m_pct": 6.08,
+        "ret_6m_pct": 12.21,
+        "momentum_pct": 9.145,
+        "sma200": 33.42,
+        "trend": "up"
       },
       {
         "symbol": "NIFTYBEES",
-        "last": 295.44,
-        "ret_3m_pct": 6.75,
-        "ret_6m_pct": 9.79,
-        "momentum_pct": 8.27
+        "last": 295.65,
+        "ret_3m_pct": 6.83,
+        "ret_6m_pct": 9.87,
+        "momentum_pct": 8.35,
+        "sma200": 272.74,
+        "trend": "up"
       },
       {
         "symbol": "CONSUMBEES",
-        "last": 138.75,
-        "ret_3m_pct": 3.56,
-        "ret_6m_pct": 10.65,
-        "momentum_pct": 7.105
+        "last": 139.0,
+        "ret_3m_pct": 3.75,
+        "ret_6m_pct": 10.85,
+        "momentum_pct": 7.3,
+        "sma200": 127.65,
+        "trend": "up"
       },
       {
         "symbol": "INFRABEES",
-        "last": 996.59,
-        "ret_3m_pct": 2.79,
-        "ret_6m_pct": 3.36,
-        "momentum_pct": 3.075
+        "last": 997.0,
+        "ret_3m_pct": 2.83,
+        "ret_6m_pct": 3.4,
+        "momentum_pct": 3.115,
+        "sma200": 952.75,
+        "trend": "up"
       },
       {
         "symbol": "JUNIORBEES",
-        "last": 789.28,
-        "ret_3m_pct": -1.37,
-        "ret_6m_pct": 4.77,
-        "momentum_pct": 1.6999999999999997
+        "last": 789.76,
+        "ret_3m_pct": -1.31,
+        "ret_6m_pct": 4.83,
+        "momentum_pct": 1.76,
+        "sma200": 758.97,
+        "trend": "up"
       },
       {
         "symbol": "MON100",
-        "last": 301.29,
-        "ret_3m_pct": -8.84,
-        "ret_6m_pct": -9.29,
-        "momentum_pct": -9.065
+        "last": 300.73,
+        "ret_3m_pct": -9.01,
+        "ret_6m_pct": -9.45,
+        "momentum_pct": -9.23,
+        "sma200": 298.29,
+        "trend": "up"
       },
       {
         "symbol": "GOLDBEES",
-        "last": 100.11,
-        "ret_3m_pct": -23.77,
-        "ret_6m_pct": -23.29,
-        "momentum_pct": -23.53
+        "last": 100.12,
+        "ret_3m_pct": -23.76,
+        "ret_6m_pct": -23.28,
+        "momentum_pct": -23.520000000000003,
+        "sma200": 122.77,
+        "trend": "down"
       }
     ],
     "trade_plan": [
       {
         "symbol": "PSUBNKBEES",
-        "price": 107.32,
+        "price": 107.57,
         "units": 18,
-        "cost": 1931.76,
-        "stop_price": 94.44
+        "cost": 1936.26,
+        "stop_price": 94.66,
+        "cash": false
       },
       {
         "symbol": "BANKBEES",
-        "price": 662.23,
+        "price": 663.41,
         "units": 3,
-        "cost": 1986.69,
-        "stop_price": 582.76
+        "cost": 1990.23,
+        "stop_price": 583.8,
+        "cash": false
       },
       {
         "symbol": "PHARMABEES",
-        "price": 29.53,
+        "price": 29.56,
         "units": 67,
-        "cost": 1978.51,
-        "stop_price": 25.99
+        "cost": 1980.52,
+        "stop_price": 26.01,
+        "cash": false
       }
     ],
     "budget_inr": 6000,
@@ -112,50 +138,51 @@
           "symbol": "PSUBNKBEES",
           "units": 1,
           "buy_price": 107.0,
-          "now": 107.32,
+          "now": 107.57,
           "cost": 107.0,
-          "value": 107.32,
-          "pnl": 0.32,
-          "pnl_pct": 0.3,
+          "value": 107.57,
+          "pnl": 0.57,
+          "pnl_pct": 0.53,
           "buy_date": "2026-11-25"
         },
         {
           "symbol": "BANKBEES",
           "units": 1,
           "buy_price": 662.0,
-          "now": 662.23,
+          "now": 663.41,
           "cost": 662.0,
-          "value": 662.23,
-          "pnl": 0.23,
-          "pnl_pct": 0.03,
+          "value": 663.41,
+          "pnl": 1.41,
+          "pnl_pct": 0.21,
           "buy_date": "2026-11-25"
         },
         {
           "symbol": "PHARMABEES",
           "units": 7,
           "buy_price": 29.86,
-          "now": 29.53,
+          "now": 29.56,
           "cost": 209.02,
-          "value": 206.71,
-          "pnl": -2.31,
-          "pnl_pct": -1.11,
+          "value": 206.92,
+          "pnl": -2.1,
+          "pnl_pct": -1.0,
           "buy_date": "2026-11-25"
         }
       ],
       "total_cost": 978.02,
-      "total_value": 976.26,
-      "total_pnl": -1.76,
-      "total_pnl_pct": -0.18,
+      "total_value": 977.9,
+      "total_pnl": -0.12,
+      "total_pnl_pct": -0.01,
       "note": "REAL money (not paper). Buy prices approximate \u2014 sum to ~\u20b9978. Correct with exact Groww fills if needed."
     },
     "rules": {
       "buy": "Use a LIMIT order near the shown price (ETFs can have wide spreads \u2014 avoid market orders). Buy whole units, equal rupee split.",
       "sizing": "ETFs trade in single units \u2014 there is NO F&O lot. Quantity = budget \u00f7 top_n \u00f7 price, rounded down.",
-      "stop": "Optional trailing stop: exit a name if it drops 12% from your entry (or its recent high). Caps drawdown between rebalances.",
-      "sell": "Primary exit is the MONTHLY rebalance: re-check /etf on the 1st trading day; if a holding fell out of the top 3, sell it and rotate into the new leader.",
+      "stop": "Optional trailing stop: exit a name if it drops 12% from your entry (or its recent high).",
+      "trend": "Trend filter ON: a top-ranked ETF is only held while it's above its 200-day SMA; otherwise that slice sits in LIQUIDBEES (cash). This is what caps drawdowns.",
+      "sell": "Primary exit is the MONTHLY rebalance: re-check /etf on the 1st trading day; sell anything that fell out of the top 3 or dropped below its 200-SMA.",
       "cadence": "Momentum is a monthly strategy \u2014 do NOT watch or trade it daily."
     },
-    "note": "Buy-only, equal-weight the top names, rebalance monthly. No leverage.",
+    "note": "Buy-only, equal-weight the top names (cash when a name is down-trending), rebalance monthly. No leverage.",
     "reasons": []
   },
   "credit_spread": {
@@ -174,20 +201,20 @@
     "capital_at_risk": 5343.0,
     "breakeven": 24532.2,
     "prob_profit_pct": 78.2,
-    "vrp": -1.7774511560300716,
-    "iv_rv_ratio": 0.893,
+    "vrp": -1.8655244326049343,
+    "iv_rv_ratio": 0.888,
     "gates": [
       {
         "name": "vrp",
         "passed": false,
-        "value": -1.7774511560300716,
+        "value": -1.8655244326049343,
         "threshold": 2.0,
         "detail": "Only sell when options are genuinely rich (ATM IV \u2212 realized vol)"
       },
       {
         "name": "iv_rv_ratio",
         "passed": false,
-        "value": 0.8930157871087827,
+        "value": 0.8883067821031418,
         "threshold": 1.1,
         "detail": "Options must be rich vs realized to collect premium"
       },
@@ -221,8 +248,8 @@
       }
     ],
     "reasons": [
-      "vrp: -1.7774511560300716 vs 2.0",
-      "iv_rv_ratio: 0.8930157871087827 vs 1.1",
+      "vrp: -1.8655244326049343 vs 2.0",
+      "iv_rv_ratio: 0.8883067821031418 vs 1.1",
       "credit_to_width: 0.178 vs 0.18"
     ]
   },
@@ -245,117 +272,141 @@
   "notes": [],
   "etf_backtest": {
     "ok": true,
-    "months": 17,
-    "total_return_pct": 29.2,
-    "cagr_pct": 19.8,
-    "best_month_pct": 10.9,
-    "worst_month_pct": -10.2,
-    "max_drawdown_pct": -10.2,
-    "win_rate_pct": 70.6,
-    "equity_curve": [
-      {
-        "date": "2025-05-29",
-        "equity": 1.0
-      },
-      {
-        "date": "2025-06-27",
-        "equity": 1.0319
-      },
-      {
-        "date": "2025-07-28",
-        "equity": 1.0192
-      },
-      {
-        "date": "2025-08-28",
-        "equity": 1.0139
-      },
-      {
-        "date": "2025-09-26",
-        "equity": 1.0728
-      },
-      {
-        "date": "2025-10-30",
-        "equity": 1.1836
-      },
-      {
-        "date": "2025-12-01",
-        "equity": 1.2161
-      },
-      {
-        "date": "2025-12-31",
-        "equity": 1.2243
-      },
-      {
-        "date": "2026-02-02",
-        "equity": 1.2483
-      },
-      {
-        "date": "2026-03-04",
-        "equity": 1.2531
-      },
-      {
-        "date": "2026-04-07",
-        "equity": 1.1252
-      },
-      {
-        "date": "2026-05-08",
-        "equity": 1.2475
-      },
-      {
-        "date": "2026-06-09",
-        "equity": 1.2613
-      },
-      {
-        "date": "2026-07-09",
-        "equity": 1.2646
-      },
-      {
-        "date": "2026-08-07",
-        "equity": 1.3052
-      },
-      {
-        "date": "2026-09-07",
-        "equity": 1.3047
-      },
-      {
-        "date": "2026-10-08",
-        "equity": 1.2483
-      },
-      {
-        "date": "2026-11-09",
-        "equity": 1.2923
-      }
-    ],
-    "recent": [
-      {
-        "date": "2026-08-07",
-        "held": [
-          "MON100",
-          "PHARMABEES",
-          "JUNIORBEES"
-        ],
-        "ret_pct": -0.04
-      },
-      {
-        "date": "2026-09-07",
-        "held": [
-          "MON100",
-          "PHARMABEES",
-          "JUNIORBEES"
-        ],
-        "ret_pct": -4.32
-      },
-      {
-        "date": "2026-10-08",
-        "held": [
-          "MON100",
-          "PHARMABEES",
-          "JUNIORBEES"
-        ],
-        "ret_pct": 3.52
-      }
-    ],
-    "note": "Monthly rebalance, top-N equal weight, buy-only. Past performance is not a promise \u2014 judge the method, size small."
+    "plain": {
+      "months": 13,
+      "total_return_pct": 20.5,
+      "cagr_pct": 18.8,
+      "best_month_pct": 12.3,
+      "worst_month_pct": -8.8,
+      "max_drawdown_pct": -8.8,
+      "win_rate_pct": 69.2,
+      "equity_curve": [
+        {
+          "date": "2025-09-12",
+          "equity": 1.0
+        },
+        {
+          "date": "2025-10-14",
+          "equity": 1.0877
+        },
+        {
+          "date": "2025-11-17",
+          "equity": 1.1232
+        },
+        {
+          "date": "2025-12-16",
+          "equity": 1.1361
+        },
+        {
+          "date": "2026-01-16",
+          "equity": 1.2044
+        },
+        {
+          "date": "2026-02-17",
+          "equity": 1.2363
+        },
+        {
+          "date": "2026-03-19",
+          "equity": 1.1271
+        },
+        {
+          "date": "2026-04-23",
+          "equity": 1.266
+        },
+        {
+          "date": "2026-05-25",
+          "equity": 1.3216
+        },
+        {
+          "date": "2026-06-24",
+          "equity": 1.2921
+        },
+        {
+          "date": "2026-07-24",
+          "equity": 1.2899
+        },
+        {
+          "date": "2026-08-24",
+          "equity": 1.3157
+        },
+        {
+          "date": "2026-09-23",
+          "equity": 1.3197
+        },
+        {
+          "date": "2026-10-26",
+          "equity": 1.2052
+        }
+      ]
+    },
+    "filtered": {
+      "months": 13,
+      "total_return_pct": 20.5,
+      "cagr_pct": 18.8,
+      "best_month_pct": 12.3,
+      "worst_month_pct": -8.8,
+      "max_drawdown_pct": -8.8,
+      "win_rate_pct": 69.2,
+      "equity_curve": [
+        {
+          "date": "2025-09-12",
+          "equity": 1.0
+        },
+        {
+          "date": "2025-10-14",
+          "equity": 1.0877
+        },
+        {
+          "date": "2025-11-17",
+          "equity": 1.1232
+        },
+        {
+          "date": "2025-12-16",
+          "equity": 1.1361
+        },
+        {
+          "date": "2026-01-16",
+          "equity": 1.2044
+        },
+        {
+          "date": "2026-02-17",
+          "equity": 1.2363
+        },
+        {
+          "date": "2026-03-19",
+          "equity": 1.1271
+        },
+        {
+          "date": "2026-04-23",
+          "equity": 1.266
+        },
+        {
+          "date": "2026-05-25",
+          "equity": 1.3216
+        },
+        {
+          "date": "2026-06-24",
+          "equity": 1.2921
+        },
+        {
+          "date": "2026-07-24",
+          "equity": 1.2899
+        },
+        {
+          "date": "2026-08-24",
+          "equity": 1.3157
+        },
+        {
+          "date": "2026-09-23",
+          "equity": 1.3197
+        },
+        {
+          "date": "2026-10-26",
+          "equity": 1.2052
+        }
+      ]
+    },
+    "note": "Trend filter holds a top-3 ETF only while above its 200-day SMA, else cash. Compare max drawdown: the filter trades a little return for a much smoother ride. Past performance is not a promise \u2014 judge the method, size small."
   },
   "spot": 25349.65,
   "disclaimer": "Educational / personal-research tool. NOT investment advice. SEBI FY26 data: ~87.7% of individual F&O traders lost money and option BUYERS lost the most. This strategy is option buying. Trade paper only until results earn trust, and never risk more than the loss budget. EOD data has no live bid-ask spread \u2014 always check the live spread in your broker app before placing any order.\n"
