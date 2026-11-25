@@ -1,6 +1,6 @@
 {
   "date": "2026-11-25",
-  "generated_at": "2026-11-25T12:11:14.955954Z",
+  "generated_at": "2026-11-25T12:20:42.528835Z",
   "etf_momentum": {
     "fired": true,
     "top_n": 3,
@@ -974,7 +974,7 @@
         }
       ]
     },
-    "note": "Hold the index ETF only in the window, cash otherwise. ToM is a documented global seasonal effect (Lakonishok & Smidt 1988); this backtest is PRICE-ONLY on real NIFTY (no assumed cash yield). On NIFTY, in-window days average ~+0.14%/day vs ~-0.02% out. \u26a0\ufe0f It trades ~24\u00d7/year \u2014 on tiny capital, flat brokerage (~\u20b920/order) can erase the edge; use more capital or zero-brokerage delivery. In market ~20% of days. In-sample 2y \u2014 a hypothesis, not a promise. Not advice.",
+    "note": "Hold the index ETF only in the window, cash otherwise. ToM is a documented global seasonal effect (Lakonishok & Smidt 1988); this backtest is PRICE-ONLY on real NIFTY (no assumed cash yield). On NIFTY, in-window days average ~+0.14%/day vs ~-0.02% out. \u26a0\ufe0f It trades ~24\u00d7/year \u2014 round-trip cost (brokerage \u22480.1% whichever-lower + 0.2% delivery STT + charges) is ~\u20b925-30/window, so on tiny capital (~\u20b96k) it's a ~5%/yr drag; works better with more capital. Verify exact charges on your Groww order screen. In market ~20% of days. In-sample 2y \u2014 a hypothesis, not a promise. Not advice.",
     "reasons": [
       "outside the window; next starts 2026-11-30"
     ]

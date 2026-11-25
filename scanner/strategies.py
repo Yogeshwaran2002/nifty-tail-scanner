@@ -397,9 +397,11 @@ def turn_of_month(session, cfg, on):
         "note": "Hold the index ETF only in the window, cash otherwise. ToM is a documented "
                 "global seasonal effect (Lakonishok & Smidt 1988); this backtest is PRICE-ONLY "
                 "on real NIFTY (no assumed cash yield). On NIFTY, in-window days average ~+0.14%/day "
-                "vs ~-0.02% out. ⚠️ It trades ~24×/year — on tiny capital, flat brokerage (~₹20/order) "
-                "can erase the edge; use more capital or zero-brokerage delivery. In market ~20% of "
-                "days. In-sample 2y — a hypothesis, not a promise. Not advice.",
+                "vs ~-0.02% out. ⚠️ It trades ~24×/year — round-trip cost (brokerage ≈0.1% "
+                "whichever-lower + 0.2% delivery STT + charges) is ~₹25-30/window, so on tiny "
+                "capital (~₹6k) it's a ~5%/yr drag; works better with more capital. Verify exact "
+                "charges on your Groww order screen. In market ~20% of days. In-sample 2y — a "
+                "hypothesis, not a promise. Not advice.",
         "reasons": [] if in_today else [f"outside the window; next starts {next_start}"],
     }
 
