@@ -14,9 +14,10 @@ Everything is educational and loss-budgeted — not advice.
 
 from __future__ import annotations
 
+import calendar as _calendar
 import json
 import os
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from . import blackscholes as bs
 from . import metrics as mx
@@ -300,6 +301,36 @@ def _g(name, passed, value, threshold, detail):
     return {"name": name, "passed": bool(passed), "value": value, "threshold": threshold, "detail": detail}
 
 
+def _month_window(y, m, last_days, first_days):
+    """Calendar (weekday) turn-of-month window for one month: first `first_days`
+    weekdays + last `last_days` weekdays. Calendar-based so it doesn't depend on
+    how recent the price data is (the true last day of a month is only knowable
+    from the calendar, not from 'the latest bar we happen to have')."""
+    firsts, d = [], date(y, m, 1)
+    while len(firsts) < first_days:
+        if d.weekday() < 5:
+            firsts.append(d)
+        d += timedelta(days=1)
+    lasts, d = [], date(y, m, _calendar.monthrange(y, m)[1])
+    while len(lasts) < last_days:
+        if d.weekday() < 5:
+            lasts.append(d)
+        d -= timedelta(days=1)
+    return sorted(set(firsts) | set(lasts))
+
+
+def _calendar_tom_status(on, last_days, first_days):
+    """(in_window_today, next_window_start_iso) using the calendar window."""
+    wins = []
+    for k in range(0, 3):
+        mm = on.month + k
+        yy, mm = on.year + (mm - 1) // 12, (mm - 1) % 12 + 1
+        wins += _month_window(yy, mm, last_days, first_days)
+    wins = sorted(set(wins))
+    future = [d for d in wins if d > on]
+    return (on in wins), (future[0].isoformat() if future else None)
+
+
 def tom_window_dates(dates, last_days, first_days):
     """Given a sorted list of trading dates, return the set that falls in a
     turn-of-the-month window: the last `last_days` of each month plus the first
@@ -328,9 +359,9 @@ def turn_of_month(session, cfg, on):
     closes = [c for _, c in hist]
     win = tom_window_dates(dates, t["last_days"], t["first_days"])
 
-    in_today = on in win
-    future_win = sorted(d for d in win if d > on)
-    next_start = future_win[0].isoformat() if future_win else None
+    # Live signal from the CALENDAR (robust to data recency); backtest below uses
+    # observed trading days (historical months are complete, so that's accurate).
+    in_today, next_start = _calendar_tom_status(on, t["last_days"], t["first_days"])
 
     cash_d = (1 + t.get("cash_annual_yield_pct", 6.0) / 100.0) ** (1 / 252.0) - 1
     eq_tom, eq_bh = 1.0, 1.0
@@ -547,9 +578,21 @@ def run_strategies(cfg, on: date | None = None) -> dict:
         out["calendar"] = calendar(puts, spot, on, r, q, cfg)
         out["spot"] = spot
     except nse.DataUnavailable as e:
-        out["notes"].append(f"Option strategies unavailable ({e}) — likely a holiday/pre-close. ETF momentum still valid.")
-        out["credit_spread"] = {"fired": False, "reasons": [str(e)]}
-        out["calendar"] = {"fired": False, "reasons": [str(e)]}
+        # Option data isn't published (holiday / weekend / before the ~18:00 IST
+        # close). Don't clobber the dashboard with a raw 404 — keep the last good
+        # option signals if we have them, else show a clean message.
+        prev = {}
+        try:
+            with open(os.path.join(cfg["output"]["dashboard_data_dir"], "strategies.json"), encoding="utf-8") as f:
+                prev = json.load(f)
+        except (OSError, json.JSONDecodeError):
+            pass
+        msg = "Options data publishes after the NSE close (~18:00 IST) on trading days — showing the last scan."
+        out["notes"].append(f"Option chain unavailable (holiday/pre-close). ETF + ToM still live.")
+        out["credit_spread"] = prev.get("credit_spread") or {"fired": False, "reasons": [msg]}
+        out["calendar"] = prev.get("calendar") or {"fired": False, "reasons": [msg]}
+        if prev.get("spot"):
+            out["spot"] = prev["spot"]
 
     out["disclaimer"] = cfg.get("disclaimer")
     _write_json(os.path.join(cfg["output"]["dashboard_data_dir"], "strategies.json"), out)

@@ -1,6 +1,6 @@
 {
-  "date": "2026-11-23",
-  "generated_at": "2026-11-25T11:48:04.298551Z",
+  "date": "2026-11-25",
+  "generated_at": "2026-11-25T12:03:21.328144Z",
   "etf_momentum": {
     "fired": true,
     "top_n": 3,
@@ -61,7 +61,7 @@
         "momentum_pct": 7.765,
         "sma200": 272.73,
         "trend": "up",
-        "vol_pct": 14.0
+        "vol_pct": 14.1
       },
       {
         "symbol": "CONSUMBEES",
@@ -204,18 +204,90 @@
   },
   "credit_spread": {
     "fired": false,
+    "expiry": "2026-12-29",
+    "dte": 36,
+    "short_strike": 24550.0,
+    "long_strike": 24450.0,
+    "short_premium": 159.95,
+    "long_premium": 142.15,
+    "short_delta": -0.218,
+    "width": 100.0,
+    "credit": 17.8,
+    "max_profit": 1157.0,
+    "max_loss": 5343.0,
+    "capital_at_risk": 5343.0,
+    "breakeven": 24532.2,
+    "prob_profit_pct": 78.2,
+    "vrp": -0.16676642697203703,
+    "iv_rv_ratio": 0.989,
+    "gates": [
+      {
+        "name": "vrp",
+        "passed": false,
+        "value": -0.16676642697203703,
+        "threshold": 2.0,
+        "detail": "Only sell when options are genuinely rich (ATM IV \u2212 realized vol)"
+      },
+      {
+        "name": "iv_rv_ratio",
+        "passed": false,
+        "value": 0.9888848018258877,
+        "threshold": 1.1,
+        "detail": "Options must be rich vs realized to collect premium"
+      },
+      {
+        "name": "credit_to_width",
+        "passed": false,
+        "value": 0.178,
+        "threshold": 0.18,
+        "detail": "Reward/risk floor: credit \u00f7 width"
+      },
+      {
+        "name": "short_liquidity",
+        "passed": true,
+        "value": 106275.0,
+        "threshold": 500,
+        "detail": "Short leg must be liquid"
+      },
+      {
+        "name": "dte",
+        "passed": true,
+        "value": 36,
+        "threshold": 45,
+        "detail": "Days-to-expiry window"
+      },
+      {
+        "name": "positive_credit",
+        "passed": true,
+        "value": 17.8,
+        "threshold": 0,
+        "detail": "Spread must take in net credit"
+      }
+    ],
     "reasons": [
-      "GET failed after 3 tries (https://nsearchives.nseindia.com/content/fo/BhavCopy_NSE_FO_0_0_0_20261125_F_0000.csv.zip): HTTP 404"
+      "vrp: -0.17 vs 2.0",
+      "iv_rv_ratio: 0.99 vs 1.1",
+      "credit_to_width: 0.18 vs 0.18"
     ]
   },
   "calendar": {
     "fired": false,
+    "front_expiry": "2026-12-01",
+    "next_expiry": "2026-12-08",
+    "front_dte": 8,
+    "next_dte": 15,
+    "front_atm_iv": 0.1719,
+    "next_atm_iv": 0.1668,
+    "term_spread_pts": 0.51,
+    "threshold_pts": 1.5,
+    "atm_strike": 25350.0,
+    "est_debit_per_lot": 4670.25,
     "reasons": [
-      "GET failed after 3 tries (https://nsearchives.nseindia.com/content/fo/BhavCopy_NSE_FO_0_0_0_20261125_F_0000.csv.zip): HTTP 404"
+      "term_spread 0.51 < 1.5 pts (front not rich enough)"
     ]
   },
   "notes": [
-    "Option strategies unavailable (GET failed after 3 tries (https://nsearchives.nseindia.com/content/fo/BhavCopy_NSE_FO_0_0_0_20261125_F_0000.csv.zip): HTTP 404) \u2014 likely a holiday/pre-close. ETF momentum still valid."
+    "Option chain unavailable (holiday/pre-close). ETF + ToM still live."
   ],
   "etf_backtest": {
     "ok": false,
@@ -226,7 +298,7 @@
     "etf": "NIFTYBEES",
     "window": "last 1 + first 3 trading days of the month",
     "in_market_pct": 20.0,
-    "next_window_start": "2026-11-25",
+    "next_window_start": "2026-11-30",
     "backtest": {
       "days": 494,
       "tom": {
@@ -904,7 +976,7 @@
     },
     "note": "Hold the index ETF only in the window, cash otherwise. ToM is a documented global seasonal effect (Lakonishok & Smidt 1988); backtest here is on NIFTY. In the market only ~4 days/month \u2192 small drawdown. Not advice.",
     "reasons": [
-      "outside the window; next starts 2026-11-25"
+      "outside the window; next starts 2026-11-30"
     ]
   },
   "spot": 25349.65,
