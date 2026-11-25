@@ -124,6 +124,11 @@ slippage), and the paper loss budget. Change a value, re-run the backtest, compa
 - **Advanced (done):** volatility **smile/skew curve** on the dashboard,
   **volatility risk premium** (IV − realized vol) metric + "genuinely cheap"
   flag, backtest **expectancy / payoff ratio / drawdown** analytics.
+- **Multi-strategy (done):** alongside tail-risk buying, the scanner also runs
+  **put credit spreads** (premium selling, defined ≈₹5–6k max loss), **calendar
+  spreads** (vol term structure), and **ETF sector momentum** (buy-only, lowest
+  capital) — each shown on the dashboard and in the bot (`/credit` `/calendar`
+  `/etf`). Tune them in `config.yaml`.
 - **Still open:** live bid-ask spread (needs a paid broker quote feed — EOD data
   has none, so every alert tells you to check Groww manually).
 

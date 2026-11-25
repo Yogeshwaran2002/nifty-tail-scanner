@@ -16,6 +16,10 @@ layer).
 - `/journal` — paper trades + loss budget
 - `/backtest` — backtest stats (expectancy, payoff ratio, …)
 - `/skew` — volatility smile + risk premium
+- `/etf` — ETF sector momentum (buy-only, lowest capital)
+- `/credit` — put credit spread (sell premium, defined risk)
+- `/calendar` — volatility term-structure spread
+- `/id` — your Telegram chat id
 - `/help`
 - Any other text → the Llama explainer (strictly grounded on the scan JSON; it
   refuses to give buy/sell advice or forecasts)
