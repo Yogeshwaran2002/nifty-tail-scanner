@@ -69,6 +69,48 @@ output:
   dashboard_data_dir: "docs/data"
   history_keep_days: 180
 
+# ───────────────────────────────────────────────────────────────────────────
+# Additional strategy modules (shown on the dashboard alongside tail-risk).
+# All deterministic, all from free EOD data. Starting parameters — tune & test.
+# ───────────────────────────────────────────────────────────────────────────
+
+# Put credit spread — premium SELLING (the statistically favored side, SEBI FY26).
+# Sell an OTM put, buy a further OTM put as a hard floor. Max loss is capped and
+# known up front = (width − credit) × lot. Only fires when options are genuinely
+# RICH (high VRP), the opposite regime to the tail-risk buyer.
+credit_spread:
+  target_short_delta: 0.22    # sell the put nearest this delta (~78% prob OTM)
+  width_points: 100           # long put this many points below (keeps max-loss low:
+                              # ≈ (width − credit) × 65 ≈ ₹5–6k, the NIFTY minimum)
+  min_credit_to_width: 0.18   # reward/risk floor: credit ÷ width
+  min_vrp: 2.0                # only sell when ATM IV − realized vol ≥ this (rich)
+  min_iv_rv_ratio: 1.10       # options must be rich vs realized to sell
+  dte_min: 20
+  dte_max: 45
+
+# Calendar spread — volatility term structure. Sell rich near-dated, buy cheaper
+# far-dated. Fires when the front-month ATM IV sits above the next month's.
+calendar:
+  front_rich_threshold_pts: 1.5   # (front ATM IV − next ATM IV) in vol points
+
+# ETF sector momentum — buy-only, no leverage, lowest capital. Rank a basket by
+# blended 3m/6m return, hold the top N, rebalance monthly. Documented factor.
+etf_momentum:
+  top_n: 3
+  lookback_3m_days: 63
+  lookback_6m_days: 126
+  basket:                     # Yahoo tickers (NSE ETFs). Unreachable ones are skipped.
+    - NIFTYBEES.NS            # Nifty 50
+    - JUNIORBEES.NS           # Nifty Next 50
+    - BANKBEES.NS             # Bank
+    - ITBEES.NS               # IT
+    - PHARMABEES.NS           # Pharma
+    - PSUBNKBEES.NS           # PSU Bank
+    - INFRABEES.NS            # Infra
+    - CONSUMBEES.NS           # Consumption
+    - GOLDBEES.NS             # Gold
+    - MON100.NS               # Nasdaq 100 (global diversifier)
+
 disclaimer: >
   Educational / personal-research tool. NOT investment advice. SEBI FY26 data:
   ~87.7% of individual F&O traders lost money and option BUYERS lost the most.

@@ -6,6 +6,7 @@ import unittest
 from scanner import blackscholes as bs
 from scanner import metrics as mx
 from scanner import rules
+from scanner import strategies as strat
 
 
 class TestBlackScholes(unittest.TestCase):
@@ -29,6 +30,53 @@ class TestBlackScholes(unittest.TestCase):
     def test_norm_cdf(self):
         self.assertAlmostEqual(bs.norm_cdf(0), 0.5, places=6)
         self.assertAlmostEqual(bs.norm_cdf(-1.96), 0.025, places=3)
+
+    def test_put_delta_atm(self):
+        # ATM put delta is near -0.5
+        d = bs.put_delta(25000, 25000, 45 / 365, 0.065, 0.012, 0.15)
+        self.assertIsNotNone(d)
+        self.assertTrue(-0.6 < d < -0.4)
+        # deep OTM put delta near 0
+        d2 = bs.put_delta(25000, 20000, 45 / 365, 0.065, 0.012, 0.15)
+        self.assertTrue(-0.1 < d2 <= 0)
+
+
+class TestStrategies(unittest.TestCase):
+    def _cfg(self):
+        return {
+            "market": {"lot_size": 65, "risk_free_rate": 0.065, "dividend_yield": 0.012,
+                       "trading_days_year": 252, "underlying": "NIFTY"},
+            "entry_gates": {"min_open_interest": 500},
+            "credit_spread": {"target_short_delta": 0.22, "width_points": 100,
+                              "min_credit_to_width": 0.18, "min_vrp": 2.0,
+                              "min_iv_rv_ratio": 1.10, "dte_min": 20, "dte_max": 45},
+            "etf_momentum": {"top_n": 2, "lookback_3m_days": 2, "lookback_6m_days": 4, "basket": []},
+        }
+
+    def test_etf_return(self):
+        # 10% rise over `lookback` steps
+        closes = [100, 101, 110]
+        self.assertAlmostEqual(strat._ret(closes, 2), 10.0, places=2)
+        self.assertIsNone(strat._ret([100], 2))
+
+    def test_credit_spread_math(self):
+        cfg = self._cfg()
+        spot, dte = 25000.0, 30
+        T = dte / 365.0
+        # synthetic OTM puts priced at a known vol so deltas/credit are sane
+        puts = []
+        for k in range(23000, 25000, 50):
+            price = bs.bs_put_price(spot, k, T, 0.065, 0.012, 0.16)
+            puts.append({"strike": float(k), "close": price, "open_interest": 1000, "volume": 500})
+        out = strat.credit_spread(puts, spot, "2026-12-29", dte, 0.16, 0.14, 20.0,
+                                  0.065, 0.012, cfg)
+        self.assertEqual(out["long_strike"], out["short_strike"] - 100)
+        # max loss = (width - credit) * lot, and defined/positive
+        expected = (out["width"] - out["credit"]) * 65
+        self.assertAlmostEqual(out["max_loss"], round(expected, 2), places=1)
+        self.assertGreater(out["max_loss"], 0)
+        self.assertTrue(50 < out["prob_profit_pct"] < 95)  # OTM short put
+        self.assertIsInstance(out["gates"], list)
 
 
 class TestMetrics(unittest.TestCase):

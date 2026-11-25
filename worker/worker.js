@@ -157,6 +157,9 @@ async function handle(env, text, chatId) {
     case "/journal": return fmtJournal(await getJSON(env, "latest.json"));
     case "/backtest": return fmtBacktest(await getJSON(env, "backtest.json").catch(() => null));
     case "/skew": return fmtSkew(await getJSON(env, "latest.json"));
+    case "/etf": return fmtEtf(await getJSON(env, "strategies.json").catch(() => null));
+    case "/credit": return fmtCredit(await getJSON(env, "strategies.json").catch(() => null));
+    case "/calendar": return fmtCalendar(await getJSON(env, "strategies.json").catch(() => null));
     default:
       return askLLM(env, text, await getJSON(env, "latest.json").catch(() => null));
   }
@@ -171,6 +174,9 @@ function help() {
     "/journal — paper trades + loss budget",
     "/backtest — backtest stats",
     "/skew — volatility smile + risk premium",
+    "/etf — ETF sector momentum (buy-only, low capital)",
+    "/credit — put credit spread (sell premium, defined risk)",
+    "/calendar — volatility term-structure spread",
     "/id — show your Telegram chat id",
     "",
     "Ask anything else in plain English and I'll explain the numbers.",
@@ -257,6 +263,49 @@ function fmtSkew(s) {
     ? `\nOptions look genuinely cheap vs realized moves.`
     : `\nOptions price in more movement than has occurred (the usual premium).`);
   return lines.join("\n");
+}
+
+function fmtEtf(st) {
+  const e = st && st.etf_momentum;
+  if (!e) return "ETF data not available.";
+  if (!e.ranked || !e.ranked.length) return "ETF momentum: " + (e.reasons || []).join("; ");
+  const lines = [`<b>ETF sector momentum</b> ${e.fired ? "● setup" : ""}`,
+    `Hold (equal weight, rebalance monthly): <b>${(e.hold || []).join(", ")}</b>`, ""];
+  for (const r of e.ranked.slice(0, 8)) {
+    const star = e.hold && e.hold.includes(r.symbol) ? "★ " : "  ";
+    lines.push(`${star}${r.symbol}: ${n(r.momentum_pct, 1)}%  (3m ${n(r.ret_3m_pct, 1)} / 6m ${n(r.ret_6m_pct, 1)})`);
+  }
+  lines.push("\n<i>Buy-only, no leverage — lowest capital. Not advice.</i>");
+  return lines.join("\n");
+}
+
+function fmtCredit(st) {
+  const c = st && st.credit_spread;
+  if (!c) return "Credit-spread data not available.";
+  if (!c.short_strike) return "Credit spread: " + (c.reasons || []).join("; ");
+  return [
+    `<b>Put credit spread</b> ${c.fired ? "● SETUP" : "○ wait"}`,
+    `Sell ${n(c.short_strike, 0)} PE / buy ${n(c.long_strike, 0)} PE · ${c.expiry} (${c.dte}d)`,
+    `Credit ${inr(c.max_profit)} | <b>max loss ${inr(c.max_loss)}</b> | PoP ${n(c.prob_profit_pct, 1)}%`,
+    `Breakeven ${n(c.breakeven, 0)} | VRP ${n(c.vrp, 1)} | IV/RV ${n(c.iv_rv_ratio, 2)}`,
+    c.fired
+      ? "\n✓ Options rich enough to sell. Max loss is capped — check live prices in Groww."
+      : "\n○ Not firing — " + (c.reasons || []).join("; ") + " (premium not rich; no edge in selling).",
+  ].join("\n");
+}
+
+function fmtCalendar(st) {
+  const k = st && st.calendar;
+  if (!k) return "Calendar data not available.";
+  if (k.front_atm_iv === undefined || k.front_atm_iv === null) return "Calendar: " + (k.reasons || []).join("; ");
+  return [
+    `<b>Calendar spread</b> ${k.fired ? "● SETUP" : "○ wait"}`,
+    `Front ${k.front_expiry} IV ${n(k.front_atm_iv * 100, 1)}% vs next ${k.next_expiry} IV ${n(k.next_atm_iv * 100, 1)}%`,
+    `Term spread ${n(k.term_spread_pts, 2)} pts (needs ≥ ${k.threshold_pts})`,
+    k.fired
+      ? `\n✓ Front rich — sell front ${n(k.atm_strike, 0)} PE, buy next-month ${n(k.atm_strike, 0)} PE (debit ≈ ${inr(k.est_debit_per_lot)}).`
+      : "\n○ Not firing — front month isn't rich enough vs next.",
+  ].join("\n");
 }
 
 function trimSignal(s) {

@@ -1,0 +1,174 @@
+{
+  "date": "2026-11-23",
+  "generated_at": "2026-11-25T05:13:03.105723Z",
+  "etf_momentum": {
+    "fired": true,
+    "top_n": 3,
+    "hold": [
+      "PSUBNKBEES",
+      "BANKBEES",
+      "PHARMABEES"
+    ],
+    "ranked": [
+      {
+        "symbol": "PSUBNKBEES",
+        "last": 106.93,
+        "ret_3m_pct": 11.59,
+        "ret_6m_pct": 19.31,
+        "momentum_pct": 15.45
+      },
+      {
+        "symbol": "BANKBEES",
+        "last": 660.86,
+        "ret_3m_pct": 10.56,
+        "ret_6m_pct": 18.09,
+        "momentum_pct": 14.325
+      },
+      {
+        "symbol": "PHARMABEES",
+        "last": 29.45,
+        "ret_3m_pct": 8.75,
+        "ret_6m_pct": 16.73,
+        "momentum_pct": 12.74
+      },
+      {
+        "symbol": "ITBEES",
+        "last": 35.96,
+        "ret_3m_pct": 6.17,
+        "ret_6m_pct": 12.3,
+        "momentum_pct": 9.235
+      },
+      {
+        "symbol": "NIFTYBEES",
+        "last": 294.4,
+        "ret_3m_pct": 6.37,
+        "ret_6m_pct": 9.4,
+        "momentum_pct": 7.885
+      },
+      {
+        "symbol": "CONSUMBEES",
+        "last": 138.3,
+        "ret_3m_pct": 3.22,
+        "ret_6m_pct": 10.29,
+        "momentum_pct": 6.755
+      },
+      {
+        "symbol": "INFRABEES",
+        "last": 993.17,
+        "ret_3m_pct": 2.43,
+        "ret_6m_pct": 3.0,
+        "momentum_pct": 2.715
+      },
+      {
+        "symbol": "JUNIORBEES",
+        "last": 786.9,
+        "ret_3m_pct": -1.67,
+        "ret_6m_pct": 4.45,
+        "momentum_pct": 1.3900000000000001
+      },
+      {
+        "symbol": "MON100",
+        "last": 301.88,
+        "ret_3m_pct": -8.66,
+        "ret_6m_pct": -9.11,
+        "momentum_pct": -8.885
+      },
+      {
+        "symbol": "GOLDBEES",
+        "last": 100.72,
+        "ret_3m_pct": -23.3,
+        "ret_6m_pct": -22.82,
+        "momentum_pct": -23.060000000000002
+      }
+    ],
+    "note": "Buy-only, equal-weight the top names, rebalance monthly. No leverage.",
+    "reasons": []
+  },
+  "credit_spread": {
+    "fired": false,
+    "expiry": "2026-12-29",
+    "dte": 36,
+    "short_strike": 24550.0,
+    "long_strike": 24450.0,
+    "short_premium": 159.95,
+    "long_premium": 142.15,
+    "short_delta": -0.218,
+    "width": 100.0,
+    "credit": 17.8,
+    "max_profit": 1157.0,
+    "max_loss": 5343.0,
+    "capital_at_risk": 5343.0,
+    "breakeven": 24532.2,
+    "prob_profit_pct": 78.2,
+    "vrp": -1.3448038961764914,
+    "iv_rv_ratio": 0.917,
+    "gates": [
+      {
+        "name": "vrp",
+        "passed": false,
+        "value": -1.3448038961764914,
+        "threshold": 2.0,
+        "detail": "Only sell when options are genuinely rich (ATM IV \u2212 realized vol)"
+      },
+      {
+        "name": "iv_rv_ratio",
+        "passed": false,
+        "value": 0.9168924921609812,
+        "threshold": 1.1,
+        "detail": "Options must be rich vs realized to collect premium"
+      },
+      {
+        "name": "credit_to_width",
+        "passed": false,
+        "value": 0.178,
+        "threshold": 0.18,
+        "detail": "Reward/risk floor: credit \u00f7 width"
+      },
+      {
+        "name": "short_liquidity",
+        "passed": true,
+        "value": 106275.0,
+        "threshold": 500,
+        "detail": "Short leg must be liquid"
+      },
+      {
+        "name": "dte",
+        "passed": true,
+        "value": 36,
+        "threshold": 45,
+        "detail": "Days-to-expiry window"
+      },
+      {
+        "name": "positive_credit",
+        "passed": true,
+        "value": 17.8,
+        "threshold": 0,
+        "detail": "Spread must take in net credit"
+      }
+    ],
+    "reasons": [
+      "vrp: -1.3448038961764914 vs 2.0",
+      "iv_rv_ratio: 0.9168924921609812 vs 1.1",
+      "credit_to_width: 0.178 vs 0.18"
+    ]
+  },
+  "calendar": {
+    "fired": false,
+    "front_expiry": "2026-12-01",
+    "next_expiry": "2026-12-08",
+    "front_dte": 8,
+    "next_dte": 15,
+    "front_atm_iv": 0.1719,
+    "next_atm_iv": 0.1668,
+    "term_spread_pts": 0.51,
+    "threshold_pts": 1.5,
+    "atm_strike": 25350.0,
+    "est_debit_per_lot": 4670.25,
+    "reasons": [
+      "term_spread 0.51 < 1.5 pts (front not rich enough)"
+    ]
+  },
+  "notes": [],
+  "spot": 25349.65,
+  "disclaimer": "Educational / personal-research tool. NOT investment advice. SEBI FY26 data: ~87.7% of individual F&O traders lost money and option BUYERS lost the most. This strategy is option buying. Trade paper only until results earn trust, and never risk more than the loss budget. EOD data has no live bid-ask spread \u2014 always check the live spread in your broker app before placing any order.\n"
+}

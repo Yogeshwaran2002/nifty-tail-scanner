@@ -162,6 +162,68 @@ function renderSkew(s) {
   } else { note.textContent = ""; }
 }
 
+function badge(fired) {
+  return fired
+    ? `<span class="chip pass">● SETUP</span>`
+    : `<span class="chip" style="background:var(--surface-3);color:var(--ink-2);border-color:var(--border)">○ wait</span>`;
+}
+
+function renderStrategies(st) {
+  const credit = el("strat-credit"), cal = el("strat-calendar"), etf = el("strat-etf");
+  if (!st) {
+    credit.innerHTML = `<p class="muted">Strategy data not available yet.</p>`;
+    cal.innerHTML = etf.innerHTML = "";
+    return;
+  }
+  // Credit spread
+  const c = st.credit_spread || {};
+  if (c.short_strike) {
+    credit.innerHTML = `
+      <h2>Put credit spread ${badge(c.fired)} <span class="muted" style="font-weight:400">— sell premium, defined risk</span></h2>
+      <p style="margin:0 0 10px">Sell <b>${fmt(c.short_strike,0)} PE</b> / buy <b>${fmt(c.long_strike,0)} PE</b> · expiry ${c.expiry} (${c.dte}d)</p>
+      <table><tbody>
+        <tr><td>Net credit (you receive)</td><td>${inr(c.max_profit)}</td></tr>
+        <tr><td><b>Max loss (capital at risk)</b></td><td><b>${inr(c.max_loss)}</b></td></tr>
+        <tr><td>Prob. of profit (≈)</td><td>${pct(c.prob_profit_pct)}</td></tr>
+        <tr><td>Breakeven (NIFTY above)</td><td>${fmt(c.breakeven,0)}</td></tr>
+        <tr><td>VRP / IV÷RV</td><td>${fmt(c.vrp,1)} pts / ${fmt(c.iv_rv_ratio,2)}</td></tr>
+      </tbody></table>
+      ${c.fired
+        ? `<div class="warn-note" style="color:var(--good);background:var(--good-bg);border-color:var(--good)">✓ Options are rich enough to sell. Max loss is capped at ${inr(c.max_loss)} — check live prices in Groww first.</div>`
+        : `<p class="muted" style="font-size:13px;margin-top:10px">Not firing — ${(c.reasons||[]).join("; ")}. (Premium isn't rich now; selling has no edge.)</p>`}`;
+  } else {
+    credit.innerHTML = `<h2>Put credit spread ${badge(false)}</h2><p class="muted">${(c.reasons||["unavailable"]).join("; ")}</p>`;
+  }
+  // Calendar
+  const k = st.calendar || {};
+  if (k.front_atm_iv !== undefined && k.front_atm_iv !== null) {
+    cal.innerHTML = `
+      <h2>Calendar spread ${badge(k.fired)} <span class="muted" style="font-weight:400">— volatility term structure</span></h2>
+      <p style="margin:0">Front ${k.front_expiry} IV <b>${pct(k.front_atm_iv*100)}</b> vs next ${k.next_expiry} IV <b>${pct(k.next_atm_iv*100)}</b> → term spread <b>${fmt(k.term_spread_pts,2)} pts</b> (needs ≥ ${k.threshold_pts}).</p>
+      ${k.fired
+        ? `<div class="warn-note" style="color:var(--good);background:var(--good-bg);border-color:var(--good)">✓ Front month is rich — sell the ${fmt(k.atm_strike,0)} front PE, buy the next-month ${fmt(k.atm_strike,0)} PE (net debit ≈ ${inr(k.est_debit_per_lot)}).</div>`
+        : `<p class="muted" style="font-size:13px;margin-top:8px">Not firing — front month isn't rich enough vs next.</p>`}`;
+  } else {
+    cal.innerHTML = `<h2>Calendar spread ${badge(false)}</h2><p class="muted">${(k.reasons||["unavailable"]).join("; ")}</p>`;
+  }
+  // ETF momentum
+  const e = st.etf_momentum || {};
+  if (e.ranked && e.ranked.length) {
+    const rows = e.ranked.map((r,i) => `<tr${i < e.top_n ? ' style="font-weight:600"' : ''}>
+      <td>${i < e.top_n ? "★ " : ""}${r.symbol}</td><td>${inr(r.last)}</td>
+      <td>${r.ret_3m_pct===null?"n/a":fmt(r.ret_3m_pct,1)+"%"}</td>
+      <td>${r.ret_6m_pct===null?"n/a":fmt(r.ret_6m_pct,1)+"%"}</td>
+      <td>${fmt(r.momentum_pct,1)}%</td></tr>`).join("");
+    etf.innerHTML = `
+      <h2>ETF sector momentum ${badge(e.fired)} <span class="muted" style="font-weight:400">— buy-only, lowest capital</span></h2>
+      <p style="margin:0 0 10px">Hold (equal weight, rebalance monthly): <b>${(e.hold||[]).join(", ")}</b></p>
+      <table><thead><tr><th>ETF</th><th>Price</th><th>3m</th><th>6m</th><th>Momentum</th></tr></thead><tbody>${rows}</tbody></table>
+      <p class="muted" style="font-size:13px;margin-top:8px">${e.note}</p>`;
+  } else {
+    etf.innerHTML = `<h2>ETF sector momentum ${badge(false)}</h2><p class="muted">${(e.reasons||["unavailable"]).join("; ")}</p>`;
+  }
+}
+
 function renderBudget(s) {
   const b = s.budget;
   if (!b) { el("budget").innerHTML = ""; return; }
@@ -229,6 +291,7 @@ function equitySVG(curve) {
   wireToolbar();
   const s = await getJSON("data/latest.json");
   const bt = await getJSON("data/backtest.json");
+  const strat = await getJSON("data/strategies.json");
   if (!s) {
     el("banner").className = "banner notrade";
     el("banner").textContent = "No scan data yet. The first daily run will populate this dashboard.";
@@ -243,6 +306,7 @@ function equitySVG(curve) {
   renderCandidates(s);
   renderBudget(s);
   renderJournal(s);
+  renderStrategies(strat);
   renderBacktest(bt);
   el("disclaimer").textContent = s.disclaimer ||
     "Educational only. Not investment advice. SEBI FY26: ~87.7% of F&O traders lost money; option buyers lost most. Paper-trade until results earn trust.";

@@ -41,6 +41,15 @@ def bs_call_price(S: float, K: float, T: float, r: float, q: float, sigma: float
     return S * math.exp(-q * T) * norm_cdf(d1) - K * math.exp(-r * T) * norm_cdf(d2)
 
 
+def put_delta(S: float, K: float, T: float, r: float, q: float, sigma: float) -> float | None:
+    """Delta of a European put (negative, in [-1, 0]). Used to pick strikes by
+    probability — a ~-0.20 delta put is roughly 80% likely to expire worthless."""
+    if sigma is None or sigma <= 0 or T <= 0:
+        return None
+    d1, _ = _d1_d2(S, K, T, r, q, sigma)
+    return -math.exp(-q * T) * norm_cdf(-d1)
+
+
 def implied_vol_put(
     market_price: float,
     S: float,

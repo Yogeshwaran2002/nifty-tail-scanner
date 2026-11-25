@@ -16,6 +16,7 @@ import yaml
 
 from scanner import alert
 from scanner.scan import run_scan
+from scanner.strategies import run_strategies
 
 # Windows consoles default to cp1252 and choke on the emoji in alert text.
 # Telegram/HTTP is always UTF-8, so this only affects local stdout.
@@ -31,6 +32,15 @@ def main() -> int:
 
     on = date.fromisoformat(sys.argv[1]) if len(sys.argv) > 1 else date.today()
     signal = run_scan(cfg, on)
+
+    # Additional strategy modules (credit spread, calendar, ETF momentum)
+    try:
+        strat = run_strategies(cfg, on)
+        cs = (strat.get("credit_spread") or {}).get("fired")
+        mom = (strat.get("etf_momentum") or {}).get("hold")
+        print(f"strategies: credit_spread fired={cs}  etf_top={mom}")
+    except Exception as e:
+        print(f"strategies error: {e}")
 
     msg = alert.format_signal(signal)
     alert.send(msg)
