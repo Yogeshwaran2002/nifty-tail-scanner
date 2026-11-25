@@ -109,6 +109,11 @@ etf_momentum:
   trend_sma_days: 200         # hold only if price > this SMA (200-day = ~10-month)
   cash_symbol: LIQUIDBEES     # where a down-trending slice parks (near-constant NAV)
   cash_annual_yield_pct: 6.0  # assumed cash/liquid yield, for the backtest only
+  # Low-volatility tilt (low-vol anomaly): split the budget INVERSELY to each
+  # holding's volatility — calmer ETFs get more money. Smoother ride, lower
+  # drawdown. Set to "equal" for plain equal-weight.
+  weighting: inverse_vol      # inverse_vol | equal
+  vol_lookback_days: 60       # trailing sessions for each ETF's volatility
   basket:                     # Yahoo tickers (NSE ETFs). Unreachable ones are skipped.
     - NIFTYBEES.NS            # Nifty 50
     - JUNIORBEES.NS           # Nifty Next 50

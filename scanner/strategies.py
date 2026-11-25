@@ -145,6 +145,8 @@ def etf_momentum(session, cfg):
     sma_days = e.get("trend_sma_days", 200)
     use_trend = e.get("trend_filter", True)
     cash_sym = e.get("cash_symbol", "LIQUIDBEES")
+    vol_lb = e.get("vol_lookback_days", 60)
+    weighting = e.get("weighting", "inverse_vol")
     rows = []
     for sym in e["basket"]:
         try:
@@ -159,9 +161,11 @@ def etf_momentum(session, cfg):
         blended = sum(parts) / len(parts) if parts else None
         sma = sum(closes[-sma_days:]) / sma_days if len(closes) >= sma_days else None
         trend = None if sma is None else ("up" if last > sma else "down")
+        vol = mx.realized_vol(closes, vol_lb, 252)
         rows.append({"symbol": sym.replace(".NS", ""), "last": round(last, 2),
                      "ret_3m_pct": r3, "ret_6m_pct": r6, "momentum_pct": blended,
-                     "sma200": round(sma, 2) if sma is not None else None, "trend": trend})
+                     "sma200": round(sma, 2) if sma is not None else None, "trend": trend,
+                     "vol_pct": round(vol * 100, 1) if vol is not None else None})
     ranked = sorted([r for r in rows if r["momentum_pct"] is not None],
                     key=lambda x: x["momentum_pct"], reverse=True)
     top = ranked[: e["top_n"]]
@@ -175,21 +179,36 @@ def etf_momentum(session, cfg):
 
     budget = e.get("budget_inr", 0)
     ts = e.get("trailing_stop_pct", 12)
-    alloc = (budget / len(top)) if top else 0
+    n = len(top)
+    base = (budget / n) if n else 0
+
+    # Low-vol tilt: redistribute the up-trend ETF budget inversely to volatility.
+    up = [r for r in top if not (use_trend and r["trend"] == "down")]
+    inv_w = {}
+    if weighting == "inverse_vol" and up and all((r.get("vol_pct") or 0) > 0 for r in up):
+        denom = sum(1.0 / r["vol_pct"] for r in up)
+        for r in up:
+            inv_w[r["symbol"]] = (1.0 / r["vol_pct"]) / denom
+    etf_pool = base * len(up)
+
     plan, hold, in_cash = [], [], 0
     for r in top:
         downtrend = use_trend and r["trend"] == "down"
         if downtrend:
             in_cash += 1
-            units = int(alloc // cash_price) if cash_price else 0
+            units = int(base // cash_price) if cash_price else 0
             plan.append({"symbol": cash_sym, "price": round(cash_price, 2) if cash_price else None,
                          "units": units, "cost": round(units * cash_price, 2) if cash_price else None,
+                         "weight_pct": round(100.0 / n, 1) if n else None,
                          "stop_price": None, "cash": True, "replaces": r["symbol"]})
-            hold.append(f"{cash_sym} (cash — {r['symbol']} is below its {sma_days}-SMA)")
+            hold.append(f"{cash_sym} (cash — {r['symbol']} below {sma_days}-SMA)")
         else:
-            units = int(alloc // r["last"]) if r["last"] > 0 else 0
+            alloc_i = etf_pool * inv_w[r["symbol"]] if r["symbol"] in inv_w else base
+            units = int(alloc_i // r["last"]) if r["last"] > 0 else 0
             plan.append({"symbol": r["symbol"], "price": r["last"], "units": units,
                          "cost": round(units * r["last"], 2),
+                         "weight_pct": round(100.0 * alloc_i / budget, 1) if budget else None,
+                         "vol_pct": r.get("vol_pct"),
                          "stop_price": round(r["last"] * (1 - ts / 100.0), 2), "cash": False})
             hold.append(r["symbol"])
 
@@ -209,10 +228,13 @@ def etf_momentum(session, cfg):
         "trailing_stop_pct": ts,
         "holdings": _mark_holdings(price_map),
         "rules": {
-            "buy": "Use a LIMIT order near the shown price (ETFs can have wide spreads — avoid market orders). Buy whole units, equal rupee split.",
-            "sizing": "ETFs trade in single units — there is NO F&O lot. Quantity = budget ÷ top_n ÷ price, rounded down.",
+            "buy": "Use a LIMIT order near the shown price (ETFs can have wide spreads — avoid market orders). Buy whole units.",
+            "sizing": "ETFs trade in single units — there is NO F&O lot. Qty = allocation ÷ price, rounded down.",
+            "tilt": ("Low-volatility tilt ON: the budget is split INVERSELY to each ETF's volatility — "
+                     "calmer names get more money (see Weight %). Smoother ride, lower drawdown."
+                     if weighting == "inverse_vol" else "Equal-weight across holdings."),
+            "trend": f"Trend filter ON: a top-ranked ETF is only held while above its {sma_days}-day SMA; otherwise that slice sits in {cash_sym} (cash). This caps drawdowns.",
             "stop": f"Optional trailing stop: exit a name if it drops {ts}% from your entry (or its recent high).",
-            "trend": f"Trend filter ON: a top-ranked ETF is only held while it's above its {sma_days}-day SMA; otherwise that slice sits in {cash_sym} (cash). This is what caps drawdowns.",
             "sell": "Primary exit is the MONTHLY rebalance: re-check /etf on the 1st trading day; sell anything that fell out of the top " + str(e["top_n"]) + " or dropped below its " + str(sma_days) + "-SMA.",
             "cadence": "Momentum is a monthly strategy — do NOT watch or trade it daily.",
         },
@@ -285,6 +307,8 @@ def etf_momentum_backtest(session, cfg):
     e = cfg["etf_momentum"]
     l3, l6, topn = e["lookback_3m_days"], e["lookback_6m_days"], e["top_n"]
     sma_days = e.get("trend_sma_days", 200)
+    vol_lb = e.get("vol_lookback_days", 60)
+    weighting = e.get("weighting", "inverse_vol")
     cash_m = (1 + e.get("cash_annual_yield_pct", 6.0) / 100.0) ** (1 / 12.0) - 1
     series = {}
     for sym in e["basket"]:
@@ -316,16 +340,31 @@ def etf_momentum_backtest(session, cfg):
                     ranked.append((sym, mom))
             ranked.sort(key=lambda x: x[1], reverse=True)
             held = [sym for sym, _ in ranked[:topn]]
-            slice_rets = []
+            # inverse-vol weights from trailing vol (fallback equal)
+            def vol_of(sym):
+                cs = [series[sym][dates[j]] for j in range(i - vol_lb, i + 1)]
+                rs = [math.log(cs[t] / cs[t - 1]) for t in range(1, len(cs)) if cs[t - 1] > 0]
+                if len(rs) < 2:
+                    return None
+                mu = sum(rs) / len(rs)
+                return (sum((x - mu) ** 2 for x in rs) / (len(rs) - 1)) ** 0.5
+            weights = {}
+            if weighting == "inverse_vol":
+                vs = {s: vol_of(s) for s in held}
+                if held and all(vs[s] and vs[s] > 0 for s in held):
+                    tot = sum(1.0 / vs[s] for s in held)
+                    weights = {s: (1.0 / vs[s]) / tot for s in held}
+            if not weights:
+                weights = {s: 1.0 / len(held) for s in held} if held else {}
+            port = 0.0
             for sym in held:
                 s = series[sym]
                 if filtered:
                     sma = sum(s[dates[j]] for j in range(i - sma_days + 1, i + 1)) / sma_days
                     if s[di] <= sma:        # down-trend → cash
-                        slice_rets.append(cash_m)
+                        port += weights[sym] * cash_m
                         continue
-                slice_rets.append(s[dnext] / s[di] - 1)
-            port = sum(slice_rets) / len(slice_rets) if slice_rets else 0.0
+                port += weights[sym] * (s[dnext] / s[di] - 1)
             equity *= (1 + port)
             rets.append(port)
             curve.append({"date": dnext.isoformat(), "equity": round(equity, 4)})

@@ -281,7 +281,7 @@ function fmtEtf(st) {
     lines.push(`\n<b>Plan</b> (₹${e.budget_inr} budget, equal split):`);
     for (const p of e.trade_plan) {
       const tag = p.cash ? " (cash)" : "";
-      lines.push(`• ${p.symbol}${tag}: buy <b>${p.units}</b> units @ limit ≈${inr(p.price)} (${inr(p.cost)})${p.stop_price ? ", stop " + inr(p.stop_price) : ""}`);
+      lines.push(`• ${p.symbol}${tag}: buy <b>${p.units}</b> units @ ≈${inr(p.price)} (${inr(p.cost)}${p.weight_pct ? ", " + n(p.weight_pct, 0) + "%" : ""})${p.stop_price ? ", stop " + inr(p.stop_price) : ""}`);
     }
     const r = e.rules || {};
     lines.push(`\nTrend: ${r.trend || ""}`);

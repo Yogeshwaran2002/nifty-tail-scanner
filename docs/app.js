@@ -216,10 +216,10 @@ function renderStrategies(st) {
       <td>${i < e.top_n ? "★ " : ""}${r.symbol}</td><td>${inr(r.last)}</td>
       <td>${r.ret_3m_pct===null?"n/a":fmt(r.ret_3m_pct,1)+"%"}</td>
       <td>${r.ret_6m_pct===null?"n/a":fmt(r.ret_6m_pct,1)+"%"}</td>
-      <td>${fmt(r.momentum_pct,1)}%</td><td>${tr}</td></tr>`;
+      <td>${fmt(r.momentum_pct,1)}%</td><td>${r.vol_pct===null?"n/a":fmt(r.vol_pct,0)+"%"}</td><td>${tr}</td></tr>`;
     }).join("");
     const plan = (e.trade_plan || []).map(p =>
-      `<tr><td>${p.symbol}${p.cash ? " <span style='color:var(--ink-muted)'>(cash)</span>" : ""}</td><td>${p.price===null?"—":inr(p.price)}</td><td><b>${p.units}</b> units</td><td>${p.cost===null?"—":inr(p.cost)}</td><td>${p.stop_price===null?"—":inr(p.stop_price)}</td></tr>`).join("");
+      `<tr><td>${p.symbol}${p.cash ? " <span style='color:var(--ink-muted)'>(cash)</span>" : ""}</td><td>${p.price===null?"—":inr(p.price)}</td><td><b>${p.units}</b> units</td><td>${p.cost===null?"—":inr(p.cost)}</td><td>${p.weight_pct===null||p.weight_pct===undefined?"—":fmt(p.weight_pct,0)+"%"}</td><td>${p.stop_price===null?"—":inr(p.stop_price)}</td></tr>`).join("");
     const rules = e.rules || {};
     const h = e.holdings;
     const bt = st.etf_backtest;
@@ -262,11 +262,12 @@ function renderStrategies(st) {
       <h2>ETF sector momentum ${badge(e.fired)} <span class="muted" style="font-weight:400">— buy-only, lowest capital</span></h2>
       ${holdingsHtml}
       <p style="margin:0 0 10px">Hold (equal weight, rebalance monthly): <b>${(e.hold||[]).join(", ")}</b></p>
-      <table><thead><tr><th>ETF</th><th>Price</th><th>3m</th><th>6m</th><th>Momentum</th><th>Trend</th></tr></thead><tbody>${rows}</tbody></table>
-      ${plan ? `<div style="margin-top:14px"><div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Trade plan — ₹${e.budget_inr} budget, equal split</div>
-        <table><thead><tr><th>Buy</th><th>Limit ≈</th><th>Qty</th><th>Cost</th><th>Stop (−${e.trailing_stop_pct}%)</th></tr></thead><tbody>${plan}</tbody></table></div>` : ""}
+      <table><thead><tr><th>ETF</th><th>Price</th><th>3m</th><th>6m</th><th>Momentum</th><th>Vol</th><th>Trend</th></tr></thead><tbody>${rows}</tbody></table>
+      ${plan ? `<div style="margin-top:14px"><div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Trade plan — ₹${e.budget_inr} budget, low-vol weighted</div>
+        <table><thead><tr><th>Buy</th><th>Limit ≈</th><th>Qty</th><th>Cost</th><th>Weight</th><th>Stop (−${e.trailing_stop_pct}%)</th></tr></thead><tbody>${plan}</tbody></table></div>` : ""}
       <ul class="muted" style="font-size:13px;margin:12px 0 0;padding-left:18px">
         <li><b>Buy:</b> ${rules.buy || ""}</li>
+        <li><b>Weighting:</b> ${rules.tilt || ""}</li>
         <li><b>Quantity:</b> ${rules.sizing || ""}</li>
         <li><b>Trend filter:</b> ${rules.trend || ""}</li>
         <li><b>Stop-loss:</b> ${rules.stop || ""}</li>
