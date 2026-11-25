@@ -1,18 +1,2265 @@
 {
   "date": "2026-11-25",
-  "generated_at": "2026-11-25T03:46:21.114967Z",
+  "generated_at": "2026-11-25T18:37:41.269549Z",
   "fired": false,
-  "spot": null,
-  "vix": null,
-  "vix_percentile": null,
-  "realized_vol": null,
-  "expiry": null,
+  "spot": 25819.25,
+  "vix": 17.697500228881836,
+  "vix_percentile": 80.48780487804878,
+  "realized_vol": 0.15003459619860093,
+  "expiry": "2026-12-29",
   "candidates": [],
-  "reasons": [],
-  "exit_signals": [],
-  "errors": [
-    "Option data: GET failed after 3 tries (https://nsearchives.nseindia.com/content/fo/BhavCopy_NSE_FO_0_0_0_20261125_F_0000.csv.zip): HTTP 404"
+  "reasons": [
+    "vix_percentile: 80.49 vs limit 30.0 (VIX must sit in the calmer part of its 1-year range)"
   ],
+  "exit_signals": [],
+  "errors": [],
   "warnings": [],
+  "rv_method": "yang-zhang",
+  "all_evaluated": [
+    {
+      "strike": 24100.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 53.0,
+      "iv": 0.17707120038457214,
+      "atm_iv": 0.15008102478459479,
+      "skew": 2.699017559997735,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 239330.0,
+      "volume": 6077.0,
+      "cost_per_lot": 3445.0,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 24047.0,
+      "breakeven_move_pct": 6.864064602960969,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 2.699017559997735,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 239330.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 6077.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 3445.0,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23400.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 24.8,
+      "iv": 0.19561135724559425,
+      "atm_iv": 0.15008102478459479,
+      "skew": 4.553033246099947,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 408135.0,
+      "volume": 2608.0,
+      "cost_per_lot": 1612.0,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23375.2,
+      "breakeven_move_pct": 9.465999206018763,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 4.553033246099947,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 408135.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 2608.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 1612.0,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23550.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 29.15,
+      "iv": 0.1916567799165845,
+      "atm_iv": 0.15008102478459479,
+      "skew": 4.157575513198972,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 57915.0,
+      "volume": 1079.0,
+      "cost_per_lot": 1894.75,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23520.85,
+      "breakeven_move_pct": 8.901885221298068,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 4.157575513198972,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 57915.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 1079.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 1894.75,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23900.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 42.3,
+      "iv": 0.1820893081963062,
+      "atm_iv": 0.15008102478459479,
+      "skew": 3.2008283411711416,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 252330.0,
+      "volume": 4308.0,
+      "cost_per_lot": 2749.5,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23857.7,
+      "breakeven_move_pct": 7.597238494534115,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 3.2008283411711416,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 252330.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 4308.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 2749.5,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23950.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 44.8,
+      "iv": 0.18088168636672203,
+      "atm_iv": 0.15008102478459479,
+      "skew": 3.0800661582127242,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 39065.0,
+      "volume": 481.0,
+      "cost_per_lot": 2912.0,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23905.2,
+      "breakeven_move_pct": 7.41326723278174,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 3.0800661582127242,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 39065.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 481.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 2912.0,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24200.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 59.6,
+      "iv": 0.1747657574608922,
+      "atm_iv": 0.15008102478459479,
+      "skew": 2.4684732676297423,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 437190.0,
+      "volume": 14433.0,
+      "cost_per_lot": 3874.0,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 24140.4,
+      "breakeven_move_pct": 6.502319006167873,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 2.4684732676297423,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 437190.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 14433.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 3874.0,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24300.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 67.7,
+      "iv": 0.17295513495095072,
+      "atm_iv": 0.15008102478459479,
+      "skew": 2.287411016635593,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 437255.0,
+      "volume": 10261.0,
+      "cost_per_lot": 4400.5,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 24232.3,
+      "breakeven_move_pct": 6.146383028166971,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 2.287411016635593,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 437255.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 10261.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 4400.5,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24450.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 81.45,
+      "iv": 0.1700263889208436,
+      "atm_iv": 0.15008102478459479,
+      "skew": 1.994536413624881,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 204750.0,
+      "volume": 1329.0,
+      "cost_per_lot": 5294.25,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 24368.55,
+      "breakeven_move_pct": 5.618675987877264,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 1.994536413624881,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 204750.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 1329.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 5294.25,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24250.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 63.2,
+      "iv": 0.17361534563284362,
+      "atm_iv": 0.15008102478459479,
+      "skew": 2.353432084824883,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 43680.0,
+      "volume": 837.0,
+      "cost_per_lot": 4108.0,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 24186.8,
+      "breakeven_move_pct": 6.322608131529772,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 2.353432084824883,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 43680.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 837.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 4108.0,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23500.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 26.95,
+      "iv": 0.19204805795736607,
+      "atm_iv": 0.15008102478459479,
+      "skew": 4.196703317277128,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 2369510.0,
+      "volume": 26073.0,
+      "cost_per_lot": 1751.75,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23473.05,
+      "breakeven_move_pct": 9.087018406808875,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 4.196703317277128,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 2369510.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 26073.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 1751.75,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23350.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 24.5,
+      "iv": 0.1984702741056681,
+      "atm_iv": 0.15008102478459479,
+      "skew": 4.83892493210733,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 22555.0,
+      "volume": 146.0,
+      "cost_per_lot": 1592.5,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23325.5,
+      "breakeven_move_pct": 9.658491241999672,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 4.83892493210733,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 22555.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 146.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 1592.5,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24350.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 71.7,
+      "iv": 0.1717597318291664,
+      "atm_iv": 0.15008102478459479,
+      "skew": 2.1678707044571617,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 53235.0,
+      "volume": 958.0,
+      "cost_per_lot": 4660.5,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 24278.3,
+      "breakeven_move_pct": 5.9682213852067765,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 2.1678707044571617,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 53235.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 958.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 4660.5,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24150.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 56.1,
+      "iv": 0.1758340096546337,
+      "atm_iv": 0.15008102478459479,
+      "skew": 2.5752984870038906,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 54210.0,
+      "volume": 861.0,
+      "cost_per_lot": 3646.5,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 24093.9,
+      "breakeven_move_pct": 6.682417188725461,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 2.5752984870038906,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 54210.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 861.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 3646.5,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23700.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 33.55,
+      "iv": 0.18683268134333197,
+      "atm_iv": 0.15008102478459479,
+      "skew": 3.6751656558737187,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 236795.0,
+      "volume": 5539.0,
+      "cost_per_lot": 2180.75,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23666.45,
+      "breakeven_move_pct": 8.337964890537098,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 3.6751656558737187,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 236795.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 5539.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 2180.75,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23650.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 32.35,
+      "iv": 0.1888601859167218,
+      "atm_iv": 0.15008102478459479,
+      "skew": 3.877916113212701,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 38415.0,
+      "volume": 260.0,
+      "cost_per_lot": 2102.75,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23617.65,
+      "breakeven_move_pct": 8.526971155242691,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 3.877916113212701,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 38415.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 260.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 2102.75,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23450.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 26.5,
+      "iv": 0.1947656587563455,
+      "atm_iv": 0.15008102478459479,
+      "skew": 4.468463397175071,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 25675.0,
+      "volume": 278.0,
+      "cost_per_lot": 1722.5,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23423.5,
+      "breakeven_move_pct": 9.278929480910561,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 4.468463397175071,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 25675.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 278.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 1722.5,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23250.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 22.8,
+      "iv": 0.20237221413552764,
+      "atm_iv": 0.15008102478459479,
+      "skew": 5.229118935093285,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 43290.0,
+      "volume": 278.0,
+      "cost_per_lot": 1482.0,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23227.2,
+      "breakeven_move_pct": 10.039214926847215,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 5.229118935093285,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 43290.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 278.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 1482.0,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24000.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 46.9,
+      "iv": 0.1791733769085258,
+      "atm_iv": 0.15008102478459479,
+      "skew": 2.909235212393102,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 4600200.0,
+      "volume": 59231.0,
+      "cost_per_lot": 3048.5,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23953.1,
+      "breakeven_move_pct": 7.227746739351459,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 2.909235212393102,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 4600200.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 59231.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 3048.5,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23300.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 23.6,
+      "iv": 0.20037244379371402,
+      "atm_iv": 0.15008102478459479,
+      "skew": 5.029141900911924,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 157170.0,
+      "volume": 3682.0,
+      "cost_per_lot": 1534.0,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23276.4,
+      "breakeven_move_pct": 9.848659430463698,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 5.029141900911924,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 157170.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 3682.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 1534.0,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23750.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 36.0,
+      "iv": 0.18615104135759175,
+      "atm_iv": 0.15008102478459479,
+      "skew": 3.607001657299697,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 52390.0,
+      "volume": 504.0,
+      "cost_per_lot": 2340.0,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23714.0,
+      "breakeven_move_pct": 8.153799974824985,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 3.607001657299697,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 52390.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 504.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 2340.0,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23800.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 37.85,
+      "iv": 0.1846531693395227,
+      "atm_iv": 0.15008102478459479,
+      "skew": 3.4572144554927906,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 294450.0,
+      "volume": 6725.0,
+      "cost_per_lot": 2460.25,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23762.15,
+      "breakeven_move_pct": 7.967311211595994,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 3.4572144554927906,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 294450.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 6725.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 2460.25,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24400.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 76.7,
+      "iv": 0.1710691140733659,
+      "atm_iv": 0.15008102478459479,
+      "skew": 2.0988089288771103,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 597675.0,
+      "volume": 10780.0,
+      "cost_per_lot": 4985.5,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 24323.3,
+      "breakeven_move_pct": 5.793932821441369,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 2.0988089288771103,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 597675.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 10780.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 4985.5,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23850.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 40.3,
+      "iv": 0.1836681664057076,
+      "atm_iv": 0.15008102478459479,
+      "skew": 3.3587141621112817,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 76505.0,
+      "volume": 926.0,
+      "cost_per_lot": 2619.5,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23809.7,
+      "breakeven_move_pct": 7.783146295883883,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 3.3587141621112817,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 76505.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 926.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 2619.5,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 23600.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 29.75,
+      "iv": 0.1890368170235306,
+      "atm_iv": 0.15008102478459479,
+      "skew": 3.8955792238935807,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 613795.0,
+      "volume": 6809.0,
+      "cost_per_lot": 1933.75,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23570.25,
+      "breakeven_move_pct": 8.710555109075592,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 3.8955792238935807,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 613795.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 6809.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": true,
+          "value": 1933.75,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24500.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 86.15,
+      "iv": 0.1687833961673081,
+      "atm_iv": 0.15008102478459479,
+      "skew": 1.87023713827133,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 3075475.0,
+      "volume": 73607.0,
+      "cost_per_lot": 5599.75,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 24413.85,
+      "breakeven_move_pct": 5.4432255003534245,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 1.87023713827133,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 3075475.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 73607.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 5599.75,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    },
+    {
+      "strike": 24050.0,
+      "expiry": "2026-12-29",
+      "dte": 34,
+      "premium": 50.4,
+      "iv": 0.17859498127847911,
+      "atm_iv": 0.15008102478459479,
+      "skew": 2.851395649388433,
+      "iv_rv_ratio": 1.0003094525340834,
+      "open_interest": 32760.0,
+      "volume": 550.0,
+      "cost_per_lot": 3276.0,
+      "vix_percentile": 80.48780487804878,
+      "breakeven": 23999.6,
+      "breakeven_move_pct": 7.04764855679387,
+      "gates": [
+        {
+          "name": "vix_percentile",
+          "passed": false,
+          "value": 80.48780487804878,
+          "threshold": 30.0,
+          "detail": "VIX must sit in the calmer part of its 1-year range"
+        },
+        {
+          "name": "skew",
+          "passed": true,
+          "value": 2.851395649388433,
+          "threshold": 6.0,
+          "detail": "Reject puts whose crash insurance is already richly priced vs ATM"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": true,
+          "value": 1.0003094525340834,
+          "threshold": 1.3,
+          "detail": "Reject options rich in implied vs realized volatility"
+        },
+        {
+          "name": "open_interest",
+          "passed": true,
+          "value": 32760.0,
+          "threshold": 500,
+          "detail": "Liquidity floor \u2014 avoid untradeable strikes"
+        },
+        {
+          "name": "volume",
+          "passed": true,
+          "value": 550.0,
+          "threshold": 100,
+          "detail": "Traded-volume floor"
+        },
+        {
+          "name": "cost_per_lot",
+          "passed": false,
+          "value": 3276.0,
+          "threshold": 3000,
+          "detail": "Keep each bullet small \u2014 \u20b9 cap per lot"
+        }
+      ],
+      "passed": false
+    }
+  ],
+  "atm_iv": 0.15008102478459479,
+  "atm_strike": 25800.0,
+  "vrp": 0.00464285859938518,
+  "skew_curve": [
+    {
+      "strike": 20700.0,
+      "moneyness": 0.8017,
+      "iv": 0.3254
+    },
+    {
+      "strike": 20750.0,
+      "moneyness": 0.8037,
+      "iv": 0.3046
+    },
+    {
+      "strike": 20800.0,
+      "moneyness": 0.8056,
+      "iv": 0.3118
+    },
+    {
+      "strike": 20850.0,
+      "moneyness": 0.8075,
+      "iv": 0.324
+    },
+    {
+      "strike": 20900.0,
+      "moneyness": 0.8095,
+      "iv": 0.3086
+    },
+    {
+      "strike": 20950.0,
+      "moneyness": 0.8114,
+      "iv": 0.306
+    },
+    {
+      "strike": 21000.0,
+      "moneyness": 0.8133,
+      "iv": 0.3063
+    },
+    {
+      "strike": 21050.0,
+      "moneyness": 0.8153,
+      "iv": 0.3095
+    },
+    {
+      "strike": 21100.0,
+      "moneyness": 0.8172,
+      "iv": 0.3027
+    },
+    {
+      "strike": 21150.0,
+      "moneyness": 0.8192,
+      "iv": 0.3038
+    },
+    {
+      "strike": 21200.0,
+      "moneyness": 0.8211,
+      "iv": 0.2903
+    },
+    {
+      "strike": 21250.0,
+      "moneyness": 0.823,
+      "iv": 0.2988
+    },
+    {
+      "strike": 21300.0,
+      "moneyness": 0.825,
+      "iv": 0.2855
+    },
+    {
+      "strike": 21350.0,
+      "moneyness": 0.8269,
+      "iv": 0.2925
+    },
+    {
+      "strike": 21400.0,
+      "moneyness": 0.8288,
+      "iv": 0.2845
+    },
+    {
+      "strike": 21450.0,
+      "moneyness": 0.8308,
+      "iv": 0.2754
+    },
+    {
+      "strike": 21500.0,
+      "moneyness": 0.8327,
+      "iv": 0.2782
+    },
+    {
+      "strike": 21550.0,
+      "moneyness": 0.8346,
+      "iv": 0.271
+    },
+    {
+      "strike": 21600.0,
+      "moneyness": 0.8366,
+      "iv": 0.2782
+    },
+    {
+      "strike": 21650.0,
+      "moneyness": 0.8385,
+      "iv": 0.2771
+    },
+    {
+      "strike": 21700.0,
+      "moneyness": 0.8405,
+      "iv": 0.2726
+    },
+    {
+      "strike": 21750.0,
+      "moneyness": 0.8424,
+      "iv": 0.2658
+    },
+    {
+      "strike": 21800.0,
+      "moneyness": 0.8443,
+      "iv": 0.2674
+    },
+    {
+      "strike": 21850.0,
+      "moneyness": 0.8463,
+      "iv": 0.2663
+    },
+    {
+      "strike": 21900.0,
+      "moneyness": 0.8482,
+      "iv": 0.2664
+    },
+    {
+      "strike": 21950.0,
+      "moneyness": 0.8501,
+      "iv": 0.2559
+    },
+    {
+      "strike": 22000.0,
+      "moneyness": 0.8521,
+      "iv": 0.2577
+    },
+    {
+      "strike": 22050.0,
+      "moneyness": 0.854,
+      "iv": 0.2526
+    },
+    {
+      "strike": 22100.0,
+      "moneyness": 0.856,
+      "iv": 0.254
+    },
+    {
+      "strike": 22150.0,
+      "moneyness": 0.8579,
+      "iv": 0.2475
+    },
+    {
+      "strike": 22200.0,
+      "moneyness": 0.8598,
+      "iv": 0.2449
+    },
+    {
+      "strike": 22250.0,
+      "moneyness": 0.8618,
+      "iv": 0.2466
+    },
+    {
+      "strike": 22300.0,
+      "moneyness": 0.8637,
+      "iv": 0.2379
+    },
+    {
+      "strike": 22350.0,
+      "moneyness": 0.8656,
+      "iv": 0.2404
+    },
+    {
+      "strike": 22400.0,
+      "moneyness": 0.8676,
+      "iv": 0.2348
+    },
+    {
+      "strike": 22450.0,
+      "moneyness": 0.8695,
+      "iv": 0.2339
+    },
+    {
+      "strike": 22500.0,
+      "moneyness": 0.8714,
+      "iv": 0.2317
+    },
+    {
+      "strike": 22550.0,
+      "moneyness": 0.8734,
+      "iv": 0.2313
+    },
+    {
+      "strike": 22600.0,
+      "moneyness": 0.8753,
+      "iv": 0.2291
+    },
+    {
+      "strike": 22650.0,
+      "moneyness": 0.8773,
+      "iv": 0.2274
+    },
+    {
+      "strike": 22700.0,
+      "moneyness": 0.8792,
+      "iv": 0.2249
+    },
+    {
+      "strike": 22750.0,
+      "moneyness": 0.8811,
+      "iv": 0.2228
+    },
+    {
+      "strike": 22800.0,
+      "moneyness": 0.8831,
+      "iv": 0.2222
+    },
+    {
+      "strike": 22850.0,
+      "moneyness": 0.885,
+      "iv": 0.219
+    },
+    {
+      "strike": 22900.0,
+      "moneyness": 0.8869,
+      "iv": 0.2167
+    },
+    {
+      "strike": 22950.0,
+      "moneyness": 0.8889,
+      "iv": 0.2147
+    },
+    {
+      "strike": 23000.0,
+      "moneyness": 0.8908,
+      "iv": 0.2126
+    },
+    {
+      "strike": 23050.0,
+      "moneyness": 0.8927,
+      "iv": 0.21
+    },
+    {
+      "strike": 23100.0,
+      "moneyness": 0.8947,
+      "iv": 0.2084
+    },
+    {
+      "strike": 23150.0,
+      "moneyness": 0.8966,
+      "iv": 0.2064
+    },
+    {
+      "strike": 23200.0,
+      "moneyness": 0.8986,
+      "iv": 0.2033
+    },
+    {
+      "strike": 23250.0,
+      "moneyness": 0.9005,
+      "iv": 0.2024
+    },
+    {
+      "strike": 23300.0,
+      "moneyness": 0.9024,
+      "iv": 0.2004
+    },
+    {
+      "strike": 23350.0,
+      "moneyness": 0.9044,
+      "iv": 0.1985
+    },
+    {
+      "strike": 23400.0,
+      "moneyness": 0.9063,
+      "iv": 0.1956
+    },
+    {
+      "strike": 23450.0,
+      "moneyness": 0.9082,
+      "iv": 0.1948
+    },
+    {
+      "strike": 23500.0,
+      "moneyness": 0.9102,
+      "iv": 0.192
+    },
+    {
+      "strike": 23550.0,
+      "moneyness": 0.9121,
+      "iv": 0.1917
+    },
+    {
+      "strike": 23600.0,
+      "moneyness": 0.914,
+      "iv": 0.189
+    },
+    {
+      "strike": 23650.0,
+      "moneyness": 0.916,
+      "iv": 0.1889
+    },
+    {
+      "strike": 23700.0,
+      "moneyness": 0.9179,
+      "iv": 0.1868
+    },
+    {
+      "strike": 23750.0,
+      "moneyness": 0.9199,
+      "iv": 0.1862
+    },
+    {
+      "strike": 23800.0,
+      "moneyness": 0.9218,
+      "iv": 0.1847
+    },
+    {
+      "strike": 23850.0,
+      "moneyness": 0.9237,
+      "iv": 0.1837
+    },
+    {
+      "strike": 23900.0,
+      "moneyness": 0.9257,
+      "iv": 0.1821
+    },
+    {
+      "strike": 23950.0,
+      "moneyness": 0.9276,
+      "iv": 0.1809
+    },
+    {
+      "strike": 24000.0,
+      "moneyness": 0.9295,
+      "iv": 0.1792
+    },
+    {
+      "strike": 24050.0,
+      "moneyness": 0.9315,
+      "iv": 0.1786
+    },
+    {
+      "strike": 24100.0,
+      "moneyness": 0.9334,
+      "iv": 0.1771
+    },
+    {
+      "strike": 24150.0,
+      "moneyness": 0.9353,
+      "iv": 0.1758
+    },
+    {
+      "strike": 24200.0,
+      "moneyness": 0.9373,
+      "iv": 0.1748
+    },
+    {
+      "strike": 24250.0,
+      "moneyness": 0.9392,
+      "iv": 0.1736
+    },
+    {
+      "strike": 24300.0,
+      "moneyness": 0.9412,
+      "iv": 0.173
+    },
+    {
+      "strike": 24350.0,
+      "moneyness": 0.9431,
+      "iv": 0.1718
+    },
+    {
+      "strike": 24400.0,
+      "moneyness": 0.945,
+      "iv": 0.1711
+    },
+    {
+      "strike": 24450.0,
+      "moneyness": 0.947,
+      "iv": 0.17
+    },
+    {
+      "strike": 24500.0,
+      "moneyness": 0.9489,
+      "iv": 0.1688
+    },
+    {
+      "strike": 24550.0,
+      "moneyness": 0.9508,
+      "iv": 0.1682
+    },
+    {
+      "strike": 24600.0,
+      "moneyness": 0.9528,
+      "iv": 0.1673
+    },
+    {
+      "strike": 24650.0,
+      "moneyness": 0.9547,
+      "iv": 0.1659
+    },
+    {
+      "strike": 24700.0,
+      "moneyness": 0.9567,
+      "iv": 0.1654
+    },
+    {
+      "strike": 24750.0,
+      "moneyness": 0.9586,
+      "iv": 0.1641
+    },
+    {
+      "strike": 24800.0,
+      "moneyness": 0.9605,
+      "iv": 0.1632
+    },
+    {
+      "strike": 24850.0,
+      "moneyness": 0.9625,
+      "iv": 0.1629
+    },
+    {
+      "strike": 24900.0,
+      "moneyness": 0.9644,
+      "iv": 0.1616
+    },
+    {
+      "strike": 24950.0,
+      "moneyness": 0.9663,
+      "iv": 0.1607
+    },
+    {
+      "strike": 25000.0,
+      "moneyness": 0.9683,
+      "iv": 0.1595
+    },
+    {
+      "strike": 25050.0,
+      "moneyness": 0.9702,
+      "iv": 0.1593
+    },
+    {
+      "strike": 25100.0,
+      "moneyness": 0.9721,
+      "iv": 0.1585
+    },
+    {
+      "strike": 25150.0,
+      "moneyness": 0.9741,
+      "iv": 0.158
+    },
+    {
+      "strike": 25200.0,
+      "moneyness": 0.976,
+      "iv": 0.1575
+    },
+    {
+      "strike": 25250.0,
+      "moneyness": 0.978,
+      "iv": 0.157
+    },
+    {
+      "strike": 25300.0,
+      "moneyness": 0.9799,
+      "iv": 0.1554
+    },
+    {
+      "strike": 25350.0,
+      "moneyness": 0.9818,
+      "iv": 0.1554
+    },
+    {
+      "strike": 25400.0,
+      "moneyness": 0.9838,
+      "iv": 0.1548
+    },
+    {
+      "strike": 25450.0,
+      "moneyness": 0.9857,
+      "iv": 0.1536
+    },
+    {
+      "strike": 25500.0,
+      "moneyness": 0.9876,
+      "iv": 0.1538
+    },
+    {
+      "strike": 25550.0,
+      "moneyness": 0.9896,
+      "iv": 0.1527
+    },
+    {
+      "strike": 25600.0,
+      "moneyness": 0.9915,
+      "iv": 0.1527
+    },
+    {
+      "strike": 25650.0,
+      "moneyness": 0.9934,
+      "iv": 0.1518
+    },
+    {
+      "strike": 25700.0,
+      "moneyness": 0.9954,
+      "iv": 0.1511
+    },
+    {
+      "strike": 25750.0,
+      "moneyness": 0.9973,
+      "iv": 0.1507
+    },
+    {
+      "strike": 25800.0,
+      "moneyness": 0.9993,
+      "iv": 0.1501
+    },
+    {
+      "strike": 25850.0,
+      "moneyness": 1.0012,
+      "iv": 0.1494
+    },
+    {
+      "strike": 25900.0,
+      "moneyness": 1.0031,
+      "iv": 0.1492
+    },
+    {
+      "strike": 25950.0,
+      "moneyness": 1.0051,
+      "iv": 0.1488
+    },
+    {
+      "strike": 26000.0,
+      "moneyness": 1.007,
+      "iv": 0.148
+    },
+    {
+      "strike": 26050.0,
+      "moneyness": 1.0089,
+      "iv": 0.1471
+    },
+    {
+      "strike": 26100.0,
+      "moneyness": 1.0109,
+      "iv": 0.1467
+    },
+    {
+      "strike": 26150.0,
+      "moneyness": 1.0128,
+      "iv": 0.1453
+    },
+    {
+      "strike": 26200.0,
+      "moneyness": 1.0147,
+      "iv": 0.1466
+    },
+    {
+      "strike": 26250.0,
+      "moneyness": 1.0167,
+      "iv": 0.1455
+    },
+    {
+      "strike": 26300.0,
+      "moneyness": 1.0186,
+      "iv": 0.1456
+    },
+    {
+      "strike": 26350.0,
+      "moneyness": 1.0206,
+      "iv": 0.1448
+    },
+    {
+      "strike": 26400.0,
+      "moneyness": 1.0225,
+      "iv": 0.1454
+    },
+    {
+      "strike": 26450.0,
+      "moneyness": 1.0244,
+      "iv": 0.1464
+    },
+    {
+      "strike": 26500.0,
+      "moneyness": 1.0264,
+      "iv": 0.1442
+    },
+    {
+      "strike": 26550.0,
+      "moneyness": 1.0283,
+      "iv": 0.1554
+    },
+    {
+      "strike": 26600.0,
+      "moneyness": 1.0302,
+      "iv": 0.144
+    },
+    {
+      "strike": 26650.0,
+      "moneyness": 1.0322,
+      "iv": 0.1822
+    },
+    {
+      "strike": 26700.0,
+      "moneyness": 1.0341,
+      "iv": 0.1409
+    },
+    {
+      "strike": 26750.0,
+      "moneyness": 1.036,
+      "iv": 0.156
+    },
+    {
+      "strike": 26800.0,
+      "moneyness": 1.038,
+      "iv": 0.1423
+    },
+    {
+      "strike": 26850.0,
+      "moneyness": 1.0399,
+      "iv": 0.1427
+    },
+    {
+      "strike": 26900.0,
+      "moneyness": 1.0419,
+      "iv": 0.1426
+    },
+    {
+      "strike": 26950.0,
+      "moneyness": 1.0438,
+      "iv": 0.1534
+    },
+    {
+      "strike": 27000.0,
+      "moneyness": 1.0457,
+      "iv": 0.1431
+    },
+    {
+      "strike": 27050.0,
+      "moneyness": 1.0477,
+      "iv": 0.1488
+    },
+    {
+      "strike": 27100.0,
+      "moneyness": 1.0496,
+      "iv": 0.139
+    }
+  ],
+  "budget": {
+    "budget": 20000,
+    "realized_pnl": 0.0,
+    "loss_used": 0.0,
+    "remaining": 20000.0,
+    "locked": false
+  },
+  "open_trades": [],
   "disclaimer": "Educational / personal-research tool. NOT investment advice. SEBI FY26 data: ~87.7% of individual F&O traders lost money and option BUYERS lost the most. This strategy is option buying. Trade paper only until results earn trust, and never risk more than the loss budget. EOD data has no live bid-ask spread \u2014 always check the live spread in your broker app before placing any order.\n"
 }

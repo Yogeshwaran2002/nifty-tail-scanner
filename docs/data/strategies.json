@@ -1,6 +1,6 @@
 {
   "date": "2026-11-25",
-  "generated_at": "2026-11-25T12:20:42.528835Z",
+  "generated_at": "2026-11-25T18:37:43.858113Z",
   "etf_momentum": {
     "fired": true,
     "top_n": 3,
@@ -205,90 +205,88 @@
   "credit_spread": {
     "fired": false,
     "expiry": "2026-12-29",
-    "dte": 36,
-    "short_strike": 24550.0,
-    "long_strike": 24450.0,
-    "short_premium": 159.95,
-    "long_premium": 142.15,
-    "short_delta": -0.218,
+    "dte": 34,
+    "short_strike": 25000.0,
+    "long_strike": 24900.0,
+    "short_premium": 157.7,
+    "long_premium": 140.7,
+    "short_delta": -0.215,
     "width": 100.0,
-    "credit": 17.8,
-    "max_profit": 1157.0,
-    "max_loss": 5343.0,
-    "capital_at_risk": 5343.0,
-    "breakeven": 24532.2,
-    "prob_profit_pct": 78.2,
-    "vrp": -0.16676642697203703,
-    "iv_rv_ratio": 0.989,
+    "credit": 17.0,
+    "max_profit": 1105.0,
+    "max_loss": 5395.0,
+    "capital_at_risk": 5395.0,
+    "breakeven": 24983.0,
+    "prob_profit_pct": 78.5,
+    "vrp": 0.00464285859938518,
+    "iv_rv_ratio": 1.0,
     "gates": [
       {
         "name": "vrp",
         "passed": false,
-        "value": -0.16676642697203703,
+        "value": 0.00464285859938518,
         "threshold": 2.0,
         "detail": "Only sell when options are genuinely rich (ATM IV \u2212 realized vol)"
       },
       {
         "name": "iv_rv_ratio",
         "passed": false,
-        "value": 0.9888848018258877,
+        "value": 1.0003094525340834,
         "threshold": 1.1,
         "detail": "Options must be rich vs realized to collect premium"
       },
       {
         "name": "credit_to_width",
         "passed": false,
-        "value": 0.178,
+        "value": 0.17,
         "threshold": 0.18,
         "detail": "Reward/risk floor: credit \u00f7 width"
       },
       {
         "name": "short_liquidity",
         "passed": true,
-        "value": 106275.0,
+        "value": 6686800.0,
         "threshold": 500,
         "detail": "Short leg must be liquid"
       },
       {
         "name": "dte",
         "passed": true,
-        "value": 36,
+        "value": 34,
         "threshold": 45,
         "detail": "Days-to-expiry window"
       },
       {
         "name": "positive_credit",
         "passed": true,
-        "value": 17.8,
+        "value": 17.0,
         "threshold": 0,
         "detail": "Spread must take in net credit"
       }
     ],
     "reasons": [
-      "vrp: -0.17 vs 2.0",
-      "iv_rv_ratio: 0.99 vs 1.1",
-      "credit_to_width: 0.18 vs 0.18"
+      "vrp: 0.0 vs 2.0",
+      "iv_rv_ratio: 1.0 vs 1.1",
+      "credit_to_width: 0.17 vs 0.18"
     ]
   },
   "calendar": {
     "fired": false,
     "front_expiry": "2026-12-01",
     "next_expiry": "2026-12-08",
-    "front_dte": 8,
-    "next_dte": 15,
-    "front_atm_iv": 0.1719,
-    "next_atm_iv": 0.1668,
-    "term_spread_pts": 0.51,
+    "front_dte": 6,
+    "next_dte": 13,
+    "front_atm_iv": 0.1692,
+    "next_atm_iv": 0.1679,
+    "term_spread_pts": 0.13,
     "threshold_pts": 1.5,
-    "atm_strike": 25350.0,
-    "est_debit_per_lot": 4670.25,
+    "atm_strike": 25800.0,
+    "est_debit_per_lot": 5850.0,
     "reasons": [
-      "term_spread 0.51 < 1.5 pts (front not rich enough)"
+      "term_spread 0.13 < 1.5 pts (front not rich enough)"
     ]
   },
-  "notes": [
-    "Option chain unavailable (holiday/pre-close). ETF + ToM still live."
-  ],
+  "notes": [],
   "etf_backtest": {
     "ok": false,
     "reason": "etf backtest error: name 'math' is not defined"
@@ -297,18 +295,18 @@
     "fired": false,
     "etf": "NIFTYBEES",
     "window": "last 1 + first 3 trading days of the month",
-    "in_market_pct": 20.0,
+    "in_market_pct": 20.1,
     "next_window_start": "2026-11-30",
     "backtest": {
-      "days": 494,
+      "days": 493,
       "tom": {
         "total_return_pct": 14.6,
         "cagr_pct": 7.2,
         "max_drawdown_pct": -3.4
       },
       "buyhold": {
-        "total_return_pct": 6.6,
-        "cagr_pct": 3.3,
+        "total_return_pct": 4.7,
+        "cagr_pct": 2.4,
         "max_drawdown_pct": -15.6
       },
       "equity_curve": [
@@ -979,6 +977,6 @@
       "outside the window; next starts 2026-11-30"
     ]
   },
-  "spot": 25349.65,
+  "spot": 25819.25,
   "disclaimer": "Educational / personal-research tool. NOT investment advice. SEBI FY26 data: ~87.7% of individual F&O traders lost money and option BUYERS lost the most. This strategy is option buying. Trade paper only until results earn trust, and never risk more than the loss budget. EOD data has no live bid-ask spread \u2014 always check the live spread in your broker app before placing any order.\n"
 }
