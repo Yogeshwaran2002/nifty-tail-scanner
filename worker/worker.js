@@ -275,6 +275,16 @@ function fmtEtf(st) {
     const star = e.hold && e.hold.includes(r.symbol) ? "★ " : "  ";
     lines.push(`${star}${r.symbol}: ${n(r.momentum_pct, 1)}%  (3m ${n(r.ret_3m_pct, 1)} / 6m ${n(r.ret_6m_pct, 1)})`);
   }
+  if (e.trade_plan && e.trade_plan.length) {
+    lines.push(`\n<b>Plan</b> (₹${e.budget_inr} budget, equal split):`);
+    for (const p of e.trade_plan) {
+      lines.push(`• ${p.symbol}: buy <b>${p.units}</b> units @ limit ≈${inr(p.price)} (${inr(p.cost)}), stop ${inr(p.stop_price)}`);
+    }
+    const r = e.rules || {};
+    lines.push(`\nSell: ${r.sell || ""}`);
+    lines.push(`Stop: ${r.stop || ""}`);
+    lines.push(`Cadence: ${r.cadence || ""}`);
+  }
   lines.push("\n<i>Buy-only, no leverage — lowest capital. Not advice.</i>");
   return lines.join("\n");
 }

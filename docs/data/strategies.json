@@ -1,6 +1,6 @@
 {
   "date": "2026-11-23",
-  "generated_at": "2026-11-25T05:13:03.105723Z",
+  "generated_at": "2026-11-25T05:29:40.198417Z",
   "etf_momentum": {
     "fired": true,
     "top_n": 3,
@@ -12,75 +12,107 @@
     "ranked": [
       {
         "symbol": "PSUBNKBEES",
-        "last": 106.93,
-        "ret_3m_pct": 11.59,
-        "ret_6m_pct": 19.31,
-        "momentum_pct": 15.45
+        "last": 107.37,
+        "ret_3m_pct": 12.05,
+        "ret_6m_pct": 19.81,
+        "momentum_pct": 15.93
       },
       {
         "symbol": "BANKBEES",
-        "last": 660.86,
-        "ret_3m_pct": 10.56,
-        "ret_6m_pct": 18.09,
-        "momentum_pct": 14.325
+        "last": 661.51,
+        "ret_3m_pct": 10.66,
+        "ret_6m_pct": 18.21,
+        "momentum_pct": 14.435
       },
       {
         "symbol": "PHARMABEES",
-        "last": 29.45,
-        "ret_3m_pct": 8.75,
-        "ret_6m_pct": 16.73,
-        "momentum_pct": 12.74
+        "last": 29.54,
+        "ret_3m_pct": 9.08,
+        "ret_6m_pct": 17.08,
+        "momentum_pct": 13.079999999999998
       },
       {
         "symbol": "ITBEES",
-        "last": 35.96,
-        "ret_3m_pct": 6.17,
-        "ret_6m_pct": 12.3,
-        "momentum_pct": 9.235
+        "last": 35.92,
+        "ret_3m_pct": 6.05,
+        "ret_6m_pct": 12.18,
+        "momentum_pct": 9.115
       },
       {
         "symbol": "NIFTYBEES",
-        "last": 294.4,
-        "ret_3m_pct": 6.37,
-        "ret_6m_pct": 9.4,
-        "momentum_pct": 7.885
+        "last": 294.89,
+        "ret_3m_pct": 6.55,
+        "ret_6m_pct": 9.58,
+        "momentum_pct": 8.065
       },
       {
         "symbol": "CONSUMBEES",
-        "last": 138.3,
-        "ret_3m_pct": 3.22,
-        "ret_6m_pct": 10.29,
-        "momentum_pct": 6.755
+        "last": 138.59,
+        "ret_3m_pct": 3.44,
+        "ret_6m_pct": 10.52,
+        "momentum_pct": 6.9799999999999995
       },
       {
         "symbol": "INFRABEES",
-        "last": 993.17,
-        "ret_3m_pct": 2.43,
-        "ret_6m_pct": 3.0,
-        "momentum_pct": 2.715
+        "last": 995.46,
+        "ret_3m_pct": 2.67,
+        "ret_6m_pct": 3.24,
+        "momentum_pct": 2.955
       },
       {
         "symbol": "JUNIORBEES",
-        "last": 786.9,
-        "ret_3m_pct": -1.67,
-        "ret_6m_pct": 4.45,
-        "momentum_pct": 1.3900000000000001
+        "last": 788.95,
+        "ret_3m_pct": -1.41,
+        "ret_6m_pct": 4.72,
+        "momentum_pct": 1.6549999999999998
       },
       {
         "symbol": "MON100",
-        "last": 301.88,
-        "ret_3m_pct": -8.66,
-        "ret_6m_pct": -9.11,
-        "momentum_pct": -8.885
+        "last": 301.67,
+        "ret_3m_pct": -8.73,
+        "ret_6m_pct": -9.17,
+        "momentum_pct": -8.95
       },
       {
         "symbol": "GOLDBEES",
-        "last": 100.72,
-        "ret_3m_pct": -23.3,
-        "ret_6m_pct": -22.82,
-        "momentum_pct": -23.060000000000002
+        "last": 100.59,
+        "ret_3m_pct": -23.4,
+        "ret_6m_pct": -22.92,
+        "momentum_pct": -23.16
       }
     ],
+    "trade_plan": [
+      {
+        "symbol": "PSUBNKBEES",
+        "price": 107.37,
+        "units": 18,
+        "cost": 1932.66,
+        "stop_price": 94.49
+      },
+      {
+        "symbol": "BANKBEES",
+        "price": 661.51,
+        "units": 3,
+        "cost": 1984.53,
+        "stop_price": 582.13
+      },
+      {
+        "symbol": "PHARMABEES",
+        "price": 29.54,
+        "units": 67,
+        "cost": 1979.18,
+        "stop_price": 26.0
+      }
+    ],
+    "budget_inr": 6000,
+    "trailing_stop_pct": 12,
+    "rules": {
+      "buy": "Use a LIMIT order near the shown price (ETFs can have wide spreads \u2014 avoid market orders). Buy whole units, equal rupee split.",
+      "sizing": "ETFs trade in single units \u2014 there is NO F&O lot. Quantity = budget \u00f7 top_n \u00f7 price, rounded down.",
+      "stop": "Optional trailing stop: exit a name if it drops 12% from your entry (or its recent high). Caps drawdown between rebalances.",
+      "sell": "Primary exit is the MONTHLY rebalance: re-check /etf on the 1st trading day; if a holding fell out of the top 3, sell it and rotate into the new leader.",
+      "cadence": "Momentum is a monthly strategy \u2014 do NOT watch or trade it daily."
+    },
     "note": "Buy-only, equal-weight the top names, rebalance monthly. No leverage.",
     "reasons": []
   },
@@ -100,20 +132,20 @@
     "capital_at_risk": 5343.0,
     "breakeven": 24532.2,
     "prob_profit_pct": 78.2,
-    "vrp": -1.3448038961764914,
-    "iv_rv_ratio": 0.917,
+    "vrp": -1.5147688673360193,
+    "iv_rv_ratio": 0.907,
     "gates": [
       {
         "name": "vrp",
         "passed": false,
-        "value": -1.3448038961764914,
+        "value": -1.5147688673360193,
         "threshold": 2.0,
         "detail": "Only sell when options are genuinely rich (ATM IV \u2212 realized vol)"
       },
       {
         "name": "iv_rv_ratio",
         "passed": false,
-        "value": 0.9168924921609812,
+        "value": 0.9073618700421422,
         "threshold": 1.1,
         "detail": "Options must be rich vs realized to collect premium"
       },
@@ -147,8 +179,8 @@
       }
     ],
     "reasons": [
-      "vrp: -1.3448038961764914 vs 2.0",
-      "iv_rv_ratio: 0.9168924921609812 vs 1.1",
+      "vrp: -1.5147688673360193 vs 2.0",
+      "iv_rv_ratio: 0.9073618700421422 vs 1.1",
       "credit_to_width: 0.178 vs 0.18"
     ]
   },

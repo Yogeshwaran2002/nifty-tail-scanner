@@ -214,11 +214,22 @@ function renderStrategies(st) {
       <td>${r.ret_3m_pct===null?"n/a":fmt(r.ret_3m_pct,1)+"%"}</td>
       <td>${r.ret_6m_pct===null?"n/a":fmt(r.ret_6m_pct,1)+"%"}</td>
       <td>${fmt(r.momentum_pct,1)}%</td></tr>`).join("");
+    const plan = (e.trade_plan || []).map(p =>
+      `<tr><td>${p.symbol}</td><td>${inr(p.price)}</td><td><b>${p.units}</b> units</td><td>${inr(p.cost)}</td><td>${inr(p.stop_price)}</td></tr>`).join("");
+    const rules = e.rules || {};
     etf.innerHTML = `
       <h2>ETF sector momentum ${badge(e.fired)} <span class="muted" style="font-weight:400">— buy-only, lowest capital</span></h2>
       <p style="margin:0 0 10px">Hold (equal weight, rebalance monthly): <b>${(e.hold||[]).join(", ")}</b></p>
       <table><thead><tr><th>ETF</th><th>Price</th><th>3m</th><th>6m</th><th>Momentum</th></tr></thead><tbody>${rows}</tbody></table>
-      <p class="muted" style="font-size:13px;margin-top:8px">${e.note}</p>`;
+      ${plan ? `<div style="margin-top:14px"><div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Trade plan — ₹${e.budget_inr} budget, equal split</div>
+        <table><thead><tr><th>Buy</th><th>Limit ≈</th><th>Qty</th><th>Cost</th><th>Stop (−${e.trailing_stop_pct}%)</th></tr></thead><tbody>${plan}</tbody></table></div>` : ""}
+      <ul class="muted" style="font-size:13px;margin:12px 0 0;padding-left:18px">
+        <li><b>Buy:</b> ${rules.buy || ""}</li>
+        <li><b>Quantity:</b> ${rules.sizing || ""}</li>
+        <li><b>Stop-loss:</b> ${rules.stop || ""}</li>
+        <li><b>Sell:</b> ${rules.sell || ""}</li>
+        <li><b>Cadence:</b> ${rules.cadence || ""}</li>
+      </ul>`;
   } else {
     etf.innerHTML = `<h2>ETF sector momentum ${badge(false)}</h2><p class="muted">${(e.reasons||["unavailable"]).join("; ")}</p>`;
   }

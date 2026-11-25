@@ -99,6 +99,8 @@ etf_momentum:
   top_n: 3
   lookback_3m_days: 63
   lookback_6m_days: 126
+  budget_inr: 6000            # total ₹ to split equally across the top_n ETFs
+  trailing_stop_pct: 12       # optional safety: exit if it falls this % from your entry/high
   basket:                     # Yahoo tickers (NSE ETFs). Unreachable ones are skipped.
     - NIFTYBEES.NS            # Nifty 50
     - JUNIORBEES.NS           # Nifty Next 50

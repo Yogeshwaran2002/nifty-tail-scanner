@@ -162,11 +162,34 @@ def etf_momentum(session, cfg):
     ranked = sorted([r for r in rows if r["momentum_pct"] is not None],
                     key=lambda x: x["momentum_pct"], reverse=True)
     top = ranked[: e["top_n"]]
+
+    # Concrete trade plan: equal-rupee split, whole units, trailing stop.
+    budget = e.get("budget_inr", 0)
+    ts = e.get("trailing_stop_pct", 12)
+    alloc = (budget / len(top)) if top else 0
+    plan = []
+    for r in top:
+        units = int(alloc // r["last"]) if r["last"] > 0 else 0
+        plan.append({
+            "symbol": r["symbol"], "price": r["last"], "units": units,
+            "cost": round(units * r["last"], 2),
+            "stop_price": round(r["last"] * (1 - ts / 100.0), 2),
+        })
     return {
         "fired": bool(top),
         "top_n": e["top_n"],
         "hold": [r["symbol"] for r in top],
         "ranked": ranked,
+        "trade_plan": plan,
+        "budget_inr": budget,
+        "trailing_stop_pct": ts,
+        "rules": {
+            "buy": "Use a LIMIT order near the shown price (ETFs can have wide spreads — avoid market orders). Buy whole units, equal rupee split.",
+            "sizing": "ETFs trade in single units — there is NO F&O lot. Quantity = budget ÷ top_n ÷ price, rounded down.",
+            "stop": f"Optional trailing stop: exit a name if it drops {ts}% from your entry (or its recent high). Caps drawdown between rebalances.",
+            "sell": "Primary exit is the MONTHLY rebalance: re-check /etf on the 1st trading day; if a holding fell out of the top " + str(e["top_n"]) + ", sell it and rotate into the new leader.",
+            "cadence": "Momentum is a monthly strategy — do NOT watch or trade it daily.",
+        },
         "note": "Buy-only, equal-weight the top names, rebalance monthly. No leverage.",
         "reasons": [] if top else ["No ETF price data available."],
     }
