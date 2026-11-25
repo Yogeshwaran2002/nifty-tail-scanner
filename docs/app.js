@@ -260,8 +260,7 @@ function renderStrategies(st) {
     }
     etf.innerHTML = `
       <h2>ETF sector momentum ${badge(e.fired)} <span class="muted" style="font-weight:400">— buy-only, lowest capital</span></h2>
-      ${holdingsHtml}
-      <p style="margin:0 0 10px">Hold (equal weight, rebalance monthly): <b>${(e.hold||[]).join(", ")}</b></p>
+      <p style="margin:0 0 10px">Hold (rebalance monthly): <b>${(e.hold||[]).join(", ")}</b></p>
       <table><thead><tr><th>ETF</th><th>Price</th><th>3m</th><th>6m</th><th>Momentum</th><th>Vol</th><th>Trend</th></tr></thead><tbody>${rows}</tbody></table>
       ${plan ? `<div style="margin-top:14px"><div class="muted" style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Trade plan — ₹${e.budget_inr} budget, low-vol weighted</div>
         <table><thead><tr><th>Buy</th><th>Limit ≈</th><th>Qty</th><th>Cost</th><th>Weight</th><th>Stop (−${e.trailing_stop_pct}%)</th></tr></thead><tbody>${plan}</tbody></table></div>` : ""}
@@ -359,6 +358,91 @@ function equitySVG(curve) {
   </svg>`;
 }
 
+function pbCard(title, status, action, exitRule) {
+  const chip = status === "ACT" ? `<span class="chip pass">● ACT</span>`
+    : status === "WAIT" ? `<span class="chip wait">○ wait</span>`
+    : `<span class="chip fail">✗ ${status}</span>`;
+  return `<div class="card pb"><div class="pb-head"><span class="pb-title">${title}</span>${chip}</div>
+    <div class="pb-action">${action}</div>
+    <div class="muted pb-exit">Exit: ${exitRule}</div></div>`;
+}
+
+function renderPlaybook(s, st) {
+  const cards = [];
+  // Tail-risk
+  if (s.fired && (s.candidates || []).length) {
+    const c = s.candidates[0];
+    cards.push(pbCard("Tail-risk put (buy)", "ACT",
+      `Buy <b>${fmt(c.strike,0)} PE</b> ${c.expiry} ≈ ₹${fmt(c.premium)} · cost/lot ${inr(c.cost_per_lot)}`,
+      "take profit at 3×, or sell on a VIX spike, or time-stop ~2 weeks out"));
+  } else {
+    cards.push(pbCard("Tail-risk put (buy)", "WAIT", (s.reasons || ["no setup"])[0], "nothing open"));
+  }
+  // Credit spread
+  const cs = st && st.credit_spread;
+  if (cs && cs.fired) {
+    cards.push(pbCard("Put credit spread (sell)", "ACT",
+      `Sell <b>${fmt(cs.short_strike,0)}</b>/buy <b>${fmt(cs.long_strike,0)} PE</b> · credit ${inr(cs.max_profit)}, max loss ${inr(cs.max_loss)}`,
+      "buy back ~50% of credit, or manage at the short strike; never hold into expiry"));
+  } else {
+    cards.push(pbCard("Put credit spread (sell)", "WAIT", (cs && cs.reasons || ["premium not rich"])[0], "—"));
+  }
+  // Calendar
+  const cal = st && st.calendar;
+  if (cal && cal.fired) {
+    cards.push(pbCard("Calendar spread", "ACT",
+      `Sell front <b>${fmt(cal.atm_strike,0)} PE</b>, buy next-month`, "close as front expiry approaches"));
+  } else {
+    cards.push(pbCard("Calendar spread", "WAIT", "front month not rich vs next", "—"));
+  }
+  // ETF momentum (buy-only, essentially always actionable)
+  const e = st && st.etf_momentum;
+  if (e && (e.trade_plan || []).length) {
+    const act = e.trade_plan.map(p => `${p.symbol}${p.weight_pct != null ? " " + fmt(p.weight_pct,0) + "%" : ""}`).join(" · ");
+    cards.push(pbCard("ETF momentum (buy)", "ACT", `Hold: <b>${act}</b>`,
+      `monthly rebalance · a name below its ${e.trend_sma_days||200}-SMA → cash · −${e.trailing_stop_pct}% trailing stop`));
+  } else {
+    cards.push(pbCard("ETF momentum (buy)", "WAIT", "no ETF data", "—"));
+  }
+  el("playbook").innerHTML = cards.join("");
+}
+
+function renderPositions(s, st) {
+  const parts = [];
+  const h = st && st.etf_momentum && st.etf_momentum.holdings;
+  if (h && h.rows && h.rows.length) {
+    const hr = h.rows.map(x => {
+      const col = x.pnl === null ? "" : x.pnl >= 0 ? "color:var(--good)" : "color:var(--critical)";
+      return `<tr><td>${x.symbol}</td><td>${x.units}</td><td>${inr(x.buy_price)}</td><td>${x.now===null?"n/a":inr(x.now)}</td><td>${x.value===null?"n/a":inr(x.value)}</td><td style="${col}">${x.pnl===null?"n/a":inr(x.pnl)+" ("+fmt(x.pnl_pct,1)+"%)"}</td></tr>`;
+    }).join("");
+    const tCol = h.total_pnl >= 0 ? "color:var(--good)" : "color:var(--critical)";
+    parts.push(`<div style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);margin-bottom:6px">ETF holdings (real money)</div>
+      <table><thead><tr><th>ETF</th><th>Qty</th><th>Buy</th><th>Now</th><th>Value</th><th>P&L</th></tr></thead><tbody>${hr}</tbody></table>
+      <div style="margin-top:8px;font-size:14px">Invested <b>${inr(h.total_cost)}</b> · now <b>${inr(h.total_value)}</b> · <b style="${tCol}">${inr(h.total_pnl)} (${fmt(h.total_pnl_pct,1)}%)</b></div>`);
+  } else {
+    parts.push(`<p class="muted" style="font-size:13px">No ETF holdings logged yet.</p>`);
+  }
+  // options paper journal + budget
+  const b = s.budget || {};
+  const open = s.open_trades || [];
+  let opt = `<div style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-muted);margin:4px 0 6px">Options paper journal</div>`;
+  if (open.length) {
+    opt += `<table><thead><tr><th>ID</th><th>Strike</th><th>Expiry</th><th>Entry</th><th>Qty</th></tr></thead><tbody>` +
+      open.map(t => `<tr><td>#${t.id}</td><td>${fmt(t.strike,0)} PE</td><td>${t.expiry}</td><td>${inr(t.entry_premium,2)}</td><td>${t.lots}×${t.lot_size}</td></tr>`).join("") + `</tbody></table>`;
+  } else {
+    opt += `<p class="muted" style="font-size:13px">No open paper trades.</p>`;
+  }
+  if (b.budget) {
+    const usedPct = Math.min(100, 100 * (b.loss_used||0) / b.budget);
+    const cls = b.locked ? "critical" : usedPct > 60 ? "warning" : "good";
+    opt += `<div style="font-size:13px;margin:6px 0 4px">Loss budget: ${inr(b.loss_used)} used · ${inr(b.remaining)} left of ${inr(b.budget)}${b.locked ? " <b style='color:var(--critical)'>(LOCKED)</b>" : ""}</div>
+      <div class="bar ${cls}"><span style="width:${usedPct}%"></span></div>`;
+  }
+  parts.push(opt);
+  parts.push(`<p class="muted" style="font-size:12px;margin-top:4px">Log real ETF trades: <code>python -m scripts.holdings buy|sell SYMBOL UNITS PRICE</code> → commit &amp; push. Options are paper, auto-logged.</p>`);
+  el("positions").innerHTML = parts.join('<hr style="border:none;border-top:1px solid var(--border);margin:14px 0">');
+}
+
 (async function main() {
   wireToolbar();
   const s = await getJSON("data/latest.json");
@@ -371,13 +455,13 @@ function equitySVG(curve) {
     return;
   }
   el("asof").textContent = "as of " + s.date;
-  renderBanner(s);
+  renderPlaybook(s, strat);
+  renderPositions(s, strat);
   renderTiles(s);
+  renderBanner(s);
   renderVix(s);
   renderSkew(s);
   renderCandidates(s);
-  renderBudget(s);
-  renderJournal(s);
   renderStrategies(strat);
   renderBacktest(bt);
   el("disclaimer").textContent = s.disclaimer ||

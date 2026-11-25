@@ -94,7 +94,8 @@ def credit_spread(exp_puts, spot, expiry, dte, atm_iv, rv, vix_pct, r, q, cfg):
         "breakeven": round(breakeven, 2), "prob_profit_pct": round(pop, 1),
         "vrp": vrp, "iv_rv_ratio": round(iv_rv, 3) if iv_rv else None,
         "gates": gates,
-        "reasons": [f"{g['name']}: {g['value']} vs {g['threshold']}" for g in gates if not g["passed"]],
+        "reasons": [f"{g['name']}: {round(g['value'], 2) if isinstance(g['value'], (int, float)) else g['value']} vs {g['threshold']}"
+                    for g in gates if not g["passed"]],
     }
 
 

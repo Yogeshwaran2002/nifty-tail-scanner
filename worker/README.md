@@ -12,6 +12,8 @@ layer).
 
 ## Commands
 - `/today` — latest scan summary
+- `/playbook` — all strategies at once: act/wait + today's action
+- `/holdings` — your real ETF positions + live P&L
 - `/why` — which entry gates passed / failed, with values
 - `/journal` — paper trades + loss budget
 - `/backtest` — backtest stats (expectancy, payoff ratio, …)

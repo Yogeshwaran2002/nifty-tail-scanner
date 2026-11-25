@@ -76,38 +76,40 @@ paid data.
 | **Tail-risk put buy** | Buy puts | Fat tails: models underprice rare crashes. Win big rarely, lose small often. | ~₹1–3k per bet | top of dashboard + `/today` `/why` |
 | **Put credit spread** | Sell premium | Volatility risk premium + theta. The statistically winning side. Defined max loss. | ~₹5–6k defined | "Other strategies" + `/credit` |
 | **Calendar spread** | Vol term structure | Sell rich near-dated IV, buy cheaper far-dated. | low (debit) | "Other strategies" + `/calendar` |
-| **ETF sector momentum** | Buy ETFs | Momentum factor: winners keep winning ~3–12m. No leverage. | lowest (₹ you choose) | "Other strategies" + `/etf` |
+| **ETF sector momentum** | Buy ETFs | Momentum + **200-SMA trend filter** (else cash) + **low-vol tilt** (inverse-vol weighting). No leverage. | lowest (₹ you choose) | "ETF sector momentum" card + `/etf` |
 
-Each shows **● SETUP** (green) when its rules fire, or **○ wait** when they don't
-— with the exact reason. "Wait" is the normal, correct state most days.
+Each shows **● SETUP/ACT** (green) when its rules fire, or **○ wait** when they
+don't — with the exact reason. "Wait" is the normal, correct state most days.
+Realized vol uses the **Yang–Zhang** OHLC estimator (sharper VRP / IV-RV).
 
 ---
 
 ## 4. Where to check everything
 
 ### Dashboard — `https://yogeshwaran2002.github.io/nifty-tail-scanner/`
-Top to bottom:
+It's a **command center**, top to bottom:
 - **Run scan now / Reload** buttons
-- **Banner** — trade / no-trade for the tail-risk strategy
-- **Tiles** — spot, VIX, VIX percentile, realized vol, ATM IV, VRP
-- **Volatility regime** — where VIX sits in its 1-year range (gate for tail-risk)
-- **Volatility smile** — IV per strike (the skew)
-- **Candidates** — tail-risk strikes that passed/failed, with reasons
-- **Other strategies** — credit spread, calendar, ETF momentum (+ your ETF holdings P&L)
-- **Paper journal** — options paper trades + loss budget
-- **Backtest** — stats over archived days
-- **Learn the mechanics** — short lessons
+- **Today's playbook** — one card per strategy: **ACT / wait**, the exact action, and the exit. This is your "what do I do today" view.
+- **Positions & P&L** — your real ETF holdings (live P&L), the options paper journal, the loss-budget bar, and how to log trades
+- **Market snapshot** — spot, VIX, VIX percentile, realized vol (Yang–Zhang), ATM IV, VRP
+- **Tail-risk** — banner, VIX-regime bar, candidate strikes with pass/fail reasons
+- **Volatility smile** — IV per strike (the skew) + VRP read
+- **Options strategies** — put credit spread + calendar, each with full trade construction
+- **ETF sector momentum** — ranked table (momentum, vol, trend), the low-vol-weighted trade plan, and the plain-vs-trend-filtered backtest
+- **Tail-risk backtest** — stats over archived days
+- **Learn the mechanics**
 
 ### Telegram bot
 Message your bot:
+- `/playbook` — **all strategies: act/wait + today's action** (the mobile version of the playbook strip)
 - `/today` — latest tail-risk scan
 - `/why` — gate breakdown (why it did/didn't fire)
 - `/skew` — volatility smile + VRP
-- `/etf` — ETF momentum ranking + trade plan
+- `/etf` — ETF momentum ranking, weighted plan + backtest
 - `/holdings` — your real ETF positions + live P&L
 - `/credit` — put credit spread setup
 - `/calendar` — calendar spread
-- `/backtest` — backtest stats
+- `/backtest` — tail-risk backtest stats
 - `/journal` — options paper journal
 - `/id` — your chat id
 - *any question* — the Llama explainer (grounded on the data; never gives advice)
@@ -119,8 +121,8 @@ Message your bot:
 You mostly **don't need to do anything** — the cron runs at 18:30 IST and pushes
 an alert. When you want to look:
 
-1. **After ~18:35 IST**, open Telegram → the push alert, or send `/today`.
-2. If a strategy shows **● SETUP**, open the dashboard for the full numbers.
+1. **After ~18:35 IST**, open Telegram → the push alert, or send **`/playbook`** (the one-shot "what do I do today" across all strategies).
+2. If any strategy shows **ACT**, open the dashboard → **Today's playbook** + the strategy's card for the full numbers.
 3. Before placing *any* option trade, **check the live bid-ask in Groww** (EOD
    data has no spread).
 4. If you trade, log it:

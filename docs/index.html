@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NIFTY Tail-Risk Scanner</title>
+  <title>NIFTY Strategy Command Center</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <h1>NIFTY Tail-Risk Scanner</h1>
+    <h1>NIFTY Strategy Command Center</h1>
     <div class="sub">
-      Cornwall-Capital-style tail-risk scan on NSE end-of-day data ·
-      deterministic signals · manual execution · <span id="asof">loading…</span>
+      Deterministic, free-data strategies on NSE end-of-day · manual execution ·
+      <span id="asof">loading…</span>
     </div>
   </header>
 
@@ -21,78 +21,81 @@
       <button id="reloadbtn" class="btn btn-ghost">↻ Reload</button>
       <span id="toolmsg" class="muted"></span>
     </div>
-    <div id="banner"></div>
 
+    <!-- 1. TODAY'S PLAYBOOK — what to do right now, across all strategies -->
     <section class="section">
+      <h2>Today's playbook <span class="muted" style="font-weight:400;font-size:12px">— act / wait, and the exit for each</span></h2>
+      <div class="grid" id="playbook"></div>
+    </section>
+
+    <!-- 2. POSITIONS & P&L -->
+    <section class="section">
+      <h2>Positions &amp; P&amp;L</h2>
+      <div class="card" id="positions"></div>
+    </section>
+
+    <!-- 3. MARKET SNAPSHOT -->
+    <section class="section">
+      <h2>Market snapshot</h2>
       <div class="grid" id="tiles"></div>
     </section>
 
+    <!-- DETAIL SECTIONS -->
     <section class="section">
-      <h2>Volatility regime</h2>
-      <div class="card">
+      <h2>Tail-risk (buy puts) <span class="muted" style="font-weight:400;font-size:12px">— the Big-Short setup</span></h2>
+      <div id="banner"></div>
+      <div class="card" style="margin-top:12px">
         <div class="muted" style="font-size:13px">India VIX percentile vs its 1-year range (left = calm, right = fearful)</div>
         <div class="marker-track"><div class="rail"></div><div class="pin" id="vixpin" style="left:0%"></div></div>
         <div id="vixnote" class="muted" style="font-size:13px"></div>
+      </div>
+      <div class="card" id="candcard" style="margin-top:12px">
+        <div id="candbody"></div>
+        <div class="warn-note" id="spreadnote" style="display:none">
+          ⚠️ End-of-day data has <b>no live bid-ask spread</b>. Always check the live spread and premium in Groww before any order.
+        </div>
       </div>
     </section>
 
     <section class="section">
       <h2>Volatility smile (skew)</h2>
       <div class="card">
-        <div class="muted" style="font-size:13px">Implied volatility per strike for the target expiry. Puts further below spot sitting
-          <i>higher</i> = the skew that makes far-OTM crash insurance pricey. A flatter/lower left tail = genuinely cheaper tails.</div>
+        <div class="muted" style="font-size:13px">Implied volatility per strike. Puts further below spot sitting <i>higher</i> = the skew that makes far-OTM crash insurance pricey.</div>
         <div id="skewchart"></div>
         <div id="skewnote" class="muted" style="font-size:13px"></div>
       </div>
     </section>
 
     <section class="section">
-      <h2>Candidates</h2>
-      <div class="card" id="candcard">
-        <div id="candbody"></div>
-        <div class="warn-note" id="spreadnote" style="display:none">
-          ⚠️ End-of-day data has <b>no live bid-ask spread</b>. Always check the live spread and
-          premium in your Groww app before placing any order — far-OTM strikes can be wide.
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <h2>Other strategies <span class="muted" style="font-weight:400;font-size:12px">— premium selling · term structure · ETF momentum</span></h2>
+      <h2>Options strategies <span class="muted" style="font-weight:400;font-size:12px">— premium selling · term structure</span></h2>
       <div class="card" id="strat-credit"></div>
       <div class="card" id="strat-calendar" style="margin-top:14px"></div>
-      <div class="card" id="strat-etf" style="margin-top:14px"></div>
     </section>
 
     <section class="section">
-      <h2>Paper journal</h2>      <div class="card">
-        <div id="budget"></div>
-        <div id="journalbody" style="margin-top:12px"></div>
-      </div>
+      <h2>ETF sector momentum <span class="muted" style="font-weight:400;font-size:12px">— 3-layer: momentum · trend filter · low-vol tilt</span></h2>
+      <div class="card" id="strat-etf"></div>
     </section>
 
     <section class="section">
-      <h2>Backtest (archived days)</h2>
-      <div class="card" id="backtestcard">
-        <div id="backtestbody"></div>
-      </div>
+      <h2>Tail-risk backtest <span class="muted" style="font-weight:400;font-size:12px">— archived days</span></h2>
+      <div class="card" id="backtestcard"></div>
     </section>
 
     <section class="section">
       <h2>Learn the mechanics</h2>
       <div class="card">
-        <div class="lesson"><h3>Fat tails</h3><p>Option models assume a bell curve, so they underprice rare crashes. Real markets crash far more often than "normal" math predicts — that gap is the opportunity.</p></div>
-        <div class="lesson"><h3>Theta (time decay)</h3><p>An out-of-the-money option loses value every day nothing happens. Monthly options bleed slower than weeklies — that's why this scan targets 30–60 days to expiry.</p></div>
-        <div class="lesson"><h3>Vega (volatility)</h3><p>You can profit from a <i>fear spike</i> without any crash: when VIX jumps, your option's implied volatility reprices it up. The exit rule sells into that panic.</p></div>
-        <div class="lesson"><h3>Skew</h3><p>Index puts further from the money carry <i>higher</i> implied vol because institutions constantly buy crash insurance. So far-OTM puts are rarely "dirt cheap" — the scanner measures skew instead of assuming it away.</p></div>
+        <div class="lesson"><h3>Fat tails</h3><p>Option models assume a bell curve, so they underprice rare crashes. That gap is the tail-risk opportunity.</p></div>
+        <div class="lesson"><h3>Theta &amp; Vega</h3><p>Options bleed value daily (theta) but reprice up when fear spikes (vega) — you can profit from a VIX jump without a crash.</p></div>
+        <div class="lesson"><h3>Skew &amp; VRP</h3><p>Index puts carry higher IV (institutions buy crash insurance). Volatility risk premium = IV − realized; low/negative = options genuinely cheap.</p></div>
+        <div class="lesson"><h3>Momentum, trend &amp; low-vol</h3><p>Winners persist; holding only above the 200-SMA (else cash) and weighting calmer ETFs more cuts drawdowns — the loss-averse edge.</p></div>
       </div>
     </section>
 
     <div class="disclaimer" id="disclaimer"></div>
   </main>
 
-  <footer>Educational / personal research. Not investment advice. Data: NSE end-of-day (free).</footer>
-
+  <footer>Educational / personal research. Not investment advice. Data: NSE end-of-day + Yahoo (free).</footer>
   <script src="app.js"></script>
 </body>
 </html>

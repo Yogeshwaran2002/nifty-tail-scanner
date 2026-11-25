@@ -1,6 +1,6 @@
 {
   "date": "2026-11-23",
-  "generated_at": "2026-11-25T06:54:56.155224Z",
+  "generated_at": "2026-11-25T07:10:55.525632Z",
   "etf_momentum": {
     "fired": true,
     "top_n": 3,
@@ -15,134 +15,134 @@
     "ranked": [
       {
         "symbol": "PSUBNKBEES",
-        "last": 107.32,
-        "ret_3m_pct": 12.0,
-        "ret_6m_pct": 19.75,
-        "momentum_pct": 15.875,
-        "sma200": 95.7,
+        "last": 106.75,
+        "ret_3m_pct": 11.41,
+        "ret_6m_pct": 19.11,
+        "momentum_pct": 15.26,
+        "sma200": 95.69,
         "trend": "up",
         "vol_pct": 21.1
       },
       {
         "symbol": "BANKBEES",
-        "last": 662.21,
-        "ret_3m_pct": 10.78,
-        "ret_6m_pct": 18.33,
-        "momentum_pct": 14.555,
-        "sma200": 587.15,
+        "last": 658.99,
+        "ret_3m_pct": 10.24,
+        "ret_6m_pct": 17.76,
+        "momentum_pct": 14.0,
+        "sma200": 587.14,
         "trend": "up",
-        "vol_pct": 17.6
+        "vol_pct": 17.4
       },
       {
         "symbol": "PHARMABEES",
-        "last": 29.6,
-        "ret_3m_pct": 9.31,
-        "ret_6m_pct": 17.32,
-        "momentum_pct": 13.315000000000001,
+        "last": 29.58,
+        "ret_3m_pct": 9.23,
+        "ret_6m_pct": 17.24,
+        "momentum_pct": 13.235,
         "sma200": 25.63,
         "trend": "up",
         "vol_pct": 16.6
       },
       {
         "symbol": "ITBEES",
-        "last": 35.85,
-        "ret_3m_pct": 5.85,
-        "ret_6m_pct": 11.96,
-        "momentum_pct": 8.905000000000001,
+        "last": 35.73,
+        "ret_3m_pct": 5.49,
+        "ret_6m_pct": 11.59,
+        "momentum_pct": 8.54,
         "sma200": 33.42,
         "trend": "up",
         "vol_pct": 25.6
       },
       {
         "symbol": "NIFTYBEES",
-        "last": 295.09,
-        "ret_3m_pct": 6.62,
-        "ret_6m_pct": 9.66,
-        "momentum_pct": 8.14,
+        "last": 293.78,
+        "ret_3m_pct": 6.15,
+        "ret_6m_pct": 9.17,
+        "momentum_pct": 7.66,
         "sma200": 272.73,
         "trend": "up",
-        "vol_pct": 14.3
+        "vol_pct": 14.1
       },
       {
         "symbol": "CONSUMBEES",
-        "last": 139.21,
-        "ret_3m_pct": 3.9,
-        "ret_6m_pct": 11.01,
-        "momentum_pct": 7.455,
+        "last": 138.95,
+        "ret_3m_pct": 3.71,
+        "ret_6m_pct": 10.81,
+        "momentum_pct": 7.26,
         "sma200": 127.65,
         "trend": "up",
-        "vol_pct": 15.9
+        "vol_pct": 15.8
       },
       {
         "symbol": "INFRABEES",
-        "last": 995.0,
-        "ret_3m_pct": 2.62,
-        "ret_6m_pct": 3.19,
-        "momentum_pct": 2.9050000000000002,
-        "sma200": 952.74,
+        "last": 992.58,
+        "ret_3m_pct": 2.37,
+        "ret_6m_pct": 2.94,
+        "momentum_pct": 2.6550000000000002,
+        "sma200": 952.72,
         "trend": "up",
         "vol_pct": 15.9
       },
       {
         "symbol": "JUNIORBEES",
-        "last": 789.5,
-        "ret_3m_pct": -1.35,
-        "ret_6m_pct": 4.8,
-        "momentum_pct": 1.7249999999999999,
-        "sma200": 758.97,
+        "last": 787.0,
+        "ret_3m_pct": -1.66,
+        "ret_6m_pct": 4.47,
+        "momentum_pct": 1.4049999999999998,
+        "sma200": 758.96,
         "trend": "up",
-        "vol_pct": 16.4
+        "vol_pct": 16.3
       },
       {
         "symbol": "MON100",
-        "last": 300.29,
-        "ret_3m_pct": -9.14,
-        "ret_6m_pct": -9.59,
-        "momentum_pct": -9.365,
-        "sma200": 298.28,
-        "trend": "up",
-        "vol_pct": 26.4
+        "last": 295.49,
+        "ret_3m_pct": -10.6,
+        "ret_6m_pct": -11.03,
+        "momentum_pct": -10.815,
+        "sma200": 298.26,
+        "trend": "down",
+        "vol_pct": 26.3
       },
       {
         "symbol": "GOLDBEES",
-        "last": 100.12,
-        "ret_3m_pct": -23.76,
-        "ret_6m_pct": -23.28,
-        "momentum_pct": -23.520000000000003,
+        "last": 100.02,
+        "ret_3m_pct": -23.83,
+        "ret_6m_pct": -23.36,
+        "momentum_pct": -23.595,
         "sma200": 122.77,
         "trend": "down",
-        "vol_pct": 20.7
+        "vol_pct": 20.8
       }
     ],
     "trade_plan": [
       {
         "symbol": "PSUBNKBEES",
-        "price": 107.32,
+        "price": 106.75,
         "units": 16,
-        "cost": 1717.12,
-        "weight_pct": 28.8,
+        "cost": 1708.0,
+        "weight_pct": 28.7,
         "vol_pct": 21.1,
-        "stop_price": 94.44,
+        "stop_price": 93.94,
         "cash": false
       },
       {
         "symbol": "BANKBEES",
-        "price": 662.21,
+        "price": 658.99,
         "units": 3,
-        "cost": 1986.63,
-        "weight_pct": 34.5,
-        "vol_pct": 17.6,
-        "stop_price": 582.74,
+        "cost": 1976.97,
+        "weight_pct": 34.8,
+        "vol_pct": 17.4,
+        "stop_price": 579.91,
         "cash": false
       },
       {
         "symbol": "PHARMABEES",
-        "price": 29.6,
+        "price": 29.58,
         "units": 74,
-        "cost": 2190.4,
-        "weight_pct": 36.6,
+        "cost": 2188.92,
+        "weight_pct": 36.5,
         "vol_pct": 16.6,
-        "stop_price": 26.05,
+        "stop_price": 26.03,
         "cash": false
       }
     ],
@@ -154,40 +154,40 @@
           "symbol": "PSUBNKBEES",
           "units": 1,
           "buy_price": 107.0,
-          "now": 107.32,
+          "now": 106.75,
           "cost": 107.0,
-          "value": 107.32,
-          "pnl": 0.32,
-          "pnl_pct": 0.3,
+          "value": 106.75,
+          "pnl": -0.25,
+          "pnl_pct": -0.23,
           "buy_date": "2026-11-25"
         },
         {
           "symbol": "BANKBEES",
           "units": 1,
           "buy_price": 662.0,
-          "now": 662.21,
+          "now": 658.99,
           "cost": 662.0,
-          "value": 662.21,
-          "pnl": 0.21,
-          "pnl_pct": 0.03,
+          "value": 658.99,
+          "pnl": -3.01,
+          "pnl_pct": -0.45,
           "buy_date": "2026-11-25"
         },
         {
           "symbol": "PHARMABEES",
           "units": 7,
           "buy_price": 29.86,
-          "now": 29.6,
+          "now": 29.58,
           "cost": 209.02,
-          "value": 207.2,
-          "pnl": -1.82,
-          "pnl_pct": -0.87,
+          "value": 207.06,
+          "pnl": -1.96,
+          "pnl_pct": -0.94,
           "buy_date": "2026-11-25"
         }
       ],
       "total_cost": 978.02,
-      "total_value": 976.73,
-      "total_pnl": -1.29,
-      "total_pnl_pct": -0.13,
+      "total_value": 972.8,
+      "total_pnl": -5.22,
+      "total_pnl_pct": -0.53,
       "note": "REAL money (not paper). Buy prices approximate \u2014 sum to ~\u20b9978. Correct with exact Groww fills if needed."
     },
     "rules": {
@@ -265,9 +265,9 @@
       }
     ],
     "reasons": [
-      "vrp: -0.16676642697203703 vs 2.0",
-      "iv_rv_ratio: 0.9888848018258877 vs 1.1",
-      "credit_to_width: 0.178 vs 0.18"
+      "vrp: -0.17 vs 2.0",
+      "iv_rv_ratio: 0.99 vs 1.1",
+      "credit_to_width: 0.18 vs 0.18"
     ]
   },
   "calendar": {

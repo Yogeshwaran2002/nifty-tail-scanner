@@ -153,6 +153,7 @@ async function handle(env, text, chatId) {
     case "/id":
       return `Your chat id is <code>${chatId}</code>\n\nSet it as the bot's ALLOWED_CHAT_ID secret to keep the bot private:\n<code>wrangler secret put ALLOWED_CHAT_ID</code>`;
     case "/today": return fmtToday(await getJSON(env, "latest.json"));
+    case "/playbook": return fmtPlaybook(await getJSON(env, "latest.json"), await getJSON(env, "strategies.json").catch(() => null));
     case "/why": return fmtWhy(await getJSON(env, "latest.json"));
     case "/journal": return fmtJournal(await getJSON(env, "latest.json"));
     case "/backtest": return fmtBacktest(await getJSON(env, "backtest.json").catch(() => null));
@@ -171,6 +172,7 @@ function help() {
     "<b>NIFTY Tail-Risk Scanner bot</b>",
     "",
     "/today — latest scan summary",
+    "/playbook — all strategies: act/wait + today's action",
     "/why — which entry gates passed/failed",
     "/journal — paper trades + loss budget",
     "/backtest — backtest stats",
@@ -189,6 +191,30 @@ function help() {
 
 const n = (x, d = 2) => (x === null || x === undefined) ? "n/a" : Number(x).toFixed(d);
 const inr = (x) => (x === null || x === undefined) ? "n/a" : "₹" + Math.round(Number(x)).toLocaleString("en-IN");
+
+function fmtPlaybook(s, st) {
+  const L = ["<b>Today's playbook</b> — " + (s ? s.date : "")];
+  // Tail-risk
+  if (s && s.fired && (s.candidates || []).length) {
+    const c = s.candidates[0];
+    L.push(`\n🟢 <b>Tail-risk</b>: BUY ${n(c.strike,0)} PE ${c.expiry} ≈₹${n(c.premium)} — exit 3× / VIX spike / time stop`);
+  } else {
+    L.push(`\n⚪ <b>Tail-risk</b>: wait (${(s && s.reasons || ["no setup"])[0]})`);
+  }
+  const cs = st && st.credit_spread;
+  if (cs && cs.fired) L.push(`🟢 <b>Credit spread</b>: SELL ${n(cs.short_strike,0)}/buy ${n(cs.long_strike,0)} PE — credit ${inr(cs.max_profit)}, max loss ${inr(cs.max_loss)}`);
+  else L.push(`⚪ <b>Credit spread</b>: wait (${(cs && cs.reasons || ["not rich"])[0]})`);
+  const cal = st && st.calendar;
+  L.push(cal && cal.fired ? `🟢 <b>Calendar</b>: sell front ${n(cal.atm_strike,0)} PE, buy next month`
+                          : `⚪ <b>Calendar</b>: wait (front not rich)`);
+  const e = st && st.etf_momentum;
+  if (e && (e.trade_plan || []).length) {
+    const act = e.trade_plan.map(p => `${p.symbol}${p.weight_pct != null ? " " + n(p.weight_pct,0) + "%" : ""}`).join(" · ");
+    L.push(`🟢 <b>ETF momentum</b>: HOLD ${act} — rebalance monthly, <200-SMA→cash, −${e.trailing_stop_pct}% trail`);
+  }
+  L.push("\n<i>Not advice. Check live prices in Groww before any order.</i>");
+  return L.join("\n");
+}
 
 function fmtToday(s) {
   const lines = [
