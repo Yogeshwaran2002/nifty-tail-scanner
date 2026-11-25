@@ -271,8 +271,15 @@ def _archive(on, *, rows_count, chain, spot, vix, expiry):
 
 
 def _finalize(signal, cfg) -> dict:
-    """Write signal to signals_dir, dashboard latest.json, and history index."""
+    """Write signal to signals_dir, dashboard latest.json, and history index.
+
+    On a data-unavailable day (market holiday, weekend, pre-publication, or a
+    blocked fetch) the scan has no spot — in that case DON'T touch the dashboard,
+    so it keeps showing the last good scan instead of flashing n/a.
+    """
     signal.setdefault("disclaimer", cfg.get("disclaimer"))
+    if signal.get("spot") is None and signal.get("errors"):
+        return signal
     out = cfg["output"]
     _write_json(os.path.join(out["signals_dir"], f"{signal['date']}.json"), signal)
     _write_json(os.path.join(out["dashboard_data_dir"], "latest.json"), signal)

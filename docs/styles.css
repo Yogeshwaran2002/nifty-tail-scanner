@@ -105,3 +105,10 @@ svg .dot { fill: var(--accent); }
 .mono { font-family: var(--mono); }
 code { font-family: var(--mono); background: var(--surface-3); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
 footer { text-align: center; color: var(--ink-muted); font-size: 12px; padding: 20px; }
+.toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+.btn { background: var(--accent); color: #fff; border: none; border-radius: 8px;
+  padding: 8px 14px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: var(--sans); }
+.btn:hover { filter: brightness(1.08); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn-ghost { background: transparent; color: var(--ink-2); border: 1px solid var(--border); }
+#toolmsg { font-size: 13px; }

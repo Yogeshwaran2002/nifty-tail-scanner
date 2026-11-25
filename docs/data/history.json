@@ -14,5 +14,13 @@
     "vix_percentile": null,
     "spot": null,
     "candidate_count": 0
+  },
+  {
+    "date": "2026-11-25",
+    "fired": false,
+    "vix": null,
+    "vix_percentile": null,
+    "spot": null,
+    "candidate_count": 0
   }
 ]

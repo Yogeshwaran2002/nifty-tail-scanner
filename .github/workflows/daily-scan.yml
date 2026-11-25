@@ -1,12 +1,13 @@
 name: daily-scan
 
 # Runs after NSE close + bhavcopy publication. NSE closes 15:30 IST; the F&O
-# bhavcopy lands by ~18:00 IST. 13:00 UTC = 18:30 IST, Mon–Fri.
-# Adjust if NSE shifts publication time.
+# bhavcopy lands by ~18:00 IST. Two attempts for resilience (and in case the
+# first run's bhavcopy isn't published yet): 18:30 and 20:00 IST, Mon–Fri.
 on:
   schedule:
-    - cron: "0 13 * * 1-5"
-  workflow_dispatch: {}          # manual "Run workflow" button
+    - cron: "0 13 * * 1-5"    # 18:30 IST
+    - cron: "30 14 * * 1-5"   # 20:00 IST (backup)
+  workflow_dispatch: {}          # manual "Run workflow" button / dashboard button
 
 permissions:
   contents: write                # needed to commit the day's signal + archive
@@ -40,17 +41,27 @@ jobs:
         continue-on-error: true
         run: python -m scripts.run_backtest
 
-      - name: Commit results
+      - name: Commit + push (rebase & retry)
         run: |
           git config user.name  "nifty-scanner-bot"
           git config user.email "actions@users.noreply.github.com"
           git add data/ docs/data/ || true
           if git diff --cached --quiet; then
             echo "No changes to commit."
-          else
-            git commit -m "scan: ${{ github.run_id }} ($(date -u +%Y-%m-%d))"
-            git push
+            exit 0
           fi
+          git commit -m "scan: ${{ github.run_id }} ($(date -u +%Y-%m-%d))"
+          # The remote can advance between checkout and push (Pages commits,
+          # overlapping runs). Rebase our data commit on top and retry so the
+          # push never fails with 'fetch first'.
+          for i in 1 2 3 4 5; do
+            if git push; then echo "pushed on attempt $i"; exit 0; fi
+            echo "push rejected — rebasing on remote (attempt $i)"
+            git pull --rebase -X theirs origin main || git rebase --abort
+            sleep 3
+          done
+          echo "::error::Could not push after 5 attempts."
+          exit 1
 
       - name: Flag data failure
         if: steps.scan.outcome == 'failure'

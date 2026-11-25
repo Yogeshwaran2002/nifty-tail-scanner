@@ -48,7 +48,59 @@ export default {
         const r = await fetch(`https://api.telegram.org/bot${env.TELEGRAM_BOT_TOKEN}/getMe`);
         return new Response(await r.text(), { status: 200, headers: { "content-type": "application/json" } });
       }
-      return new Response("nifty-tail-bot up — visit /setup?key=<WEBHOOK_SECRET> to register the webhook", { status: 200 });
+      // GET /try?key=...&cmd=/today — run a bot command in the browser (no
+      // Telegram needed). Handy for testing while a bot is unavailable.
+      if (url.pathname === "/try") {
+        if (!env.WEBHOOK_SECRET || url.searchParams.get("key") !== env.WEBHOOK_SECRET) {
+          return new Response("forbidden (append ?key=<your WEBHOOK_SECRET>)", { status: 403 });
+        }
+        const cmd = url.searchParams.get("cmd") || "/today";
+        let out;
+        try { out = await handle(env, cmd, "web"); }
+        catch (e) { out = "error: " + (e && e.message ? e.message : e); }
+        const html = `<!doctype html><meta charset="utf-8"><title>bot /try</title>` +
+          `<body style="background:#0f1419;color:#e6edf3;font:14px/1.6 ui-monospace,Consolas,monospace;padding:24px">` +
+          `<div style="color:#6e7d8a">cmd: ${cmd} — try ?cmd=/today /why /skew /journal /backtest or any question</div>` +
+          `<pre style="white-space:pre-wrap;margin-top:12px">${out}</pre></body>`;
+        return new Response(html, { status: 200, headers: { "content-type": "text/html; charset=utf-8" } });
+      }
+      // GET /scan?key=... — trigger the GitHub Actions daily-scan via
+      // workflow_dispatch (powers the "Run scan now" button on the dashboard).
+      // Needs a GH_DISPATCH_TOKEN secret (fine-grained PAT, Actions: read+write).
+      if (url.pathname === "/scan") {
+        const cors = { "access-control-allow-origin": "*", "content-type": "application/json" };
+        if (!env.WEBHOOK_SECRET || url.searchParams.get("key") !== env.WEBHOOK_SECRET) {
+          return new Response(JSON.stringify({ ok: false, error: "bad key" }), { status: 403, headers: cors });
+        }
+        if (!env.GH_DISPATCH_TOKEN) {
+          return new Response(JSON.stringify({ ok: false, error: "GH_DISPATCH_TOKEN not set on the Worker" }), { status: 200, headers: cors });
+        }
+        const repo = env.GH_REPO || "Yogeshwaran2002/nifty-tail-scanner";
+        const r = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/daily-scan.yml/dispatches`, {
+          method: "POST",
+          headers: {
+            "authorization": `Bearer ${env.GH_DISPATCH_TOKEN}`,
+            "accept": "application/vnd.github+json",
+            "x-github-api-version": "2022-11-28",
+            "user-agent": "nifty-tail-bot",
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({ ref: "main" }),
+        });
+        const ok = r.status === 204;
+        return new Response(JSON.stringify({ ok, status: r.status, detail: ok ? "scan triggered" : await r.text() }),
+          { status: 200, headers: cors });
+      }
+      return new Response("nifty-tail-bot up — /setup /check /try /scan (all need ?key=<WEBHOOK_SECRET>)", { status: 200 });
+    }
+
+    // CORS preflight for the dashboard button
+    if (request.method === "OPTIONS") {
+      return new Response(null, { status: 204, headers: {
+        "access-control-allow-origin": "*",
+        "access-control-allow-methods": "GET, POST, OPTIONS",
+        "access-control-allow-headers": "content-type",
+      } });
     }
 
     if (request.method !== "POST") return new Response("ok", { status: 200 });

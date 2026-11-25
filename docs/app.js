@@ -1,5 +1,41 @@
 "use strict";
 
+const WORKER_BASE = "https://nifty-tail-bot.yogeshwaran2002.workers.dev";
+
+function wireToolbar() {
+  const msg = el("toolmsg");
+  const reload = el("reloadbtn");
+  const scan = el("scanbtn");
+  if (reload) reload.onclick = () => location.reload();
+  if (!scan) return;
+  scan.onclick = async () => {
+    let key = localStorage.getItem("nts_key");
+    if (!key) {
+      key = prompt("Enter your WEBHOOK_SECRET (set once, stored in this browser):");
+      if (!key) return;
+      localStorage.setItem("nts_key", key.trim());
+    }
+    scan.disabled = true;
+    msg.textContent = "Triggering scan…";
+    try {
+      const r = await fetch(`${WORKER_BASE}/scan?key=${encodeURIComponent(key.trim())}`);
+      const d = await r.json();
+      if (d.ok) {
+        msg.textContent = "✓ Scan triggered — GitHub Action is running. Hit ↻ Reload in ~1–2 min.";
+      } else if (d.error === "bad key") {
+        localStorage.removeItem("nts_key");
+        msg.textContent = "✗ Wrong secret — click again to re-enter.";
+      } else {
+        msg.textContent = "✗ " + (d.error || d.detail || "could not trigger");
+      }
+    } catch (e) {
+      msg.textContent = "✗ Could not reach the Worker (" + e.message + ")";
+    } finally {
+      scan.disabled = false;
+    }
+  };
+}
+
 const fmt = (x, nd = 2) => (x === null || x === undefined || Number.isNaN(x)) ? "n/a" : Number(x).toFixed(nd);
 const inr = (x, nd = 0) => (x === null || x === undefined) ? "n/a" : "₹" + Number(x).toLocaleString("en-IN", { maximumFractionDigits: nd });
 const pct = (x, nd = 1) => (x === null || x === undefined) ? "n/a" : fmt(x, nd) + "%";
@@ -190,6 +226,7 @@ function equitySVG(curve) {
 }
 
 (async function main() {
+  wireToolbar();
   const s = await getJSON("data/latest.json");
   const bt = await getJSON("data/backtest.json");
   if (!s) {

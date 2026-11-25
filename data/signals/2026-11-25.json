@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-25",
+  "generated_at": "2026-11-25T03:46:21.114967Z",
+  "fired": false,
+  "spot": null,
+  "vix": null,
+  "vix_percentile": null,
+  "realized_vol": null,
+  "expiry": null,
+  "candidates": [],
+  "reasons": [],
+  "exit_signals": [],
+  "errors": [
+    "Option data: GET failed after 3 tries (https://nsearchives.nseindia.com/content/fo/BhavCopy_NSE_FO_0_0_0_20261125_F_0000.csv.zip): HTTP 404"
+  ],
+  "warnings": [],
+  "disclaimer": "Educational / personal-research tool. NOT investment advice. SEBI FY26 data: ~87.7% of individual F&O traders lost money and option BUYERS lost the most. This strategy is option buying. Trade paper only until results earn trust, and never risk more than the loss budget. EOD data has no live bid-ask spread \u2014 always check the live spread in your broker app before placing any order.\n"
+}
