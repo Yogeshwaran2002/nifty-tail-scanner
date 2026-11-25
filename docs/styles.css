@@ -118,3 +118,6 @@ footer { text-align: center; color: var(--ink-muted); font-size: 12px; padding: 
 .btn:disabled { opacity: 0.5; cursor: default; }
 .btn-ghost { background: transparent; color: var(--ink-2); border: 1px solid var(--border); }
 #toolmsg { font-size: 13px; }
+.fld { background: var(--surface); color: var(--ink); border: 1px solid var(--border);
+  border-radius: 6px; padding: 7px 9px; font-size: 14px; font-family: var(--sans); }
+.fld:focus { outline: 2px solid var(--accent); outline-offset: -1px; }

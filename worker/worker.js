@@ -91,7 +91,38 @@ export default {
         return new Response(JSON.stringify({ ok, status: r.status, detail: ok ? "scan triggered" : await r.text() }),
           { status: 200, headers: cors });
       }
-      return new Response("nifty-tail-bot up — /setup /check /try /scan (all need ?key=<WEBHOOK_SECRET>)", { status: 200 });
+      // GET /log?key=...&action=buy|sell&symbol=..&units=..&price=.. — log a
+      // real ETF trade by dispatching the log-trade GitHub Action (reuses the
+      // dispatch token; no file-write permission needed). Powers the dashboard form.
+      if (url.pathname === "/log") {
+        const cors = { "access-control-allow-origin": "*", "content-type": "application/json" };
+        if (!env.WEBHOOK_SECRET || url.searchParams.get("key") !== env.WEBHOOK_SECRET) {
+          return new Response(JSON.stringify({ ok: false, error: "bad key" }), { status: 403, headers: cors });
+        }
+        if (!env.GH_DISPATCH_TOKEN) {
+          return new Response(JSON.stringify({ ok: false, error: "GH_DISPATCH_TOKEN not set" }), { status: 200, headers: cors });
+        }
+        const inputs = {
+          action: (url.searchParams.get("action") || "buy").toLowerCase(),
+          symbol: (url.searchParams.get("symbol") || "").toUpperCase().trim(),
+          units: url.searchParams.get("units") || "",
+          price: url.searchParams.get("price") || "",
+        };
+        if (!["buy", "sell"].includes(inputs.action) || !inputs.symbol || !inputs.units || !inputs.price) {
+          return new Response(JSON.stringify({ ok: false, error: "need action(buy/sell), symbol, units, price" }), { status: 200, headers: cors });
+        }
+        const repo = env.GH_REPO || "Yogeshwaran2002/nifty-tail-scanner";
+        const r = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/log-trade.yml/dispatches`, {
+          method: "POST",
+          headers: { "authorization": `Bearer ${env.GH_DISPATCH_TOKEN}`, "accept": "application/vnd.github+json",
+                     "x-github-api-version": "2022-11-28", "user-agent": "nifty-tail-bot", "content-type": "application/json" },
+          body: JSON.stringify({ ref: "main", inputs }),
+        });
+        const ok = r.status === 204;
+        return new Response(JSON.stringify({ ok, status: r.status, detail: ok ? "trade logged — dashboard updates in ~1 min" : await r.text() }),
+          { status: 200, headers: cors });
+      }
+      return new Response("nifty-tail-bot up — /setup /check /try /scan /log (all need ?key=<WEBHOOK_SECRET>)", { status: 200 });
     }
 
     // CORS preflight for the dashboard button

@@ -1,0 +1,56 @@
+name: log-trade
+
+# Fired by the dashboard "Log a trade" form (via the Cloudflare Worker →
+# workflow_dispatch). Runs the holdings CLI, refreshes P&L, commits.
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "buy or sell"
+        required: true
+        default: "buy"
+      symbol:
+        description: "ETF symbol, e.g. PSUBNKBEES"
+        required: true
+      units:
+        description: "number of units"
+        required: true
+      price:
+        description: "price per unit"
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-writes          # don't race the daily-scan push
+  cancel-in-progress: false
+
+jobs:
+  log:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Record the trade
+        run: python -m scripts.holdings "${{ inputs.action }}" "${{ inputs.symbol }}" "${{ inputs.units }}" "${{ inputs.price }}"
+      - name: Refresh P&L (mark holdings to market)
+        continue-on-error: true
+        run: python -m scripts.run_scan
+      - name: Commit + push (rebase & retry)
+        run: |
+          git config user.name  "nifty-scanner-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/ docs/data/ || true
+          if git diff --cached --quiet; then echo "No changes."; exit 0; fi
+          git commit -m "holdings: ${{ inputs.action }} ${{ inputs.units }} ${{ inputs.symbol }} @ ${{ inputs.price }}"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            echo "push rejected — rebasing (attempt $i)"
+            git pull --rebase -X theirs origin main || git rebase --abort
+            sleep 3
+          done
+          echo "::error::push failed"; exit 1

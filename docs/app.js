@@ -409,6 +409,8 @@ function renderPlaybook(s, st) {
 
 function renderPositions(s, st) {
   const parts = [];
+  const syms = ((st && st.etf_momentum && st.etf_momentum.ranked) || []).map(r => r.symbol);
+  const symOptions = syms.map(x => `<option value="${x}">`).join("");
   const h = st && st.etf_momentum && st.etf_momentum.holdings;
   if (h && h.rows && h.rows.length) {
     const hr = h.rows.map(x => {
@@ -439,8 +441,52 @@ function renderPositions(s, st) {
       <div class="bar ${cls}"><span style="width:${usedPct}%"></span></div>`;
   }
   parts.push(opt);
-  parts.push(`<p class="muted" style="font-size:12px;margin-top:4px">Log real ETF trades: <code>python -m scripts.holdings buy|sell SYMBOL UNITS PRICE</code> → commit &amp; push. Options are paper, auto-logged.</p>`);
+  parts.push(`<p class="muted" style="font-size:12px;margin-top:4px">Options are paper, auto-logged. Log real ETF trades below (or via <code>scripts/holdings.py</code>).</p>
+    <div style="margin-top:10px">
+      <button id="logtoggle" class="btn btn-ghost">➕ Log a trade</button>
+      <div id="logform" style="display:none;margin-top:10px;padding:12px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2)">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <select id="log-action" class="fld"><option value="buy">Buy</option><option value="sell">Sell</option></select>
+          <input id="log-symbol" class="fld" list="log-symlist" placeholder="SYMBOL" style="width:150px">
+          <input id="log-units" class="fld" type="number" min="1" step="1" placeholder="units" style="width:90px">
+          <input id="log-price" class="fld" type="number" min="0" step="0.01" placeholder="price" style="width:110px">
+          <button id="log-submit" class="btn">Save</button>
+        </div>
+        <datalist id="log-symlist">${symOptions}</datalist>
+        <div id="log-msg" class="muted" style="font-size:13px;margin-top:8px"></div>
+      </div>
+    </div>`);
   el("positions").innerHTML = parts.join('<hr style="border:none;border-top:1px solid var(--border);margin:14px 0">');
+  wireLogForm();
+}
+
+function wireLogForm() {
+  const toggle = el("logtoggle");
+  if (!toggle) return;
+  toggle.onclick = () => {
+    const f = el("logform");
+    f.style.display = f.style.display === "none" ? "block" : "none";
+  };
+  const submit = el("log-submit");
+  submit.onclick = async () => {
+    const action = el("log-action").value;
+    const symbol = (el("log-symbol").value || "").trim().toUpperCase();
+    const units = el("log-units").value;
+    const price = el("log-price").value;
+    const msg = el("log-msg");
+    if (!symbol || !units || !price) { msg.textContent = "Fill symbol, units and price."; return; }
+    let key = localStorage.getItem("nts_key");
+    if (!key) { key = prompt("Enter your WEBHOOK_SECRET (stored in this browser):"); if (!key) return; localStorage.setItem("nts_key", key.trim()); }
+    submit.disabled = true; msg.textContent = "Logging…";
+    try {
+      const u = `${WORKER_BASE}/log?key=${encodeURIComponent(key.trim())}&action=${action}&symbol=${encodeURIComponent(symbol)}&units=${encodeURIComponent(units)}&price=${encodeURIComponent(price)}`;
+      const d = await (await fetch(u)).json();
+      if (d.ok) msg.innerHTML = `✓ ${action.toUpperCase()} ${units} ${symbol} @ ${price} logged — hit ↻ Reload in ~1 min.`;
+      else if (d.error === "bad key") { localStorage.removeItem("nts_key"); msg.textContent = "✗ Wrong secret — click Save to re-enter."; }
+      else msg.textContent = "✗ " + (d.error || d.detail || "failed");
+    } catch (e) { msg.textContent = "✗ Could not reach the Worker (" + e.message + ")"; }
+    finally { submit.disabled = false; }
+  };
 }
 
 (async function main() {
