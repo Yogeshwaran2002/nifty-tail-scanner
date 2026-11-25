@@ -1,12 +1,15 @@
 name: daily-scan
 
-# Runs after NSE close + bhavcopy publication. NSE closes 15:30 IST; the F&O
-# bhavcopy lands by ~18:00 IST. Two attempts for resilience (and in case the
-# first run's bhavcopy isn't published yet): 18:30 and 20:00 IST, Mon–Fri.
+# Runs after NSE close + bhavcopy publication (~18:00 IST). Several slots because
+# GitHub's free-tier cron is best-effort and sometimes skips a slot — more slots
+# = lower chance of a trading day with zero runs. Runs are idempotent (no data
+# change → no commit), so extra firings are harmless.
 on:
   schedule:
     - cron: "0 13 * * 1-5"    # 18:30 IST
-    - cron: "30 14 * * 1-5"   # 20:00 IST (backup)
+    - cron: "30 13 * * 1-5"   # 19:00 IST
+    - cron: "30 14 * * 1-5"   # 20:00 IST
+    - cron: "30 15 * * 1-5"   # 21:00 IST
   workflow_dispatch: {}          # manual "Run workflow" button / dashboard button
 
 permissions:
