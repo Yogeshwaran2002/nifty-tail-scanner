@@ -115,8 +115,20 @@ def run_scan(cfg: dict, on: date | None = None, *, archive: bool = True) -> dict
     if closes:
         signal["realized_vol"] = mx.realized_vol(closes, cfg["realized_vol"]["window_days"],
                                                  m["trading_days_year"])
+        signal["rv_method"] = "close-to-close"
         if spot is None:
             spot = closes[-1]
+
+    # Upgrade realized vol to Yang–Zhang (OHLC) when available — far more accurate
+    # for option rich/cheap decisions (Sinclair, Volatility Trading).
+    try:
+        bars = [b for b in nse.yahoo_ohlc(session, nse.YF_NIFTY, "6mo") if b["date"] <= on]
+        yz = mx.yang_zhang_vol(bars, cfg["realized_vol"]["window_days"], m["trading_days_year"])
+        if yz is not None:
+            signal["realized_vol"] = yz
+            signal["rv_method"] = "yang-zhang"
+    except nse.DataUnavailable:
+        pass
 
     signal["spot"] = spot
     if spot is None:

@@ -204,6 +204,33 @@ def get_vix_history(session: requests.Session, days: int = 260) -> list[tuple[da
             raise DataUnavailable(f"VIX unavailable — Yahoo: {yf_err} | NSE: {nse_err}")
 
 
+def yahoo_ohlc(session: requests.Session, symbol: str, rng: str) -> list[dict]:
+    """Daily OHLC bars from Yahoo's chart API (for Yang–Zhang vol). Keyless.
+    Returns [{date, open, high, low, close}, ...] sorted ascending."""
+    url = YF_CHART.format(symbol=symbol)
+    r = _get(session, url, params={"range": rng, "interval": "1d"})
+    try:
+        chart = r.json().get("chart", {})
+        if chart.get("error"):
+            raise DataUnavailable(f"Yahoo error for {symbol}: {chart['error']}")
+        node = (chart.get("result") or [{}])[0]
+        stamps = node.get("timestamp") or []
+        q = (node.get("indicators", {}).get("quote") or [{}])[0]
+        o, h, l, c = q.get("open") or [], q.get("high") or [], q.get("low") or [], q.get("close") or []
+    except (ValueError, AttributeError, KeyError, IndexError) as e:
+        raise DataUnavailable(f"Yahoo OHLC parse failed for {symbol}: {e}")
+    out = []
+    for i, ts in enumerate(stamps):
+        if i < len(c) and None not in (o[i] if i < len(o) else None, h[i] if i < len(h) else None,
+                                       l[i] if i < len(l) else None, c[i]):
+            out.append({"date": datetime.utcfromtimestamp(ts).date(),
+                        "open": float(o[i]), "high": float(h[i]), "low": float(l[i]), "close": float(c[i])})
+    out.sort(key=lambda b: b["date"])
+    if not out:
+        raise DataUnavailable(f"Yahoo returned zero OHLC bars for {symbol}.")
+    return out
+
+
 def get_nifty_history(session: requests.Session, days: int = 40) -> list[tuple[date, float]]:
     """NIFTY 50 daily closes. Yahoo first (datacenter-friendly), NSE fallback."""
     try:

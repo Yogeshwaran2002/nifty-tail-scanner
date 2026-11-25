@@ -86,6 +86,18 @@ class TestMetrics(unittest.TestCase):
         self.assertIsNotNone(rv)
         self.assertGreaterEqual(rv, 0)
 
+    def test_yang_zhang_vol(self):
+        # flat OHLC → zero variance → None (degenerate)
+        flat = [{"open": 100, "high": 100, "low": 100, "close": 100} for _ in range(25)]
+        self.assertIsNone(mx.yang_zhang_vol(flat, 20))
+        # bars with a real range → positive annualized vol
+        bars = [{"open": (b := 100 + i * 0.1), "high": b * 1.01, "low": b * 0.99, "close": b * 1.002}
+                for i in range(25)]
+        yz = mx.yang_zhang_vol(bars, 20)
+        self.assertIsNotNone(yz)
+        self.assertGreater(yz, 0)
+        self.assertIsNone(mx.yang_zhang_vol(bars, 100))  # not enough bars
+
     def test_percentile_rank(self):
         series = list(range(1, 101))  # 1..100
         self.assertAlmostEqual(mx.percentile_rank(50, series), 50.0, places=0)

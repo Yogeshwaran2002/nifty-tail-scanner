@@ -22,7 +22,8 @@ def realized_vol(closes: Sequence[float], window: int, trading_days: int = 252) 
     """Annualized realized volatility from the trailing `window` sessions.
 
     Returns a FRACTION (e.g. 0.14 = 14%), matching how implied vol is expressed.
-    None if there isn't enough data.
+    None if there isn't enough data. (Simple close-to-close — Yang–Zhang below is
+    more accurate when OHLC is available.)
     """
     if len(closes) < window + 1:
         return None
@@ -32,6 +33,45 @@ def realized_vol(closes: Sequence[float], window: int, trading_days: int = 252) 
     mean = sum(rets) / len(rets)
     var = sum((r - mean) ** 2 for r in rets) / (len(rets) - 1)
     return math.sqrt(var) * math.sqrt(trading_days)
+
+
+def yang_zhang_vol(bars: Sequence[dict], window: int, trading_days: int = 252) -> float | None:
+    """Annualized Yang–Zhang realized volatility from OHLC bars.
+
+    Yang–Zhang combines overnight (close→open), open→close, and the drift-free
+    Rogers–Satchell range estimator. It is the most efficient of the common
+    realized-vol estimators and is drift- and gap-robust — materially better than
+    close-to-close for option rich/cheap decisions. (Ref: Euan Sinclair,
+    *Volatility Trading*; impl pattern per jasonstrimpel/volatility-trading.)
+
+    `bars` is an ordered list of dicts with open/high/low/close. Needs window+1
+    bars (the extra one supplies the first overnight gap). Returns a fraction.
+    """
+    if len(bars) < window + 1:
+        return None
+    w = bars[-(window + 1):]
+    n = window
+    o_terms, c_terms, rs_terms = [], [], []
+    for i in range(1, len(w)):
+        prev_c = w[i - 1]["close"]
+        o, h, l, c = w[i]["open"], w[i]["high"], w[i]["low"], w[i]["close"]
+        if min(prev_c, o, h, l, c) <= 0:
+            return None
+        o_terms.append(math.log(o / prev_c))      # overnight
+        c_terms.append(math.log(c / o))            # open→close
+        rs_terms.append(math.log(h / c) * math.log(h / o) + math.log(l / c) * math.log(l / o))
+    if len(o_terms) < 2:
+        return None
+    om = sum(o_terms) / n
+    cm = sum(c_terms) / n
+    var_o = sum((x - om) ** 2 for x in o_terms) / (n - 1)
+    var_c = sum((x - cm) ** 2 for x in c_terms) / (n - 1)
+    var_rs = sum(rs_terms) / n
+    k = 0.34 / (1.34 + (n + 1) / (n - 1))
+    var_yz = var_o + k * var_c + (1 - k) * var_rs
+    if var_yz <= 0:
+        return None
+    return math.sqrt(var_yz) * math.sqrt(trading_days)
 
 
 def percentile_rank(value: float, series: Sequence[float]) -> float | None:

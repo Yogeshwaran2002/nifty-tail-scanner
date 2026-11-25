@@ -1,11 +1,11 @@
 {
   "date": "2026-11-23",
-  "generated_at": "2026-11-25T06:15:47.020083Z",
+  "generated_at": "2026-11-25T06:48:45.374993Z",
   "fired": false,
   "spot": 25349.65,
   "vix": 17.700000762939453,
   "vix_percentile": 80.81632653061224,
-  "realized_vol": 0.15502182432795447,
+  "realized_vol": 0.15003459619860093,
   "expiry": "2026-12-29",
   "candidates": [],
   "reasons": [
@@ -14,6 +14,7 @@
   "exit_signals": [],
   "errors": [],
   "warnings": [],
+  "rv_method": "yang-zhang",
   "all_evaluated": [
     {
       "strike": 22900.0,
@@ -23,7 +24,7 @@
       "iv": 0.19967608920559282,
       "atm_iv": 0.14836693192888056,
       "skew": 5.130915727671226,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 180700.0,
       "volume": 580.0,
       "cost_per_lot": 1771.25,
@@ -48,7 +49,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -84,7 +85,7 @@
       "iv": 0.1973886949524283,
       "atm_iv": 0.14836693192888056,
       "skew": 4.902176302354774,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 74685.0,
       "volume": 266.0,
       "cost_per_lot": 1820.0,
@@ -109,7 +110,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -145,7 +146,7 @@
       "iv": 0.16682642855495214,
       "atm_iv": 0.14836693192888056,
       "skew": 1.8459496626071576,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 4679485.0,
       "volume": 60308.0,
       "cost_per_lot": 5258.5,
@@ -170,7 +171,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -206,7 +207,7 @@
       "iv": 0.1714219478871673,
       "atm_iv": 0.14836693192888056,
       "skew": 2.305501595828674,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 306215.0,
       "volume": 4897.0,
       "cost_per_lot": 4163.25,
@@ -231,7 +232,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -267,7 +268,7 @@
       "iv": 0.17709880423359575,
       "atm_iv": 0.14836693192888056,
       "skew": 2.873187230471519,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 2340585.0,
       "volume": 22719.0,
       "cost_per_lot": 2843.75,
@@ -292,7 +293,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -328,7 +329,7 @@
       "iv": 0.18761171709597113,
       "atm_iv": 0.14836693192888056,
       "skew": 3.9244785167090566,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 250185.0,
       "volume": 3395.0,
       "cost_per_lot": 2187.25,
@@ -353,7 +354,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -389,7 +390,7 @@
       "iv": 0.18723398021459575,
       "atm_iv": 0.14836693192888056,
       "skew": 3.886704828571519,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 41275.0,
       "volume": 633.0,
       "cost_per_lot": 2362.75,
@@ -414,7 +415,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -450,7 +451,7 @@
       "iv": 0.17747022687420244,
       "atm_iv": 0.14836693192888056,
       "skew": 2.9103294945321876,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 23335.0,
       "volume": 225.0,
       "cost_per_lot": 2629.25,
@@ -475,7 +476,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -511,7 +512,7 @@
       "iv": 0.17505554199740286,
       "atm_iv": 0.14836693192888056,
       "skew": 2.66886100685223,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 39845.0,
       "volume": 209.0,
       "cost_per_lot": 3506.75,
@@ -536,7 +537,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -572,7 +573,7 @@
       "iv": 0.17370500226393343,
       "atm_iv": 0.14836693192888056,
       "skew": 2.5338070335052865,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 266305.0,
       "volume": 4950.0,
       "cost_per_lot": 3701.75,
@@ -597,7 +598,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -633,7 +634,7 @@
       "iv": 0.20074181756563486,
       "atm_iv": 0.14836693192888056,
       "skew": 5.23748856367543,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 22360.0,
       "volume": 77.0,
       "cost_per_lot": 1670.5,
@@ -658,7 +659,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -694,7 +695,7 @@
       "iv": 0.17651947729960082,
       "atm_iv": 0.14836693192888056,
       "skew": 2.8152545370720263,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 22685.0,
       "volume": 61.0,
       "cost_per_lot": 3058.25,
@@ -719,7 +720,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -755,7 +756,7 @@
       "iv": 0.16926303632669154,
       "atm_iv": 0.14836693192888056,
       "skew": 2.0896104397810977,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 246805.0,
       "volume": 3799.0,
       "cost_per_lot": 4693.0,
@@ -780,7 +781,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -816,7 +817,7 @@
       "iv": 0.1679621723458171,
       "atm_iv": 0.14836693192888056,
       "skew": 1.9595240416936526,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 43485.0,
       "volume": 190.0,
       "cost_per_lot": 4959.5,
@@ -841,7 +842,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -877,7 +878,7 @@
       "iv": 0.18031450363621115,
       "atm_iv": 0.14836693192888056,
       "skew": 3.194757170733059,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 411710.0,
       "volume": 4070.0,
       "cost_per_lot": 2583.75,
@@ -902,7 +903,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -938,7 +939,7 @@
       "iv": 0.18385727698542176,
       "atm_iv": 0.14836693192888056,
       "skew": 3.5490345056541193,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 19955.0,
       "volume": 100.0,
       "cost_per_lot": 2583.75,
@@ -963,7 +964,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -999,7 +1000,7 @@
       "iv": 0.19069656829386952,
       "atm_iv": 0.14836693192888056,
       "skew": 4.232963636498896,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 24245.0,
       "volume": 117.0,
       "cost_per_lot": 2167.75,
@@ -1024,7 +1025,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1060,7 +1061,7 @@
       "iv": 0.19167060046717527,
       "atm_iv": 0.14836693192888056,
       "skew": 4.330366853829471,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 206050.0,
       "volume": 870.0,
       "cost_per_lot": 2037.75,
@@ -1085,7 +1086,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1121,7 +1122,7 @@
       "iv": 0.19327702527344226,
       "atm_iv": 0.14836693192888056,
       "skew": 4.4910093344561695,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 15730.0,
       "volume": 100.0,
       "cost_per_lot": 1946.75,
@@ -1146,7 +1147,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1182,7 +1183,7 @@
       "iv": 0.1700214809490368,
       "atm_iv": 0.14836693192888056,
       "skew": 2.1654549020156235,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 73060.0,
       "volume": 725.0,
       "cost_per_lot": 4390.75,
@@ -1207,7 +1208,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1243,7 +1244,7 @@
       "iv": 0.17536238802224394,
       "atm_iv": 0.14836693192888056,
       "skew": 2.6995456093363375,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 566150.0,
       "volume": 4289.0,
       "cost_per_lot": 3243.5,
@@ -1268,7 +1269,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1304,7 +1305,7 @@
       "iv": 0.17264122964218254,
       "atm_iv": 0.14836693192888056,
       "skew": 2.427429771330197,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 58370.0,
       "volume": 280.0,
       "cost_per_lot": 3932.5,
@@ -1329,7 +1330,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1365,7 +1366,7 @@
       "iv": 0.18483732538223263,
       "atm_iv": 0.14836693192888056,
       "skew": 3.647039345335207,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 168025.0,
       "volume": 1740.0,
       "cost_per_lot": 2427.75,
@@ -1390,7 +1391,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1426,7 +1427,7 @@
       "iv": 0.19546218097917734,
       "atm_iv": 0.14836693192888056,
       "skew": 4.709524905029677,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 3581360.0,
       "volume": 24806.0,
       "cost_per_lot": 1888.25,
@@ -1451,7 +1452,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1487,7 +1488,7 @@
       "iv": 0.16540787569414822,
       "atm_iv": 0.14836693192888056,
       "skew": 1.7040943765267658,
-      "iv_rv_ratio": 0.9570712547867116,
+      "iv_rv_ratio": 0.9888848018258877,
       "open_interest": 30420.0,
       "volume": 369.0,
       "cost_per_lot": 5544.5,
@@ -1512,7 +1513,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9570712547867116,
+          "value": 0.9888848018258877,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1543,7 +1544,7 @@
   ],
   "atm_iv": 0.14836693192888056,
   "atm_strike": 25350.0,
-  "vrp": -0.6654892399073908,
+  "vrp": -0.16676642697203703,
   "skew_curve": [
     {
       "strike": 20300.0,

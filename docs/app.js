@@ -76,7 +76,7 @@ function renderTiles(s) {
     tile(fmt(s.spot, 0), "NIFTY spot"),
     tile(fmt(s.vix, 2), "India VIX"),
     tile(s.vix_percentile === null ? "n/a" : fmt(s.vix_percentile, 0), "VIX percentile (1y)"),
-    tile(rv === null ? "n/a" : pct(rv), "Realized vol (annual)"),
+    tile(rv === null ? "n/a" : pct(rv), s.rv_method === "yang-zhang" ? "Realized vol (Yang–Zhang)" : "Realized vol (annual)"),
     tile(atmIv === null ? "n/a" : pct(atmIv), "ATM implied vol"),
     tile(s.vrp === null || s.vrp === undefined ? "n/a" : fmt(s.vrp, 1) + " pts", "Vol risk premium (IV−RV)"),
   ].join("");

@@ -402,6 +402,13 @@ def run_strategies(cfg, on: date | None = None) -> dict:
             rv = mx.realized_vol(nh, cfg["realized_vol"]["window_days"], m["trading_days_year"])
         except nse.DataUnavailable:
             pass
+        try:  # prefer Yang–Zhang (OHLC) when available
+            bars = [b for b in nse.yahoo_ohlc(session, nse.YF_NIFTY, "6mo") if b["date"] <= on]
+            yz = mx.yang_zhang_vol(bars, cfg["realized_vol"]["window_days"], m["trading_days_year"])
+            if yz is not None:
+                rv = yz
+        except nse.DataUnavailable:
+            pass
 
         # choose the monthly expiry in the credit-spread DTE band (max OI)
         cband = cfg["credit_spread"]
