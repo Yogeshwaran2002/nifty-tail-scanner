@@ -10,6 +10,39 @@ gate.
 > 📘 **New here? Read the step-by-step [Operator Guide (DOCS.md)](DOCS.md)** —
 > architecture, every strategy, what to check where, and your daily/monthly routine.
 
+## ⭐ My routine (what to do each day)
+
+Most days the honest answer is **"do nothing"** — and that's the strategy working.
+
+**Every evening (2 min, after ~6:35 PM IST)**
+1. Open Telegram → read the push alert, or send **`/playbook`**.
+2. Look at the 4 lines. **If all say ⚪ wait → you're done.** Waiting *is* the discipline.
+3. **Only if a line says 🟢 ACT**, do that one thing (below), then stop.
+
+**When something says 🟢 ACT**
+- **ETF momentum** (live): just target holdings + weights. You already hold the right 3, so daily there's **nothing to do** — it only matters at the monthly rebalance.
+- **Tail-risk put** 🟢: buy the shown PE in Groww with a **limit order**, tiny size (~₹1–3k). Exit at 3× / on a VIX spike / ~2 weeks before expiry.
+- **Credit spread** 🟢: sell/buy the shown strikes; max loss is fixed (~₹5k). Close ~50% profit; never hold into expiry.
+- **Calendar** 🟢: rarely fires; follow the card if it does.
+- **Always** check the live bid-ask in Groww before you click (our data is end-of-day).
+
+**Once a month (5 min, 1st trading day)**
+1. Send `/etf`.
+2. If any of your 3 ETFs **dropped out of the top 3** or went **below its 200-SMA (▼ down)** → sell it, buy the new leader.
+3. Nudge weights toward the plan (more in the calmer ones).
+4. Log it: `python -m scripts.holdings sell/buy SYMBOL UNITS PRICE` → `git push`.
+
+**After any real trade** — log ETF buys/sells with `scripts/holdings.py` and push; the dashboard & `/holdings` then show live P&L. Options are auto-logged on paper (keep real money out of options until you trust it).
+
+**The 4 rules that keep me safe**
+1. **Size tiny** — nothing I'd hate to lose.
+2. **Don't watch intraday** — evening check only; monthly for ETFs.
+3. **Respect the loss budget** — if it locks, stop and review.
+4. **It's an experiment, not advice** — judge each strategy over many trades, not one.
+
+> The whole job: glance at `/playbook` each evening, act only on 🟢, rebalance ETFs once a month. Everything else runs itself.
+
+
 > ### Honest framing — read this first
 > This is an **educational / personal-research experiment, not investment advice.**
 > SEBI's FY26 study: **~87.7% of individual F&O traders lost money**, and **option
