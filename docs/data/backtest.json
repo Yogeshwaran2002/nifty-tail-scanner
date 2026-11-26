@@ -1,6 +1,6 @@
 {
   "ok": true,
-  "days_tested": 57,
+  "days_tested": 58,
   "total_trades": 0,
   "wins": 0,
   "losses": 0,
@@ -297,6 +297,11 @@
     },
     {
       "date": "2026-11-25",
+      "realized_pnl": 0.0,
+      "open_positions": 0
+    },
+    {
+      "date": "2026-11-26",
       "realized_pnl": 0.0,
       "open_positions": 0
     }
