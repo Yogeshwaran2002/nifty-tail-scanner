@@ -438,6 +438,15 @@ def turn_of_month(session, cfg, on):
     # observed trading days (historical months are complete, so that's accurate).
     in_today, next_start = _calendar_tom_status(on, t["last_days"], t["first_days"])
 
+    # units/capital for the ETF buy when the window opens
+    etf_price = units = None
+    try:
+        etf_price = nse.yahoo_history(session, t["etf_symbol"] + ".NS", "1mo")[-1][1]
+        budget = t.get("budget_inr", 0)
+        units = int(budget // etf_price) if etf_price else 0
+    except nse.DataUnavailable:
+        pass
+
     cash_d = (1 + t.get("cash_annual_yield_pct", 6.0) / 100.0) ** (1 / 252.0) - 1
     eq_tom, eq_bh = 1.0, 1.0
     cur_tom, cur_bh = [1.0], [1.0]
@@ -464,6 +473,10 @@ def turn_of_month(session, cfg, on):
     return {
         "fired": in_today,
         "etf": t["etf_symbol"],
+        "etf_price": round(etf_price, 2) if etf_price else None,
+        "budget_inr": t.get("budget_inr", 0),
+        "units": units,
+        "cost": round(units * etf_price, 2) if (units and etf_price) else None,
         "window": f"last {t['last_days']} + first {t['first_days']} trading days of the month",
         "in_market_pct": round(100.0 * in_days / n, 1) if n else 0,
         "next_window_start": next_start,

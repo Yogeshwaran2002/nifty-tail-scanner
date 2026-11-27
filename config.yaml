@@ -122,6 +122,7 @@ turn_of_month:
   last_days: 1                # include the last N trading days of the month
   first_days: 3               # + the first N trading days of the next month
   cash_annual_yield_pct: 0.0  # 0 = honest price-only backtest (no assumed cash yield)
+  budget_inr: 3000            # how much to deploy when the window opens (for the unit count)
 
 # ETF sector momentum — buy-only, no leverage, lowest capital. Rank a basket by
 # blended 3m/6m return, hold the top N, rebalance monthly. Documented factor.

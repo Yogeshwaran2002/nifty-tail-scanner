@@ -1,19 +1,25 @@
 name: daily-scan
 
-# Runs after NSE close + bhavcopy publication (~18:00 IST). Several slots because
-# GitHub's free-tier cron is best-effort and sometimes skips a slot — more slots
-# = lower chance of a trading day with zero runs. Runs are idempotent (no data
-# change → no commit), so extra firings are harmless.
+# Scans 3 sessions a day (Mon–Fri). Morning & midday track VIX/NIFTY/ETF live
+# (Yahoo) to catch a volatility spike; the evening session does the full option
+# scan once the NSE bhavcopy publishes (~18:00 IST). A Telegram alert fires on
+# the day's first scan and whenever a strategy flips to ACT. Extra slots per
+# session cushion GitHub's best-effort cron. Runs are idempotent.
 on:
   schedule:
-    - cron: "0 13 * * 1-5"    # 18:30 IST
-    - cron: "30 13 * * 1-5"   # 19:00 IST
-    - cron: "30 14 * * 1-5"   # 20:00 IST
-    - cron: "30 15 * * 1-5"   # 21:00 IST
-  workflow_dispatch: {}          # manual "Run workflow" button / dashboard button
+    - cron: "15 4 * * 1-5"    # ~09:45 IST — morning session
+    - cron: "0 7 * * 1-5"     # ~12:30 IST — midday session
+    - cron: "15 13 * * 1-5"   # ~18:45 IST — evening session (fresh option data)
+    - cron: "0 15 * * 1-5"    # ~20:30 IST — evening backup
+  workflow_dispatch:
+    inputs:
+      force_push:
+        description: "Send a Telegram push even if nothing changed (for testing)"
+        required: false
+        default: "false"
 
 permissions:
-  contents: write                # needed to commit the day's signal + archive
+  contents: write
 
 concurrency:
   group: daily-scan
@@ -34,10 +40,11 @@ jobs:
 
       - name: Run daily scan
         id: scan
-        continue-on-error: true    # NSE may block the runner IP; still commit what we have
+        continue-on-error: true
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FORCE_PUSH: ${{ github.event.inputs.force_push == 'true' && '1' || '' }}
         run: python -m scripts.run_scan
 
       - name: Run backtest over archive

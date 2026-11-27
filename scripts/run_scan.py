@@ -40,24 +40,27 @@ def main() -> int:
     except Exception as e:
         print(f"strategies error: {e}")
 
-    # Telegram push: the FULL playbook, once per day (the cron fires several
-    # times for reliability — dedupe so you don't get repeat messages).
+    # Telegram push: fires on the FIRST scan of the day (daily summary) AND any
+    # time a strategy flips to ACT (a new setup to act on). Deduped by signature
+    # so the 3 daily sessions don't spam you. FORCE_PUSH=1 overrides (for tests).
     import json, os
     ps_path = "data/push_state.json"
-    last = None
+    last_sig = None
     if os.path.exists(ps_path):
         try:
-            last = json.load(open(ps_path, encoding="utf-8")).get("last_pushed")
+            last_sig = json.load(open(ps_path, encoding="utf-8")).get("signature")
         except (OSError, ValueError):
             pass
+    sig_now = alert.strategy_signature(signal, strat)
     have_data = signal.get("spot") is not None or (strat and (strat.get("etf_momentum") or {}).get("fired"))
-    if have_data and last != signal["date"]:
+    force = os.environ.get("FORCE_PUSH") == "1"
+    if force or (have_data and sig_now != last_sig):
         alert.send(alert.format_playbook(signal, strat))
         os.makedirs("data", exist_ok=True)
-        json.dump({"last_pushed": signal["date"]}, open(ps_path, "w", encoding="utf-8"))
-        print(f"pushed playbook for {signal['date']}")
+        json.dump({"signature": sig_now}, open(ps_path, "w", encoding="utf-8"))
+        print(f"pushed playbook (sig={sig_now}, force={force})")
     else:
-        print(f"push skipped (last_pushed={last}, date={signal['date']}, have_data={have_data})")
+        print(f"push skipped (sig={sig_now}, last={last_sig}, have_data={have_data})")
 
     print(f"\n=== scan {signal['date']} ===")
     print(f"fired={signal['fired']}  spot={signal.get('spot')}  "
