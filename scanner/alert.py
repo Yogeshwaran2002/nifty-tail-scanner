@@ -42,6 +42,60 @@ def _fmt(x, nd=2, suffix=""):
     return "n/a" if x is None else f"{x:.{nd}f}{suffix}"
 
 
+def format_playbook(sig: dict, st: dict | None) -> str:
+    """Full daily playbook: every strategy's act/wait + action, plus holdings."""
+    st = st or {}
+    L = [f"<b>NIFTY Strategy Playbook — {sig.get('date')}</b>",
+         f"Spot {_fmt(sig.get('spot'), 0)} | VIX {_fmt(sig.get('vix'))} "
+         f"(pctile {_fmt(sig.get('vix_percentile'), 0)}) | RV {_fmt((sig.get('realized_vol') or 0) * 100, 1)}%", ""]
+
+    if sig.get("fired") and sig.get("candidates"):
+        c = sig["candidates"][0]
+        L.append(f"🟢 <b>Tail-risk</b>: BUY {c['strike']:.0f} PE {c['expiry']} ≈ ₹{_fmt(c['premium'])}")
+    else:
+        L.append("⚪ <b>Tail-risk</b>: wait")
+
+    def line(name, blk, act):
+        if not blk:
+            return f"⚪ <b>{name}</b>: n/a"
+        return f"🟢 <b>{name}</b>: {act(blk)}" if blk.get("fired") else f"⚪ <b>{name}</b>: wait"
+
+    L.append(line("Credit spread", st.get("credit_spread"),
+                  lambda b: f"SELL {b.get('short_strike'):.0f}/buy {b.get('long_strike'):.0f} PE, "
+                            f"credit ₹{_fmt(b.get('max_profit'), 0)} maxloss ₹{_fmt(b.get('max_loss'), 0)}"))
+    L.append(line("Iron condor", st.get("iron_condor"),
+                  lambda b: f"shorts {b.get('short_put'):.0f}P/{b.get('short_call'):.0f}C, "
+                            f"credit ₹{_fmt(b.get('max_profit'), 0)} maxloss ₹{_fmt(b.get('max_loss'), 0)}"))
+    L.append(line("Calendar", st.get("calendar"), lambda b: f"sell front {b.get('atm_strike'):.0f} PE"))
+
+    e = st.get("etf_momentum") or {}
+    if e.get("trade_plan"):
+        L.append("🟢 <b>ETF momentum</b>: HOLD " +
+                 ", ".join(f"{p['symbol']} {_fmt(p.get('weight_pct'), 0)}%" for p in e["trade_plan"]))
+    t = st.get("turn_of_month") or {}
+    if t.get("backtest"):
+        L.append(f"🟢 <b>Turn-of-Month</b>: HOLD {t.get('etf')}" if t.get("fired")
+                 else f"⚪ <b>Turn-of-Month</b>: cash (next {t.get('next_window_start')})")
+    bn = st.get("banknifty") or {}
+    if bn.get("iron_condor") or bn.get("credit_spread"):
+        bic, bcs = bn.get("iron_condor") or {}, bn.get("credit_spread") or {}
+        if bic.get("fired"):
+            L.append(f"🟢 <b>BankNIFTY condor</b>: shorts {bic.get('short_put'):.0f}P/{bic.get('short_call'):.0f}C, maxloss ₹{_fmt(bic.get('max_loss'), 0)}")
+        elif bcs.get("fired"):
+            L.append(f"🟢 <b>BankNIFTY credit</b>: SELL {bcs.get('short_strike'):.0f}/buy {bcs.get('long_strike'):.0f} PE, maxloss ₹{_fmt(bcs.get('max_loss'), 0)}")
+        else:
+            L.append("⚪ <b>BankNIFTY</b>: wait")
+
+    h = e.get("holdings") or {}
+    if h.get("rows"):
+        L.append(f"\n<b>Your ETF holdings</b>: invested ₹{_fmt(h.get('total_cost'), 0)} → "
+                 f"₹{_fmt(h.get('total_value'), 0)} ({_fmt(h.get('total_pnl'), 0)} / {_fmt(h.get('total_pnl_pct'), 1)}%)")
+
+    L.append("\n⚠️ EOD data, no live spread — check Groww before any order.")
+    L.append("<i>Educational only. Not advice. Option buyers lose most (SEBI FY26).</i>")
+    return "\n".join(L)
+
+
 def format_signal(signal: dict) -> str:
     """Build the rich alert body from a scan signal dict."""
     d = signal["date"]

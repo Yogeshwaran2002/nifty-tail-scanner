@@ -192,6 +192,8 @@ async function handle(env, text, chatId) {
     case "/etf": return fmtEtf(await getJSON(env, "strategies.json").catch(() => null));
     case "/holdings": return fmtHoldings(await getJSON(env, "strategies.json").catch(() => null));
     case "/credit": return fmtCredit(await getJSON(env, "strategies.json").catch(() => null));
+    case "/condor": return fmtCondor((await getJSON(env, "strategies.json").catch(() => null) || {}).iron_condor, "Iron condor (NIFTY)");
+    case "/banknifty": return fmtBankNifty(await getJSON(env, "strategies.json").catch(() => null));
     case "/calendar": return fmtCalendar(await getJSON(env, "strategies.json").catch(() => null));
     case "/tom": return fmtTom(await getJSON(env, "strategies.json").catch(() => null));
     default:
@@ -212,6 +214,8 @@ function help() {
     "/etf — ETF sector momentum (buy-only, low capital)",
     "/holdings — your real-money ETF holdings + P&L",
     "/credit — put credit spread (sell premium, defined risk)",
+    "/condor — iron condor (sell both sides, defined risk)",
+    "/banknifty — BankNIFTY credit spread + condor",
     "/calendar — volatility term-structure spread",
     "/tom — turn-of-the-month seasonal (NIFTY-proven)",
     "/id — show your Telegram chat id",
@@ -237,6 +241,9 @@ function fmtPlaybook(s, st) {
   const cs = st && st.credit_spread;
   if (cs && cs.fired) L.push(`🟢 <b>Credit spread</b>: SELL ${n(cs.short_strike,0)}/buy ${n(cs.long_strike,0)} PE — credit ${inr(cs.max_profit)}, max loss ${inr(cs.max_loss)}`);
   else L.push(`⚪ <b>Credit spread</b>: wait (${(cs && cs.reasons || ["not rich"])[0]})`);
+  const ic = st && st.iron_condor;
+  if (ic && ic.fired) L.push(`🟢 <b>Iron condor</b>: shorts ${n(ic.short_put,0)}P/${n(ic.short_call,0)}C — credit ${inr(ic.max_profit)}, max loss ${inr(ic.max_loss)}`);
+  else if (ic) L.push(`⚪ <b>Iron condor</b>: wait`);
   const cal = st && st.calendar;
   L.push(cal && cal.fired ? `🟢 <b>Calendar</b>: sell front ${n(cal.atm_strike,0)} PE, buy next month`
                           : `⚪ <b>Calendar</b>: wait (front not rich)`);
@@ -249,6 +256,13 @@ function fmtPlaybook(s, st) {
   if (t && t.backtest) {
     L.push(t.fired ? `🟢 <b>Turn-of-Month</b>: HOLD ${t.etf} (in window) — exit after first days of next month`
                    : `⚪ <b>Turn-of-Month</b>: cash — next window ${t.next_window_start || "?"}`);
+  }
+  const bn = st && st.banknifty;
+  if (bn) {
+    const bic = bn.iron_condor || {}, bcs = bn.credit_spread || {};
+    if (bic.fired) L.push(`🟢 <b>BankNIFTY condor</b>: shorts ${n(bic.short_put,0)}P/${n(bic.short_call,0)}C — max loss ${inr(bic.max_loss)}`);
+    else if (bcs.fired) L.push(`🟢 <b>BankNIFTY credit</b>: SELL ${n(bcs.short_strike,0)}/buy ${n(bcs.long_strike,0)} PE — max loss ${inr(bcs.max_loss)}`);
+    else L.push(`⚪ <b>BankNIFTY</b>: wait`);
   }
   L.push("\n<i>Not advice. Check live prices in Groww before any order.</i>");
   return L.join("\n");
@@ -372,6 +386,29 @@ function fmtHoldings(st) {
   }
   lines.push(`\nInvested <b>${inr(h.total_cost)}</b> · now <b>${inr(h.total_value)}</b> · P&L <b>${inr(h.total_pnl)} (${n(h.total_pnl_pct, 1)}%)</b>`);
   return lines.join("\n");
+}
+
+function fmtCondor(ic, title) {
+  if (!ic || !ic.short_put) return `${title}: ` + ((ic && ic.reasons) || ["unavailable"]).join("; ");
+  return [
+    `<b>${title}</b> ${ic.fired ? "● SETUP" : "○ wait"}`,
+    `Sell ${n(ic.short_put,0)} PE + ${n(ic.short_call,0)} CE; buy ${n(ic.long_put,0)}P/${n(ic.long_call,0)}C wings · ${ic.expiry}`,
+    `Credit ${inr(ic.max_profit)} | <b>max loss ${inr(ic.max_loss)}</b> | PoP ${n(ic.prob_profit_pct,1)}%`,
+    `Profit range ${n(ic.lower_breakeven,0)}–${n(ic.upper_breakeven,0)} | VRP ${n(ic.vrp,1)}`,
+    ic.fired ? "\n✓ Rich enough — profit if index stays in range, loss capped. Check Groww."
+             : "\n○ Not firing — " + (ic.reasons || []).join("; "),
+  ].join("\n");
+}
+
+function fmtBankNifty(st) {
+  const bn = st && st.banknifty;
+  if (!bn) return "BankNIFTY data not available.";
+  const cs = bn.credit_spread || {};
+  const csLine = cs.short_strike
+    ? `<b>BankNIFTY credit spread</b> ${cs.fired ? "● SETUP" : "○ wait"}\nSell ${n(cs.short_strike,0)}/buy ${n(cs.long_strike,0)} PE — credit ${inr(cs.max_profit)}, max loss ${inr(cs.max_loss)}${cs.fired ? "" : " (wait)"}`
+    : `<b>BankNIFTY credit spread</b> ○ ${(cs.reasons||["n/a"])[0]}`;
+  return csLine + "\n\n" + fmtCondor(bn.iron_condor, "BankNIFTY iron condor") +
+    `\n\n<i>Spot ${bn.spot ? n(bn.spot,0) : "n/a"}, lot ${bn.lot}. Higher IV, more ₹ per spread.</i>`;
 }
 
 function fmtCredit(st) {

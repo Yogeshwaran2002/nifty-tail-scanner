@@ -90,6 +90,25 @@ credit_spread:
 
 # Calendar spread — volatility term structure. Sell rich near-dated, buy cheaper
 # far-dated. Fires when the front-month ATM IV sits above the next month's.
+# Iron condor — defined-risk premium selling on BOTH sides (sell OTM put spread +
+# OTM call spread). Profits if the index stays range-bound; max loss is capped
+# (no naked-option tail). Fires only when options are genuinely rich (VRP).
+iron_condor:
+  target_short_delta: 0.20    # sell the ~0.20-delta put and call (~60% prob all-OTM)
+  width_points: 100           # NIFTY wing width (long leg this far beyond the short)
+  min_credit_to_width: 0.18
+  min_vrp: 1.5
+  dte_min: 20
+  dte_max: 45
+
+# Option strategies (credit spread + iron condor) also run on BankNIFTY. Higher
+# IV = fatter premium, but larger ₹ per spread (less "low capital").
+banknifty:
+  enabled: true
+  symbol: BANKNIFTY
+  lot_size: 35                # VERIFY on NSE — BankNIFTY lot changes periodically
+  width_points: 300           # BankNIFTY strikes are wider; bigger wing
+
 calendar:
   front_rich_threshold_pts: 1.5   # (front ATM IV − next ATM IV) in vol points
 

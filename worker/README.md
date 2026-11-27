@@ -20,6 +20,8 @@ layer).
 - `/skew` — volatility smile + risk premium
 - `/etf` — ETF sector momentum (buy-only, lowest capital)
 - `/credit` — put credit spread (sell premium, defined risk)
+- `/condor` — iron condor (sell both sides, defined risk)
+- `/banknifty` — BankNIFTY credit spread + condor
 - `/calendar` — volatility term-structure spread
 - `/tom` — turn-of-the-month seasonal (NIFTY-backtested)
 - `/id` — your Telegram chat id

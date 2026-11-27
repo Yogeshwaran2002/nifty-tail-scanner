@@ -99,29 +99,30 @@ def download_fo_bhavcopy(session: requests.Session, on: date) -> list[dict]:
 
 
 def extract_nifty_puts(rows: list[dict], underlying: str = "NIFTY") -> dict:
-    """Pull NIFTY index-option PUT rows out of a UDiFF bhavcopy.
+    """Pull index-option PUT rows (back-compat wrapper over extract_options)."""
+    o = extract_options(rows, underlying)
+    return {"spot": o["spot"], "puts": o["puts"]}
 
-    UDiFF columns used (defensive lookups with fallbacks): TckrSymb, FinInstrmTp,
-    OptnTp, XpryDt, StrkPric, ClsPric, UndrlygPric, OpnIntrst, TtlTradgVol.
-    Returns {"spot": float|None, "puts": [ {expiry,strike,close,oi,volume}, ... ]}.
-    """
+
+def extract_options(rows: list[dict], underlying: str = "NIFTY") -> dict:
+    """Pull index-option PUT and CALL rows for `underlying` (NIFTY/BANKNIFTY) out
+    of a UDiFF bhavcopy. Returns {"spot", "puts":[...], "calls":[...]} where each
+    leg is {expiry,strike,close,open_interest,volume}."""
     def col(row, *names):
         for n in names:
             if n in row and row[n] not in ("", None):
                 return row[n]
         return None
 
-    puts = []
-    spot = None
+    puts, calls, spot = [], [], None
     for row in rows:
         sym = (col(row, "TckrSymb", "SYMBOL") or "").strip().upper()
         if sym != underlying.upper():
             continue
         instr = (col(row, "FinInstrmTp", "INSTRUMENT") or "").upper()
         optt = (col(row, "OptnTp", "OPTION_TYP") or "").upper()
-        # Index options only (IDO/OPTIDX), puts only
         is_option = ("OPT" in instr) or optt in ("PE", "CE")
-        if not is_option or optt != "PE":
+        if not is_option or optt not in ("PE", "CE"):
             continue
         try:
             strike = float(col(row, "StrkPric", "STRIKE_PR"))
@@ -130,8 +131,7 @@ def extract_nifty_puts(rows: list[dict], underlying: str = "NIFTY") -> dict:
             vol = float(col(row, "TtlTradgVol", "CONTRACTS") or 0)
         except (TypeError, ValueError):
             continue
-        xpry_raw = col(row, "XpryDt", "EXPIRY_DT")
-        expiry = _parse_date(xpry_raw)
+        expiry = _parse_date(col(row, "XpryDt", "EXPIRY_DT"))
         if expiry is None:
             continue
         up = col(row, "UndrlygPric")
@@ -140,9 +140,10 @@ def extract_nifty_puts(rows: list[dict], underlying: str = "NIFTY") -> dict:
                 spot = float(up)
             except ValueError:
                 pass
-        puts.append({"expiry": expiry, "strike": strike, "close": close,
-                     "open_interest": oi, "volume": vol})
-    return {"spot": spot, "puts": puts}
+        leg = {"expiry": expiry, "strike": strike, "close": close,
+               "open_interest": oi, "volume": vol}
+        (puts if optt == "PE" else calls).append(leg)
+    return {"spot": spot, "puts": puts, "calls": calls}
 
 
 def _parse_date(s) -> date | None:

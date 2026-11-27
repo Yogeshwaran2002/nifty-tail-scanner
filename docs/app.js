@@ -387,6 +387,15 @@ function renderPlaybook(s, st) {
   } else {
     cards.push(pbCard("Put credit spread (sell)", "WAIT", (cs && cs.reasons || ["premium not rich"])[0], "—"));
   }
+  // Iron condor
+  const ic = st && st.iron_condor;
+  if (ic && ic.fired) {
+    cards.push(pbCard("Iron condor (sell)", "ACT",
+      `Shorts <b>${fmt(ic.short_put,0)}P / ${fmt(ic.short_call,0)}C</b> · credit ${inr(ic.max_profit)}, max loss ${inr(ic.max_loss)}`,
+      "buy back ~50% of credit; defined risk both sides; never into expiry"));
+  } else if (ic) {
+    cards.push(pbCard("Iron condor (sell)", "WAIT", (ic.reasons || ["premium not rich"])[0], "—"));
+  }
   // Calendar
   const cal = st && st.calendar;
   if (cal && cal.fired) {
@@ -413,7 +422,54 @@ function renderPlaybook(s, st) {
     cards.push(pbCard("Turn-of-the-Month (buy)", "WAIT", `in cash — next window starts <b>${t.next_window_start || "?"}</b>`,
       "buy the index ETF when the window opens"));
   }
+  // BankNIFTY options
+  const bn = st && st.banknifty;
+  if (bn) {
+    const bic = bn.iron_condor || {}, bcs = bn.credit_spread || {};
+    if (bic.fired) {
+      cards.push(pbCard("BankNIFTY condor", "ACT", `Shorts <b>${fmt(bic.short_put,0)}P / ${fmt(bic.short_call,0)}C</b> · max loss ${inr(bic.max_loss)}`, "defined risk; close ~50%"));
+    } else if (bcs.fired) {
+      cards.push(pbCard("BankNIFTY credit", "ACT", `Sell <b>${fmt(bcs.short_strike,0)}/buy ${fmt(bcs.long_strike,0)} PE</b> · max loss ${inr(bcs.max_loss)}`, "close ~50% of credit"));
+    } else {
+      cards.push(pbCard("BankNIFTY options", "WAIT", "premium not rich", "—"));
+    }
+  }
   el("playbook").innerHTML = cards.join("");
+}
+
+function condorHtml(ic, title) {
+  if (!ic || !ic.short_put) return `<h2 style="margin-top:0">${title} ${badge(false)}</h2><p class="muted">${(ic && ic.reasons || ["unavailable"]).join("; ")}</p>`;
+  return `<h2 style="margin-top:0">${title} ${badge(ic.fired)} <span class="muted" style="font-weight:400">— sell both sides, defined risk</span></h2>
+    <p style="margin:0 0 10px">Sell <b>${fmt(ic.short_put,0)} PE</b> + <b>${fmt(ic.short_call,0)} CE</b>; buy ${fmt(ic.long_put,0)}P / ${fmt(ic.long_call,0)}C wings · expiry ${ic.expiry} (${ic.dte}d)</p>
+    <table><tbody>
+      <tr><td>Net credit (you receive)</td><td>${inr(ic.max_profit)}</td></tr>
+      <tr><td><b>Max loss (capital at risk)</b></td><td><b>${inr(ic.max_loss)}</b></td></tr>
+      <tr><td>Prob. of profit (≈ stays in range)</td><td>${pct(ic.prob_profit_pct)}</td></tr>
+      <tr><td>Profit range (breakevens)</td><td>${fmt(ic.lower_breakeven,0)} – ${fmt(ic.upper_breakeven,0)}</td></tr>
+      <tr><td>VRP</td><td>${fmt(ic.vrp,1)} pts</td></tr>
+    </tbody></table>
+    ${ic.fired
+      ? `<div class="warn-note" style="color:var(--good);background:var(--good-bg);border-color:var(--good)">✓ Options rich enough. Profit if the index stays between ${fmt(ic.lower_breakeven,0)}–${fmt(ic.upper_breakeven,0)}; loss capped at ${inr(ic.max_loss)}. Check live prices in Groww.</div>`
+      : `<p class="muted" style="font-size:13px;margin-top:10px">Not firing — ${(ic.reasons||[]).join("; ")}.</p>`}`;
+}
+
+function renderCondor(st) {
+  el("strat-condor").innerHTML = condorHtml(st && st.iron_condor, "Iron condor (NIFTY)");
+}
+
+function renderBankNifty(st) {
+  const bn = st && st.banknifty;
+  const box = el("strat-banknifty");
+  if (!bn) { box.innerHTML = `<p class="muted">BankNIFTY data not available.</p>`; return; }
+  const cs = bn.credit_spread || {};
+  const csHtml = cs.short_strike
+    ? `<h2 style="margin:0 0 6px">BankNIFTY credit spread ${badge(cs.fired)}</h2>
+       <p style="margin:0">Sell ${fmt(cs.short_strike,0)}/buy ${fmt(cs.long_strike,0)} PE · credit ${inr(cs.max_profit)} · <b>max loss ${inr(cs.max_loss)}</b> · PoP ${pct(cs.prob_profit_pct)}${cs.fired ? "" : ` — wait (${(cs.reasons||[])[0]||""})`}</p>`
+    : `<h2 style="margin:0 0 6px">BankNIFTY credit spread ${badge(false)}</h2><p class="muted">${(cs.reasons||["unavailable"]).join("; ")}</p>`;
+  box.innerHTML = `${csHtml}
+    <div style="border-top:1px solid var(--border);margin:12px 0"></div>
+    ${condorHtml(bn.iron_condor, "BankNIFTY iron condor")}
+    <p class="muted" style="font-size:12px;margin-top:8px">BankNIFTY spot ${bn.spot ? fmt(bn.spot,0) : "n/a"}. Lot ${bn.lot}. Higher IV = fatter premium, but each spread ties up more ₹ — size accordingly.</p>`;
 }
 
 function renderTom(st) {
@@ -536,6 +592,8 @@ function wireLogForm() {
   renderSkew(s);
   renderCandidates(s);
   renderStrategies(strat);
+  renderCondor(strat);
+  renderBankNifty(strat);
   renderTom(strat);
   renderBacktest(bt);
   el("disclaimer").textContent = s.disclaimer ||

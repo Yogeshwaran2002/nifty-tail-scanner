@@ -26,8 +26,8 @@
   {
     "date": "2026-11-26",
     "fired": false,
-    "vix": 17.670000076293945,
-    "vix_percentile": 80.48780487804878,
+    "vix": 16.84000015258789,
+    "vix_percentile": 75.7085020242915,
     "spot": 25884.5,
     "candidate_count": 0
   }

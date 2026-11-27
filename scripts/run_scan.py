@@ -33,17 +33,31 @@ def main() -> int:
     on = date.fromisoformat(sys.argv[1]) if len(sys.argv) > 1 else date.today()
     signal = run_scan(cfg, on)
 
-    # Additional strategy modules (credit spread, calendar, ETF momentum)
+    # Additional strategy modules (credit spread, iron condor, calendar, ETF, ToM, BankNIFTY)
+    strat = None
     try:
         strat = run_strategies(cfg, on)
-        cs = (strat.get("credit_spread") or {}).get("fired")
-        mom = (strat.get("etf_momentum") or {}).get("hold")
-        print(f"strategies: credit_spread fired={cs}  etf_top={mom}")
     except Exception as e:
         print(f"strategies error: {e}")
 
-    msg = alert.format_signal(signal)
-    alert.send(msg)
+    # Telegram push: the FULL playbook, once per day (the cron fires several
+    # times for reliability — dedupe so you don't get repeat messages).
+    import json, os
+    ps_path = "data/push_state.json"
+    last = None
+    if os.path.exists(ps_path):
+        try:
+            last = json.load(open(ps_path, encoding="utf-8")).get("last_pushed")
+        except (OSError, ValueError):
+            pass
+    have_data = signal.get("spot") is not None or (strat and (strat.get("etf_momentum") or {}).get("fired"))
+    if have_data and last != signal["date"]:
+        alert.send(alert.format_playbook(signal, strat))
+        os.makedirs("data", exist_ok=True)
+        json.dump({"last_pushed": signal["date"]}, open(ps_path, "w", encoding="utf-8"))
+        print(f"pushed playbook for {signal['date']}")
+    else:
+        print(f"push skipped (last_pushed={last}, date={signal['date']}, have_data={have_data})")
 
     print(f"\n=== scan {signal['date']} ===")
     print(f"fired={signal['fired']}  spot={signal.get('spot')}  "

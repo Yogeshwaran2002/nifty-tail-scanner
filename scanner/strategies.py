@@ -32,8 +32,10 @@ def _write_json(path: str, obj) -> None:
 
 # ── Put credit spread (premium selling, defined risk) ───────────────────────
 
-def credit_spread(exp_puts, spot, expiry, dte, atm_iv, rv, vix_pct, r, q, cfg):
+def credit_spread(exp_puts, spot, expiry, dte, atm_iv, rv, vix_pct, r, q, cfg, lot=None, width=None):
     c = cfg["credit_spread"]
+    lot = lot or cfg["market"]["lot_size"]
+    width_pts = width or c["width_points"]
     T = max(dte, 1) / 365.0
     vrp = mx.vol_risk_premium(atm_iv, rv)
     iv_rv = mx.iv_rv_ratio(atm_iv, rv)
@@ -56,14 +58,13 @@ def credit_spread(exp_puts, spot, expiry, dte, atm_iv, rv, vix_pct, r, q, cfg):
     # Short strike = put whose delta is nearest the target (e.g. -0.22)
     target = -abs(c["target_short_delta"])
     short = min(enriched, key=lambda x: abs(x["delta"] - target))
-    long_strike_target = short["strike"] - c["width_points"]
+    long_strike_target = short["strike"] - width_pts
     long = min(enriched, key=lambda x: abs(x["strike"] - long_strike_target))
     if long["strike"] >= short["strike"]:
         return {"fired": False, "reasons": ["Could not find a long strike below the short strike."]}
 
     width = short["strike"] - long["strike"]
     credit = short["close"] - long["close"]
-    lot = cfg["market"]["lot_size"]
     max_loss = (width - credit) * lot
     max_profit = credit * lot
     breakeven = short["strike"] - credit
@@ -96,6 +97,80 @@ def credit_spread(exp_puts, spot, expiry, dte, atm_iv, rv, vix_pct, r, q, cfg):
         "vrp": vrp, "iv_rv_ratio": round(iv_rv, 3) if iv_rv else None,
         "gates": gates,
         "reasons": [f"{g['name']}: {round(g['value'], 2) if isinstance(g['value'], (int, float)) else g['value']} vs {g['threshold']}"
+                    for g in gates if not g["passed"]],
+    }
+
+
+# ── Iron condor (defined-risk premium selling, both sides) ──────────────────
+
+def iron_condor(exp_puts, exp_calls, spot, expiry, dte, atm_iv, rv, vix_pct, r, q, cfg, lot=None, width=None):
+    ic = cfg["iron_condor"]
+    lot = lot or cfg["market"]["lot_size"]
+    width = width or ic["width_points"]
+    T = max(dte, 1) / 365.0
+    vrp = mx.vol_risk_premium(atm_iv, rv)
+    iv_rv = mx.iv_rv_ratio(atm_iv, rv)
+    tgt = abs(ic["target_short_delta"])
+
+    # OTM puts (strike<spot) with delta; OTM calls (strike>spot) with delta
+    eputs = []
+    for p in exp_puts:
+        if p["strike"] >= spot:
+            continue
+        iv = bs.implied_vol_put(p["close"], spot, p["strike"], T, r, q)
+        d = bs.put_delta(spot, p["strike"], T, r, q, iv) if iv else None
+        if d is not None:
+            eputs.append({**p, "iv": iv, "delta": d})
+    ecalls = []
+    for c in exp_calls:
+        if c["strike"] <= spot:
+            continue
+        iv = bs.implied_vol_call(c["close"], spot, c["strike"], T, r, q)
+        d = bs.call_delta(spot, c["strike"], T, r, q, iv) if iv else None
+        if d is not None:
+            ecalls.append({**c, "iv": iv, "delta": d})
+    if not eputs or not ecalls:
+        return {"fired": False, "reasons": ["Not enough priceable OTM puts and calls."]}
+
+    sp = min(eputs, key=lambda x: abs(x["delta"] - (-tgt)))        # short put
+    lp = min(eputs, key=lambda x: abs(x["strike"] - (sp["strike"] - width)))  # long put
+    sc = min(ecalls, key=lambda x: abs(x["delta"] - tgt))          # short call
+    lc = min(ecalls, key=lambda x: abs(x["strike"] - (sc["strike"] + width)))  # long call
+    if lp["strike"] >= sp["strike"] or lc["strike"] <= sc["strike"]:
+        return {"fired": False, "reasons": ["Could not build both wings at this width."]}
+
+    put_w = sp["strike"] - lp["strike"]
+    call_w = lc["strike"] - sc["strike"]
+    credit = (sp["close"] - lp["close"]) + (sc["close"] - lc["close"])
+    maxw = max(put_w, call_w)
+    max_loss = (maxw - credit) * lot
+    max_profit = credit * lot
+    pop = (1.0 + sp["delta"] - sc["delta"]) * 100.0   # prob index stays between the shorts
+    ctw = credit / maxw if maxw else 0
+
+    gates = [
+        _g("vrp", vrp is not None and vrp >= ic["min_vrp"], vrp, ic["min_vrp"],
+           "Only sell when options are genuinely rich"),
+        _g("credit_to_width", ctw >= ic["min_credit_to_width"], round(ctw, 3), ic["min_credit_to_width"],
+           "Reward/risk floor: credit ÷ wing width"),
+        _g("put_liquidity", sp["open_interest"] >= cfg["entry_gates"]["min_open_interest"],
+           sp["open_interest"], cfg["entry_gates"]["min_open_interest"], "Short put must be liquid"),
+        _g("call_liquidity", sc["open_interest"] >= cfg["entry_gates"]["min_open_interest"],
+           sc["open_interest"], cfg["entry_gates"]["min_open_interest"], "Short call must be liquid"),
+        _g("dte", ic["dte_min"] <= dte <= ic["dte_max"], dte, ic["dte_max"], "Days-to-expiry window"),
+        _g("positive_credit", credit > 0, round(credit, 2), 0, "Must take in net credit"),
+    ]
+    fired = all(g["passed"] for g in gates)
+    return {
+        "fired": fired, "expiry": expiry, "dte": dte,
+        "short_put": sp["strike"], "long_put": lp["strike"],
+        "short_call": sc["strike"], "long_call": lc["strike"],
+        "credit": round(credit, 2), "max_profit": round(max_profit, 2), "max_loss": round(max_loss, 2),
+        "capital_at_risk": round(max_loss, 2),
+        "lower_breakeven": round(sp["strike"] - credit, 2), "upper_breakeven": round(sc["strike"] + credit, 2),
+        "prob_profit_pct": round(pop, 1), "vrp": vrp,
+        "gates": gates,
+        "reasons": [f"{g['name']}: {round(g['value'],2) if isinstance(g['value'],(int,float)) else g['value']} vs {g['threshold']}"
                     for g in gates if not g["passed"]],
     }
 
@@ -507,12 +582,44 @@ def etf_momentum_backtest(session, cfg):
 
 # ── Orchestrator ────────────────────────────────────────────────────────────
 
+def _underlying_options(rows, sym, lot, width, cfg, on, r, q, vix_pct, rv):
+    """Run credit spread + iron condor for one underlying (NIFTY/BANKNIFTY)."""
+    chain = nse.extract_options(rows, sym)
+    puts, calls, spot = chain["puts"], chain["calls"], chain["spot"]
+    na = lambda why: {"symbol": sym, "lot": lot, "spot": spot,
+                      "credit_spread": {"fired": False, "reasons": [why]},
+                      "iron_condor": {"fired": False, "reasons": [why]}}
+    if spot is None or not puts:
+        return na(f"No {sym} option chain in today's bhavcopy.")
+    cb = cfg["credit_spread"]
+    by_exp = {}
+    for p in puts:
+        d = (p["expiry"] - on).days
+        if cb["dte_min"] <= d <= cb["dte_max"]:
+            by_exp[p["expiry"]] = by_exp.get(p["expiry"], 0.0) + p["open_interest"]
+    if not by_exp:
+        return na(f"No {sym} expiry in the {cb['dte_min']}–{cb['dte_max']} DTE band.")
+    expiry = max(by_exp.items(), key=lambda kv: kv[1])[0]
+    dte = (expiry - on).days
+    exp_puts = [p for p in puts if p["expiry"] == expiry]
+    exp_calls = [c for c in calls if c["expiry"] == expiry]
+    atm = min(exp_puts, key=lambda x: abs(x["strike"] - spot))
+    atm_iv = bs.implied_vol_put(atm["close"], spot, atm["strike"], max(dte, 1) / 365.0, r, q)
+    exp = expiry.isoformat()
+    return {
+        "symbol": sym, "lot": lot, "spot": spot, "expiry": exp,
+        "credit_spread": credit_spread(exp_puts, spot, exp, dte, atm_iv, rv, vix_pct, r, q, cfg, lot, width),
+        "iron_condor": iron_condor(exp_puts, exp_calls, spot, exp, dte, atm_iv, rv, vix_pct, r, q, cfg, lot, width),
+    }
+
+
 def run_strategies(cfg, on: date | None = None) -> dict:
     on = on or date.today()
     m = cfg["market"]
     r, q = m["risk_free_rate"], m["dividend_yield"]
     out = {"date": on.isoformat(), "generated_at": datetime.utcnow().isoformat() + "Z",
-           "etf_momentum": None, "credit_spread": None, "calendar": None, "notes": []}
+           "etf_momentum": None, "credit_spread": None, "iron_condor": None,
+           "calendar": None, "banknifty": None, "turn_of_month": None, "notes": []}
 
     session = nse.nse_session()
 
@@ -537,12 +644,8 @@ def run_strategies(cfg, on: date | None = None) -> dict:
     # Option strategies need the chain
     try:
         rows = nse.download_fo_bhavcopy(session, on)
-        chain = nse.extract_nifty_puts(rows, m["underlying"])
-        puts, spot = chain["puts"], chain["spot"]
-        if spot is None:
-            raise nse.DataUnavailable("no spot in chain")
 
-        # vix percentile + realized vol (Yahoo, cached by the main scan too)
+        # vix percentile + realized vol (Yahoo) — shared across underlyings
         vix_pct = rv = None
         try:
             vh = [v for _, v in nse.get_vix_history(session, cfg["vix"]["lookback_days"])]
@@ -554,7 +657,7 @@ def run_strategies(cfg, on: date | None = None) -> dict:
             rv = mx.realized_vol(nh, cfg["realized_vol"]["window_days"], m["trading_days_year"])
         except nse.DataUnavailable:
             pass
-        try:  # prefer Yang–Zhang (OHLC) when available
+        try:  # prefer Yang–Zhang (OHLC)
             bars = [b for b in nse.yahoo_ohlc(session, nse.YF_NIFTY, "6mo") if b["date"] <= on]
             yz = mx.yang_zhang_vol(bars, cfg["realized_vol"]["window_days"], m["trading_days_year"])
             if yz is not None:
@@ -562,30 +665,34 @@ def run_strategies(cfg, on: date | None = None) -> dict:
         except nse.DataUnavailable:
             pass
 
-        # choose the monthly expiry in the credit-spread DTE band (max OI)
-        cband = cfg["credit_spread"]
-        by_exp = {}
-        for p in puts:
-            d = (p["expiry"] - on).days
-            if cband["dte_min"] <= d <= cband["dte_max"]:
-                by_exp[p["expiry"]] = by_exp.get(p["expiry"], 0.0) + p["open_interest"]
-        if by_exp:
-            expiry = max(by_exp.items(), key=lambda kv: kv[1])[0]
-            dte = (expiry - on).days
-            exp_puts = [p for p in puts if p["expiry"] == expiry]
-            atm = min(exp_puts, key=lambda x: abs(x["strike"] - spot))
-            atm_iv = bs.implied_vol_put(atm["close"], spot, atm["strike"], max(dte, 1) / 365.0, r, q)
-            out["credit_spread"] = credit_spread(exp_puts, spot, expiry.isoformat(), dte,
-                                                  atm_iv, rv, vix_pct, r, q, cfg)
-        else:
-            out["credit_spread"] = {"fired": False, "reasons": ["No expiry in the credit-spread DTE band."]}
+        # NIFTY: credit spread + iron condor + calendar
+        nifty = _underlying_options(rows, m["underlying"], m["lot_size"],
+                                    cfg["credit_spread"]["width_points"], cfg, on, r, q, vix_pct, rv)
+        if nifty.get("spot") is None:
+            raise nse.DataUnavailable("no NIFTY spot in chain")
+        out["credit_spread"] = nifty["credit_spread"]
+        out["iron_condor"] = nifty["iron_condor"]
+        out["spot"] = nifty["spot"]
+        chain_n = nse.extract_options(rows, m["underlying"])
+        out["calendar"] = calendar(chain_n["puts"], chain_n["spot"], on, r, q, cfg)
 
-        out["calendar"] = calendar(puts, spot, on, r, q, cfg)
-        out["spot"] = spot
+        # BankNIFTY: credit spread + iron condor (higher IV, more capital)
+        bn = cfg.get("banknifty", {})
+        if bn.get("enabled"):
+            bn_rv = rv  # BankNIFTY needs its OWN realized vol, not NIFTY's
+            try:
+                bbars = [b for b in nse.yahoo_ohlc(session, "%5ENSEBANK", "6mo") if b["date"] <= on]
+                yzb = mx.yang_zhang_vol(bbars, cfg["realized_vol"]["window_days"], m["trading_days_year"])
+                if yzb is not None:
+                    bn_rv = yzb
+            except nse.DataUnavailable:
+                pass
+            b = _underlying_options(rows, bn["symbol"], bn["lot_size"], bn["width_points"],
+                                    cfg, on, r, q, vix_pct, bn_rv)
+            out["banknifty"] = {"spot": b.get("spot"), "lot": bn["lot_size"], "rv": bn_rv,
+                                "credit_spread": b["credit_spread"], "iron_condor": b["iron_condor"]}
     except nse.DataUnavailable as e:
-        # Option data isn't published (holiday / weekend / before the ~18:00 IST
-        # close). Don't clobber the dashboard with a raw 404 — keep the last good
-        # option signals if we have them, else show a clean message.
+        # Holiday / weekend / pre-close — keep the last good option signals.
         prev = {}
         try:
             with open(os.path.join(cfg["output"]["dashboard_data_dir"], "strategies.json"), encoding="utf-8") as f:
@@ -593,9 +700,12 @@ def run_strategies(cfg, on: date | None = None) -> dict:
         except (OSError, json.JSONDecodeError):
             pass
         msg = "Options data publishes after the NSE close (~18:00 IST) on trading days — showing the last scan."
-        out["notes"].append(f"Option chain unavailable (holiday/pre-close). ETF + ToM still live.")
+        out["notes"].append("Option chain unavailable (holiday/pre-close). ETF + ToM still live.")
         out["credit_spread"] = prev.get("credit_spread") or {"fired": False, "reasons": [msg]}
+        out["iron_condor"] = prev.get("iron_condor") or {"fired": False, "reasons": [msg]}
         out["calendar"] = prev.get("calendar") or {"fired": False, "reasons": [msg]}
+        out["banknifty"] = prev.get("banknifty") or {"credit_spread": {"fired": False, "reasons": [msg]},
+                                                      "iron_condor": {"fired": False, "reasons": [msg]}}
         if prev.get("spot"):
             out["spot"] = prev["spot"]
 

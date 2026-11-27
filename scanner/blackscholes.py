@@ -50,6 +50,39 @@ def put_delta(S: float, K: float, T: float, r: float, q: float, sigma: float) ->
     return -math.exp(-q * T) * norm_cdf(-d1)
 
 
+def call_delta(S: float, K: float, T: float, r: float, q: float, sigma: float) -> float | None:
+    """Delta of a European call (positive, in [0, 1])."""
+    if sigma is None or sigma <= 0 or T <= 0:
+        return None
+    d1, _ = _d1_d2(S, K, T, r, q, sigma)
+    return math.exp(-q * T) * norm_cdf(d1)
+
+
+def implied_vol_call(market_price: float, S: float, K: float, T: float, r: float, q: float,
+                     lo: float = 1e-4, hi: float = 5.0, tol: float = 1e-5, max_iter: int = 100) -> float | None:
+    """Recover implied vol of a call via bisection. None on arbitrage-bound /
+    unbracketable (illiquid) prints."""
+    if market_price <= 0 or S <= 0 or K <= 0 or T <= 0:
+        return None
+    intrinsic = max(S * math.exp(-q * T) - K * math.exp(-r * T), 0.0)
+    if market_price < intrinsic - tol or market_price > S * math.exp(-q * T) + tol:
+        return None
+    p_lo = bs_call_price(S, K, T, r, q, lo) - market_price
+    p_hi = bs_call_price(S, K, T, r, q, hi) - market_price
+    if p_lo * p_hi > 0:
+        return None
+    for _ in range(max_iter):
+        mid = 0.5 * (lo + hi)
+        p_mid = bs_call_price(S, K, T, r, q, mid) - market_price
+        if abs(p_mid) < tol:
+            return mid
+        if p_lo * p_mid < 0:
+            hi = mid
+        else:
+            lo, p_lo = mid, p_mid
+    return 0.5 * (lo + hi)
+
+
 def implied_vol_put(
     market_price: float,
     S: float,

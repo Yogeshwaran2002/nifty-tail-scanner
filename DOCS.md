@@ -110,6 +110,8 @@ Message your bot:
 - `/tom` — turn-of-the-month seasonal (NIFTY-backtested)
 - `/holdings` — your real ETF positions + live P&L
 - `/credit` — put credit spread setup
+- `/condor` — iron condor (sell both sides, defined risk)
+- `/banknifty` — BankNIFTY credit spread + condor
 - `/calendar` — calendar spread
 - `/backtest` — tail-risk backtest stats
 - `/journal` — options paper journal

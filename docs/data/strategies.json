@@ -1,6 +1,6 @@
 {
   "date": "2026-11-26",
-  "generated_at": "2026-11-26T23:57:55.377424Z",
+  "generated_at": "2026-11-27T05:45:33.739744Z",
   "etf_momentum": {
     "fired": true,
     "top_n": 3,
@@ -8,141 +8,141 @@
     "trend_sma_days": 200,
     "in_cash_slots": 0,
     "hold": [
+      "PHARMABEES",
       "PSUBNKBEES",
-      "BANKBEES",
-      "PHARMABEES"
+      "BANKBEES"
     ],
     "ranked": [
       {
-        "symbol": "PSUBNKBEES",
-        "last": 107.15,
-        "ret_3m_pct": 11.82,
-        "ret_6m_pct": 19.56,
-        "momentum_pct": 15.69,
-        "sma200": 95.69,
-        "trend": "up",
-        "vol_pct": 21.1
-      },
-      {
-        "symbol": "BANKBEES",
-        "last": 660.51,
-        "ret_3m_pct": 10.5,
-        "ret_6m_pct": 18.03,
-        "momentum_pct": 14.265,
-        "sma200": 587.14,
-        "trend": "up",
-        "vol_pct": 17.5
-      },
-      {
         "symbol": "PHARMABEES",
-        "last": 29.87,
-        "ret_3m_pct": 10.34,
-        "ret_6m_pct": 17.92,
-        "momentum_pct": 14.13,
-        "sma200": 25.67,
+        "last": 29.91,
+        "ret_3m_pct": 10.04,
+        "ret_6m_pct": 18.17,
+        "momentum_pct": 14.105,
+        "sma200": 25.7,
         "trend": "up",
         "vol_pct": 16.7
       },
       {
-        "symbol": "ITBEES",
-        "last": 35.75,
-        "ret_3m_pct": 5.55,
-        "ret_6m_pct": 11.65,
-        "momentum_pct": 8.6,
-        "sma200": 33.42,
+        "symbol": "PSUBNKBEES",
+        "last": 106.46,
+        "ret_3m_pct": 11.91,
+        "ret_6m_pct": 15.53,
+        "momentum_pct": 13.719999999999999,
+        "sma200": 95.75,
         "trend": "up",
-        "vol_pct": 25.6
+        "vol_pct": 21.0
+      },
+      {
+        "symbol": "BANKBEES",
+        "last": 657.02,
+        "ret_3m_pct": 10.48,
+        "ret_6m_pct": 15.06,
+        "momentum_pct": 12.77,
+        "sma200": 587.41,
+        "trend": "up",
+        "vol_pct": 17.5
+      },
+      {
+        "symbol": "ITBEES",
+        "last": 36.68,
+        "ret_3m_pct": 8.14,
+        "ret_6m_pct": 14.09,
+        "momentum_pct": 11.115,
+        "sma200": 33.4,
+        "trend": "up",
+        "vol_pct": 26.1
       },
       {
         "symbol": "NIFTYBEES",
-        "last": 294.07,
-        "ret_3m_pct": 6.25,
-        "ret_6m_pct": 9.28,
-        "momentum_pct": 7.765,
-        "sma200": 272.73,
+        "last": 293.48,
+        "ret_3m_pct": 6.38,
+        "ret_6m_pct": 7.9,
+        "momentum_pct": 7.140000000000001,
+        "sma200": 272.78,
         "trend": "up",
         "vol_pct": 14.1
       },
       {
         "symbol": "CONSUMBEES",
-        "last": 138.08,
-        "ret_3m_pct": 3.4,
-        "ret_6m_pct": 9.09,
-        "momentum_pct": 6.245,
-        "sma200": 127.7,
+        "last": 137.69,
+        "ret_3m_pct": 2.52,
+        "ret_6m_pct": 8.98,
+        "momentum_pct": 5.75,
+        "sma200": 127.75,
         "trend": "up",
         "vol_pct": 15.9
       },
       {
         "symbol": "INFRABEES",
-        "last": 991.91,
-        "ret_3m_pct": 2.3,
-        "ret_6m_pct": 2.87,
-        "momentum_pct": 2.585,
-        "sma200": 952.72,
+        "last": 991.74,
+        "ret_3m_pct": 2.65,
+        "ret_6m_pct": 1.84,
+        "momentum_pct": 2.245,
+        "sma200": 952.97,
         "trend": "up",
-        "vol_pct": 15.9
+        "vol_pct": 15.8
       },
       {
         "symbol": "JUNIORBEES",
-        "last": 788.33,
-        "ret_3m_pct": -1.49,
-        "ret_6m_pct": 4.64,
-        "momentum_pct": 1.5749999999999997,
-        "sma200": 758.96,
+        "last": 790.0,
+        "ret_3m_pct": -1.24,
+        "ret_6m_pct": 3.29,
+        "momentum_pct": 1.025,
+        "sma200": 759.31,
         "trend": "up",
         "vol_pct": 16.4
       },
       {
         "symbol": "MON100",
-        "last": 294.03,
-        "ret_3m_pct": -11.04,
-        "ret_6m_pct": -11.47,
-        "momentum_pct": -11.254999999999999,
-        "sma200": 298.25,
-        "trend": "down",
-        "vol_pct": 26.4
+        "last": 303.28,
+        "ret_3m_pct": -7.53,
+        "ret_6m_pct": -8.29,
+        "momentum_pct": -7.91,
+        "sma200": 298.64,
+        "trend": "up",
+        "vol_pct": 27.2
       },
       {
         "symbol": "GOLDBEES",
-        "last": 100.11,
-        "ret_3m_pct": -23.77,
-        "ret_6m_pct": -23.29,
-        "momentum_pct": -23.53,
-        "sma200": 122.77,
+        "last": 102.9,
+        "ret_3m_pct": -22.64,
+        "ret_6m_pct": -21.16,
+        "momentum_pct": -21.9,
+        "sma200": 122.69,
         "trend": "down",
-        "vol_pct": 20.7
+        "vol_pct": 21.5
       }
     ],
     "trade_plan": [
       {
+        "symbol": "PHARMABEES",
+        "price": 29.91,
+        "units": 72,
+        "cost": 2153.52,
+        "weight_pct": 36.4,
+        "vol_pct": 16.7,
+        "stop_price": 26.32,
+        "cash": false
+      },
+      {
         "symbol": "PSUBNKBEES",
-        "price": 107.15,
+        "price": 106.46,
         "units": 16,
-        "cost": 1714.4,
-        "weight_pct": 28.8,
-        "vol_pct": 21.1,
-        "stop_price": 94.29,
+        "cost": 1703.36,
+        "weight_pct": 28.9,
+        "vol_pct": 21.0,
+        "stop_price": 93.68,
         "cash": false
       },
       {
         "symbol": "BANKBEES",
-        "price": 660.51,
+        "price": 657.02,
         "units": 3,
-        "cost": 1981.53,
-        "weight_pct": 34.8,
+        "cost": 1971.06,
+        "weight_pct": 34.7,
         "vol_pct": 17.5,
-        "stop_price": 581.25,
-        "cash": false
-      },
-      {
-        "symbol": "PHARMABEES",
-        "price": 29.87,
-        "units": 73,
-        "cost": 2180.51,
-        "weight_pct": 36.4,
-        "vol_pct": 16.7,
-        "stop_price": 26.29,
+        "stop_price": 578.18,
         "cash": false
       }
     ],
@@ -154,40 +154,40 @@
           "symbol": "PSUBNKBEES",
           "units": 1,
           "buy_price": 107.0,
-          "now": 107.15,
+          "now": 106.46,
           "cost": 107.0,
-          "value": 107.15,
-          "pnl": 0.15,
-          "pnl_pct": 0.14,
+          "value": 106.46,
+          "pnl": -0.54,
+          "pnl_pct": -0.5,
           "buy_date": "2026-11-25"
         },
         {
           "symbol": "BANKBEES",
           "units": 1,
           "buy_price": 662.0,
-          "now": 660.51,
+          "now": 657.02,
           "cost": 662.0,
-          "value": 660.51,
-          "pnl": -1.49,
-          "pnl_pct": -0.23,
+          "value": 657.02,
+          "pnl": -4.98,
+          "pnl_pct": -0.75,
           "buy_date": "2026-11-25"
         },
         {
           "symbol": "PHARMABEES",
           "units": 7,
           "buy_price": 29.86,
-          "now": 29.87,
+          "now": 29.91,
           "cost": 209.02,
-          "value": 209.09,
-          "pnl": 0.07,
-          "pnl_pct": 0.03,
+          "value": 209.37,
+          "pnl": 0.35,
+          "pnl_pct": 0.17,
           "buy_date": "2026-11-25"
         }
       ],
       "total_cost": 978.02,
-      "total_value": 976.75,
-      "total_pnl": -1.27,
-      "total_pnl_pct": -0.13,
+      "total_value": 972.85,
+      "total_pnl": -5.17,
+      "total_pnl_pct": -0.53,
       "note": "REAL money (not paper). Buy prices approximate \u2014 sum to ~\u20b9978. Correct with exact Groww fills if needed."
     },
     "rules": {
@@ -218,20 +218,20 @@
     "capital_at_risk": 5297.5,
     "breakeven": 25131.5,
     "prob_profit_pct": 77.7,
-    "vrp": -1.2632662531616823,
-    "iv_rv_ratio": 0.917,
+    "vrp": -1.2342733496540554,
+    "iv_rv_ratio": 0.919,
     "gates": [
       {
         "name": "vrp",
         "passed": false,
-        "value": -1.2632662531616823,
+        "value": -1.2342733496540554,
         "threshold": 2.0,
         "detail": "Only sell when options are genuinely rich (ATM IV \u2212 realized vol)"
       },
       {
         "name": "iv_rv_ratio",
         "passed": false,
-        "value": 0.9171664817739851,
+        "value": 0.9189134198765848,
         "threshold": 1.1,
         "detail": "Options must be rich vs realized to collect premium"
       },
@@ -265,8 +265,72 @@
       }
     ],
     "reasons": [
-      "vrp: -1.26 vs 2.0",
+      "vrp: -1.23 vs 2.0",
       "iv_rv_ratio: 0.92 vs 1.1"
+    ]
+  },
+  "iron_condor": {
+    "fired": false,
+    "expiry": "2026-12-29",
+    "dte": 33,
+    "short_put": 25050.0,
+    "long_put": 24950.0,
+    "short_call": 27000.0,
+    "long_call": 27100.0,
+    "credit": 32.2,
+    "max_profit": 2093.0,
+    "max_loss": 4407.0,
+    "capital_at_risk": 4407.0,
+    "lower_breakeven": 25017.8,
+    "upper_breakeven": 27032.2,
+    "prob_profit_pct": 60.5,
+    "vrp": -1.2342733496540554,
+    "gates": [
+      {
+        "name": "vrp",
+        "passed": false,
+        "value": -1.2342733496540554,
+        "threshold": 1.5,
+        "detail": "Only sell when options are genuinely rich"
+      },
+      {
+        "name": "credit_to_width",
+        "passed": true,
+        "value": 0.322,
+        "threshold": 0.18,
+        "detail": "Reward/risk floor: credit \u00f7 wing width"
+      },
+      {
+        "name": "put_liquidity",
+        "passed": true,
+        "value": 53170.0,
+        "threshold": 500,
+        "detail": "Short put must be liquid"
+      },
+      {
+        "name": "call_liquidity",
+        "passed": true,
+        "value": 6063070.0,
+        "threshold": 500,
+        "detail": "Short call must be liquid"
+      },
+      {
+        "name": "dte",
+        "passed": true,
+        "value": 33,
+        "threshold": 45,
+        "detail": "Days-to-expiry window"
+      },
+      {
+        "name": "positive_credit",
+        "passed": true,
+        "value": 32.2,
+        "threshold": 0,
+        "detail": "Must take in net credit"
+      }
+    ],
+    "reasons": [
+      "vrp: -1.23 vs 1.5"
     ]
   },
   "calendar": {
@@ -285,27 +349,158 @@
       "term_spread -1.22 < 1.5 pts (front not rich enough)"
     ]
   },
-  "notes": [],
-  "etf_backtest": {
-    "ok": false,
-    "reason": "etf backtest error: name 'math' is not defined"
+  "banknifty": {
+    "spot": 63535.3,
+    "lot": 35,
+    "rv": 0.1834099540837151,
+    "credit_spread": {
+      "fired": false,
+      "expiry": "2026-12-29",
+      "dte": 33,
+      "short_strike": 61200.0,
+      "long_strike": 60900.0,
+      "short_premium": 466.0,
+      "long_premium": 411.6,
+      "short_delta": -0.219,
+      "width": 300.0,
+      "credit": 54.4,
+      "max_profit": 1904.0,
+      "max_loss": 8596.0,
+      "capital_at_risk": 8596.0,
+      "breakeven": 61145.6,
+      "prob_profit_pct": 78.1,
+      "vrp": -0.7642858617756987,
+      "iv_rv_ratio": 0.958,
+      "gates": [
+        {
+          "name": "vrp",
+          "passed": false,
+          "value": -0.7642858617756987,
+          "threshold": 2.0,
+          "detail": "Only sell when options are genuinely rich (ATM IV \u2212 realized vol)"
+        },
+        {
+          "name": "iv_rv_ratio",
+          "passed": false,
+          "value": 0.9583290958446644,
+          "threshold": 1.1,
+          "detail": "Options must be rich vs realized to collect premium"
+        },
+        {
+          "name": "credit_to_width",
+          "passed": true,
+          "value": 0.181,
+          "threshold": 0.18,
+          "detail": "Reward/risk floor: credit \u00f7 width"
+        },
+        {
+          "name": "short_liquidity",
+          "passed": true,
+          "value": 16020.0,
+          "threshold": 500,
+          "detail": "Short leg must be liquid"
+        },
+        {
+          "name": "dte",
+          "passed": true,
+          "value": 33,
+          "threshold": 45,
+          "detail": "Days-to-expiry window"
+        },
+        {
+          "name": "positive_credit",
+          "passed": true,
+          "value": 54.4,
+          "threshold": 0,
+          "detail": "Spread must take in net credit"
+        }
+      ],
+      "reasons": [
+        "vrp: -0.76 vs 2.0",
+        "iv_rv_ratio: 0.96 vs 1.1"
+      ]
+    },
+    "iron_condor": {
+      "fired": false,
+      "expiry": "2026-12-29",
+      "dte": 33,
+      "short_put": 60900.0,
+      "long_put": 60600.0,
+      "short_call": 66700.0,
+      "long_call": 67000.0,
+      "credit": 105.1,
+      "max_profit": 3678.5,
+      "max_loss": 6821.5,
+      "capital_at_risk": 6821.5,
+      "lower_breakeven": 60794.9,
+      "upper_breakeven": 66805.1,
+      "prob_profit_pct": 59.9,
+      "vrp": -0.7642858617756987,
+      "gates": [
+        {
+          "name": "vrp",
+          "passed": false,
+          "value": -0.7642858617756987,
+          "threshold": 1.5,
+          "detail": "Only sell when options are genuinely rich"
+        },
+        {
+          "name": "credit_to_width",
+          "passed": true,
+          "value": 0.35,
+          "threshold": 0.18,
+          "detail": "Reward/risk floor: credit \u00f7 wing width"
+        },
+        {
+          "name": "put_liquidity",
+          "passed": true,
+          "value": 15540.0,
+          "threshold": 500,
+          "detail": "Short put must be liquid"
+        },
+        {
+          "name": "call_liquidity",
+          "passed": true,
+          "value": 20610.0,
+          "threshold": 500,
+          "detail": "Short call must be liquid"
+        },
+        {
+          "name": "dte",
+          "passed": true,
+          "value": 33,
+          "threshold": 45,
+          "detail": "Days-to-expiry window"
+        },
+        {
+          "name": "positive_credit",
+          "passed": true,
+          "value": 105.1,
+          "threshold": 0,
+          "detail": "Must take in net credit"
+        }
+      ],
+      "reasons": [
+        "vrp: -0.76 vs 1.5"
+      ]
+    }
   },
   "turn_of_month": {
     "fired": false,
     "etf": "NIFTYBEES",
     "window": "last 1 + first 3 trading days of the month",
-    "in_market_pct": 20.1,
+    "in_market_pct": 19.8,
     "next_window_start": "2026-11-30",
     "backtest": {
-      "days": 493,
+      "days": 494,
       "tom": {
-        "total_return_pct": 15.7,
-        "cagr_pct": 7.8,
+        "total_return_pct": 15.3,
+        "cagr_pct": 7.6,
         "max_drawdown_pct": -3.4
       },
       "buyhold": {
-        "total_return_pct": 6.7,
-        "cagr_pct": 3.4,
+        "total_return_pct": 6.0,
+        "cagr_pct": 3.0,
         "max_drawdown_pct": -15.6
       },
       "equity_curve": [
@@ -315,659 +510,659 @@
         },
         {
           "i": 3,
-          "equity": 0.9974
+          "equity": 1.0
         },
         {
           "i": 6,
-          "equity": 1.0113
+          "equity": 1.0179
         },
         {
           "i": 9,
-          "equity": 1.0212
+          "equity": 1.0179
         },
         {
           "i": 12,
-          "equity": 1.0212
+          "equity": 1.0179
         },
         {
           "i": 15,
-          "equity": 1.0212
+          "equity": 1.0179
         },
         {
           "i": 18,
-          "equity": 1.0212
+          "equity": 1.0179
         },
         {
           "i": 21,
-          "equity": 1.0212
+          "equity": 1.0179
         },
         {
           "i": 24,
-          "equity": 1.0212
+          "equity": 1.0221
         },
         {
           "i": 27,
-          "equity": 1.0368
+          "equity": 1.0166
         },
         {
           "i": 30,
-          "equity": 1.02
+          "equity": 1.0166
         },
         {
           "i": 33,
-          "equity": 1.02
+          "equity": 1.0166
         },
         {
           "i": 36,
-          "equity": 1.02
+          "equity": 1.0166
         },
         {
           "i": 39,
-          "equity": 1.02
+          "equity": 1.0166
         },
         {
           "i": 42,
-          "equity": 1.02
+          "equity": 1.0166
         },
         {
           "i": 45,
-          "equity": 1.02
+          "equity": 1.0166
         },
         {
           "i": 48,
-          "equity": 1.0189
+          "equity": 1.0102
         },
         {
           "i": 51,
-          "equity": 1.0282
+          "equity": 1.0247
         },
         {
           "i": 54,
-          "equity": 1.0282
+          "equity": 1.0247
         },
         {
           "i": 57,
-          "equity": 1.0282
+          "equity": 1.0247
         },
         {
           "i": 60,
-          "equity": 1.0282
+          "equity": 1.0247
         },
         {
           "i": 63,
-          "equity": 1.0282
+          "equity": 1.0247
         },
         {
           "i": 66,
-          "equity": 1.0282
+          "equity": 1.0247
         },
         {
           "i": 69,
-          "equity": 1.0262
+          "equity": 1.0346
         },
         {
           "i": 72,
-          "equity": 1.0477
+          "equity": 1.0442
         },
         {
           "i": 75,
-          "equity": 1.0477
+          "equity": 1.0442
         },
         {
           "i": 78,
-          "equity": 1.0477
+          "equity": 1.0442
         },
         {
           "i": 81,
-          "equity": 1.0477
+          "equity": 1.0442
         },
         {
           "i": 84,
-          "equity": 1.0477
+          "equity": 1.0442
         },
         {
           "i": 87,
-          "equity": 1.0319
+          "equity": 1.0359
         },
         {
           "i": 90,
-          "equity": 1.0203
-        },
-        {
-          "i": 93,
-          "equity": 1.0203
-        },
-        {
-          "i": 96,
-          "equity": 1.0203
-        },
-        {
-          "i": 99,
-          "equity": 1.0203
-        },
-        {
-          "i": 102,
-          "equity": 1.0203
-        },
-        {
-          "i": 105,
-          "equity": 1.0203
-        },
-        {
-          "i": 108,
-          "equity": 1.0222
-        },
-        {
-          "i": 111,
-          "equity": 1.0236
-        },
-        {
-          "i": 114,
-          "equity": 1.0236
-        },
-        {
-          "i": 117,
-          "equity": 1.0236
-        },
-        {
-          "i": 120,
-          "equity": 1.0236
-        },
-        {
-          "i": 123,
-          "equity": 1.0236
-        },
-        {
-          "i": 126,
-          "equity": 1.0236
-        },
-        {
-          "i": 129,
-          "equity": 1.0182
-        },
-        {
-          "i": 132,
-          "equity": 1.0236
-        },
-        {
-          "i": 135,
-          "equity": 1.0236
-        },
-        {
-          "i": 138,
-          "equity": 1.0236
-        },
-        {
-          "i": 141,
-          "equity": 1.0236
-        },
-        {
-          "i": 144,
-          "equity": 1.0236
-        },
-        {
-          "i": 147,
-          "equity": 1.0236
-        },
-        {
-          "i": 150,
-          "equity": 1.0192
-        },
-        {
-          "i": 153,
-          "equity": 1.0214
-        },
-        {
-          "i": 156,
-          "equity": 1.0214
-        },
-        {
-          "i": 159,
-          "equity": 1.0214
-        },
-        {
-          "i": 162,
-          "equity": 1.0214
-        },
-        {
-          "i": 165,
-          "equity": 1.0214
-        },
-        {
-          "i": 168,
-          "equity": 1.0214
-        },
-        {
-          "i": 171,
-          "equity": 1.013
-        },
-        {
-          "i": 174,
-          "equity": 1.0134
-        },
-        {
-          "i": 177,
-          "equity": 1.0134
-        },
-        {
-          "i": 180,
-          "equity": 1.0134
-        },
-        {
-          "i": 183,
-          "equity": 1.0134
-        },
-        {
-          "i": 186,
-          "equity": 1.0134
-        },
-        {
-          "i": 189,
-          "equity": 1.0134
-        },
-        {
-          "i": 192,
-          "equity": 1.0254
-        },
-        {
-          "i": 195,
-          "equity": 1.0261
-        },
-        {
-          "i": 198,
-          "equity": 1.0261
-        },
-        {
-          "i": 201,
-          "equity": 1.0261
-        },
-        {
-          "i": 204,
-          "equity": 1.0261
-        },
-        {
-          "i": 207,
-          "equity": 1.0261
-        },
-        {
-          "i": 210,
-          "equity": 1.0261
-        },
-        {
-          "i": 213,
-          "equity": 1.038
-        },
-        {
-          "i": 216,
-          "equity": 1.0469
-        },
-        {
-          "i": 219,
-          "equity": 1.0469
-        },
-        {
-          "i": 222,
-          "equity": 1.0469
-        },
-        {
-          "i": 225,
-          "equity": 1.0469
-        },
-        {
-          "i": 228,
-          "equity": 1.0469
-        },
-        {
-          "i": 231,
-          "equity": 1.0469
-        },
-        {
-          "i": 234,
-          "equity": 1.0418
-        },
-        {
-          "i": 237,
-          "equity": 1.0375
-        },
-        {
-          "i": 240,
-          "equity": 1.0375
-        },
-        {
-          "i": 243,
-          "equity": 1.0375
-        },
-        {
-          "i": 246,
-          "equity": 1.0375
-        },
-        {
-          "i": 249,
-          "equity": 1.0375
-        },
-        {
-          "i": 252,
-          "equity": 1.0365
-        },
-        {
-          "i": 255,
-          "equity": 1.0308
-        },
-        {
-          "i": 258,
-          "equity": 1.0308
-        },
-        {
-          "i": 261,
-          "equity": 1.0308
-        },
-        {
-          "i": 264,
-          "equity": 1.0308
-        },
-        {
-          "i": 267,
-          "equity": 1.0308
-        },
-        {
-          "i": 270,
-          "equity": 1.0308
-        },
-        {
-          "i": 273,
-          "equity": 1.0308
-        },
-        {
-          "i": 276,
-          "equity": 1.0356
-        },
-        {
-          "i": 279,
-          "equity": 1.0328
-        },
-        {
-          "i": 282,
-          "equity": 1.0328
-        },
-        {
-          "i": 285,
-          "equity": 1.0328
-        },
-        {
-          "i": 288,
-          "equity": 1.0328
-        },
-        {
-          "i": 291,
-          "equity": 1.0328
-        },
-        {
-          "i": 294,
-          "equity": 1.0233
-        },
-        {
-          "i": 297,
-          "equity": 1.0459
-        },
-        {
-          "i": 300,
-          "equity": 1.0459
-        },
-        {
-          "i": 303,
-          "equity": 1.0459
-        },
-        {
-          "i": 306,
-          "equity": 1.0459
-        },
-        {
-          "i": 309,
-          "equity": 1.0459
-        },
-        {
-          "i": 312,
-          "equity": 1.0459
-        },
-        {
-          "i": 315,
           "equity": 1.0169
         },
         {
+          "i": 93,
+          "equity": 1.0169
+        },
+        {
+          "i": 96,
+          "equity": 1.0169
+        },
+        {
+          "i": 99,
+          "equity": 1.0169
+        },
+        {
+          "i": 102,
+          "equity": 1.0169
+        },
+        {
+          "i": 105,
+          "equity": 1.0174
+        },
+        {
+          "i": 108,
+          "equity": 1.0203
+        },
+        {
+          "i": 111,
+          "equity": 1.0203
+        },
+        {
+          "i": 114,
+          "equity": 1.0203
+        },
+        {
+          "i": 117,
+          "equity": 1.0203
+        },
+        {
+          "i": 120,
+          "equity": 1.0203
+        },
+        {
+          "i": 123,
+          "equity": 1.0203
+        },
+        {
+          "i": 126,
+          "equity": 1.0188
+        },
+        {
+          "i": 129,
+          "equity": 1.0203
+        },
+        {
+          "i": 132,
+          "equity": 1.0203
+        },
+        {
+          "i": 135,
+          "equity": 1.0203
+        },
+        {
+          "i": 138,
+          "equity": 1.0203
+        },
+        {
+          "i": 141,
+          "equity": 1.0203
+        },
+        {
+          "i": 144,
+          "equity": 1.0203
+        },
+        {
+          "i": 147,
+          "equity": 1.0212
+        },
+        {
+          "i": 150,
+          "equity": 1.018
+        },
+        {
+          "i": 153,
+          "equity": 1.018
+        },
+        {
+          "i": 156,
+          "equity": 1.018
+        },
+        {
+          "i": 159,
+          "equity": 1.018
+        },
+        {
+          "i": 162,
+          "equity": 1.018
+        },
+        {
+          "i": 165,
+          "equity": 1.018
+        },
+        {
+          "i": 168,
+          "equity": 1.018
+        },
+        {
+          "i": 171,
+          "equity": 1.0161
+        },
+        {
+          "i": 174,
+          "equity": 1.01
+        },
+        {
+          "i": 177,
+          "equity": 1.01
+        },
+        {
+          "i": 180,
+          "equity": 1.01
+        },
+        {
+          "i": 183,
+          "equity": 1.01
+        },
+        {
+          "i": 186,
+          "equity": 1.01
+        },
+        {
+          "i": 189,
+          "equity": 1.0182
+        },
+        {
+          "i": 192,
+          "equity": 1.0228
+        },
+        {
+          "i": 195,
+          "equity": 1.0228
+        },
+        {
+          "i": 198,
+          "equity": 1.0228
+        },
+        {
+          "i": 201,
+          "equity": 1.0228
+        },
+        {
+          "i": 204,
+          "equity": 1.0228
+        },
+        {
+          "i": 207,
+          "equity": 1.0228
+        },
+        {
+          "i": 210,
+          "equity": 1.0228
+        },
+        {
+          "i": 213,
+          "equity": 1.0421
+        },
+        {
+          "i": 216,
+          "equity": 1.0434
+        },
+        {
+          "i": 219,
+          "equity": 1.0434
+        },
+        {
+          "i": 222,
+          "equity": 1.0434
+        },
+        {
+          "i": 225,
+          "equity": 1.0434
+        },
+        {
+          "i": 228,
+          "equity": 1.0434
+        },
+        {
+          "i": 231,
+          "equity": 1.0434
+        },
+        {
+          "i": 234,
+          "equity": 1.0348
+        },
+        {
+          "i": 237,
+          "equity": 1.0341
+        },
+        {
+          "i": 240,
+          "equity": 1.0341
+        },
+        {
+          "i": 243,
+          "equity": 1.0341
+        },
+        {
+          "i": 246,
+          "equity": 1.0341
+        },
+        {
+          "i": 249,
+          "equity": 1.0341
+        },
+        {
+          "i": 252,
+          "equity": 1.0274
+        },
+        {
+          "i": 255,
+          "equity": 1.0274
+        },
+        {
+          "i": 258,
+          "equity": 1.0274
+        },
+        {
+          "i": 261,
+          "equity": 1.0274
+        },
+        {
+          "i": 264,
+          "equity": 1.0274
+        },
+        {
+          "i": 267,
+          "equity": 1.0274
+        },
+        {
+          "i": 270,
+          "equity": 1.0274
+        },
+        {
+          "i": 273,
+          "equity": 1.0281
+        },
+        {
+          "i": 276,
+          "equity": 1.0293
+        },
+        {
+          "i": 279,
+          "equity": 1.0293
+        },
+        {
+          "i": 282,
+          "equity": 1.0293
+        },
+        {
+          "i": 285,
+          "equity": 1.0293
+        },
+        {
+          "i": 288,
+          "equity": 1.0293
+        },
+        {
+          "i": 291,
+          "equity": 1.0293
+        },
+        {
+          "i": 294,
+          "equity": 1.0459
+        },
+        {
+          "i": 297,
+          "equity": 1.0424
+        },
+        {
+          "i": 300,
+          "equity": 1.0424
+        },
+        {
+          "i": 303,
+          "equity": 1.0424
+        },
+        {
+          "i": 306,
+          "equity": 1.0424
+        },
+        {
+          "i": 309,
+          "equity": 1.0424
+        },
+        {
+          "i": 312,
+          "equity": 1.0424
+        },
+        {
+          "i": 315,
+          "equity": 1.0254
+        },
+        {
           "i": 318,
-          "equity": 1.0157
+          "equity": 1.0123
         },
         {
           "i": 321,
-          "equity": 1.0157
+          "equity": 1.0123
         },
         {
           "i": 324,
-          "equity": 1.0157
+          "equity": 1.0123
         },
         {
           "i": 327,
-          "equity": 1.0157
+          "equity": 1.0123
         },
         {
           "i": 330,
-          "equity": 1.0157
+          "equity": 1.0123
         },
         {
           "i": 333,
-          "equity": 1.0315
+          "equity": 1.0296
         },
         {
           "i": 336,
-          "equity": 1.0517
+          "equity": 1.0482
         },
         {
           "i": 339,
-          "equity": 1.0517
+          "equity": 1.0482
         },
         {
           "i": 342,
-          "equity": 1.0517
+          "equity": 1.0482
         },
         {
           "i": 345,
-          "equity": 1.0517
+          "equity": 1.0482
         },
         {
           "i": 348,
-          "equity": 1.0517
+          "equity": 1.0482
         },
         {
           "i": 351,
-          "equity": 1.0517
+          "equity": 1.0482
         },
         {
           "i": 354,
-          "equity": 1.0532
+          "equity": 1.0628
         },
         {
           "i": 357,
-          "equity": 1.0661
+          "equity": 1.0626
         },
         {
           "i": 360,
-          "equity": 1.0661
+          "equity": 1.0626
         },
         {
           "i": 363,
-          "equity": 1.0661
+          "equity": 1.0626
         },
         {
           "i": 366,
-          "equity": 1.0661
+          "equity": 1.0626
         },
         {
           "i": 369,
-          "equity": 1.0661
+          "equity": 1.0626
         },
         {
           "i": 372,
-          "equity": 1.0586
+          "equity": 1.0597
         },
         {
           "i": 375,
-          "equity": 1.0602
+          "equity": 1.0567
         },
         {
           "i": 378,
-          "equity": 1.0602
+          "equity": 1.0567
         },
         {
           "i": 381,
-          "equity": 1.0602
+          "equity": 1.0567
         },
         {
           "i": 384,
-          "equity": 1.0602
+          "equity": 1.0567
         },
         {
           "i": 387,
-          "equity": 1.0602
+          "equity": 1.0567
         },
         {
           "i": 390,
-          "equity": 1.0602
+          "equity": 1.0567
         },
         {
           "i": 393,
-          "equity": 1.0664
+          "equity": 1.0704
         },
         {
           "i": 396,
-          "equity": 1.0853
+          "equity": 1.0817
         },
         {
           "i": 399,
-          "equity": 1.0853
+          "equity": 1.0817
         },
         {
           "i": 402,
-          "equity": 1.0853
+          "equity": 1.0817
         },
         {
           "i": 405,
-          "equity": 1.0853
+          "equity": 1.0817
         },
         {
           "i": 408,
-          "equity": 1.0853
+          "equity": 1.0817
         },
         {
           "i": 411,
-          "equity": 1.0853
+          "equity": 1.0817
         },
         {
           "i": 414,
-          "equity": 1.0853
+          "equity": 1.0817
         },
         {
           "i": 417,
-          "equity": 1.0955
+          "equity": 1.0924
         },
         {
           "i": 420,
-          "equity": 1.0965
+          "equity": 1.0929
         },
         {
           "i": 423,
-          "equity": 1.0965
+          "equity": 1.0929
         },
         {
           "i": 426,
-          "equity": 1.0965
+          "equity": 1.0929
         },
         {
           "i": 429,
-          "equity": 1.0965
+          "equity": 1.0929
         },
         {
           "i": 432,
-          "equity": 1.0965
+          "equity": 1.0929
         },
         {
           "i": 435,
-          "equity": 1.0965
+          "equity": 1.0929
         },
         {
           "i": 438,
-          "equity": 1.0889
+          "equity": 1.0835
         },
         {
           "i": 441,
-          "equity": 1.0882
+          "equity": 1.0846
         },
         {
           "i": 444,
-          "equity": 1.0882
+          "equity": 1.0846
         },
         {
           "i": 447,
-          "equity": 1.0882
+          "equity": 1.0846
         },
         {
           "i": 450,
-          "equity": 1.0882
+          "equity": 1.0846
         },
         {
           "i": 453,
-          "equity": 1.0882
+          "equity": 1.0846
         },
         {
           "i": 456,
-          "equity": 1.0882
+          "equity": 1.0846
         },
         {
           "i": 459,
-          "equity": 1.0851
+          "equity": 1.092
         },
         {
           "i": 462,
-          "equity": 1.0873
+          "equity": 1.0837
         },
         {
           "i": 465,
-          "equity": 1.0873
+          "equity": 1.0837
         },
         {
           "i": 468,
-          "equity": 1.0873
+          "equity": 1.0837
         },
         {
           "i": 471,
-          "equity": 1.0873
+          "equity": 1.0837
         },
         {
           "i": 474,
-          "equity": 1.0873
+          "equity": 1.0837
         },
         {
           "i": 477,
-          "equity": 1.0873
+          "equity": 1.102
         },
         {
           "i": 480,
-          "equity": 1.1301
+          "equity": 1.1535
         },
         {
           "i": 483,
-          "equity": 1.1573
+          "equity": 1.1535
         },
         {
           "i": 486,
-          "equity": 1.1573
+          "equity": 1.1535
         },
         {
           "i": 489,
-          "equity": 1.1573
+          "equity": 1.1535
         },
         {
           "i": 492,
-          "equity": 1.1573
+          "equity": 1.1535
         }
       ]
     },
@@ -975,6 +1170,11 @@
     "reasons": [
       "outside the window; next starts 2026-11-30"
     ]
+  },
+  "notes": [],
+  "etf_backtest": {
+    "ok": false,
+    "reason": "etf backtest error: name 'math' is not defined"
   },
   "spot": 25884.5,
   "disclaimer": "Educational / personal-research tool. NOT investment advice. SEBI FY26 data: ~87.7% of individual F&O traders lost money and option BUYERS lost the most. This strategy is option buying. Trade paper only until results earn trust, and never risk more than the loss budget. EOD data has no live bid-ask spread \u2014 always check the live spread in your broker app before placing any order.\n"

@@ -1,15 +1,15 @@
 {
   "date": "2026-11-26",
-  "generated_at": "2026-11-26T23:57:53.494262Z",
+  "generated_at": "2026-11-27T05:45:29.070215Z",
   "fired": false,
   "spot": 25884.5,
-  "vix": 17.670000076293945,
-  "vix_percentile": 80.48780487804878,
-  "realized_vol": 0.15250665192257123,
+  "vix": 16.84000015258789,
+  "vix_percentile": 75.7085020242915,
+  "realized_vol": 0.15221672288749497,
   "expiry": "2026-12-29",
   "candidates": [],
   "reasons": [
-    "vix_percentile: 80.49 vs limit 30.0 (VIX must sit in the calmer part of its 1-year range)"
+    "vix_percentile: 75.71 vs limit 30.0 (VIX must sit in the calmer part of its 1-year range)"
   ],
   "exit_signals": [],
   "errors": [],
@@ -24,18 +24,18 @@
       "iv": 0.18959289861097933,
       "atm_iv": 0.1398739893909544,
       "skew": 4.971890922002492,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 20995.0,
       "volume": 272.0,
       "cost_per_lot": 1244.75,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23430.85,
       "breakeven_move_pct": 9.47922501883367,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -49,7 +49,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -85,18 +85,18 @@
       "iv": 0.18258973505981263,
       "atm_iv": 0.1398739893909544,
       "skew": 4.271574566885822,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 38545.0,
       "volume": 523.0,
       "cost_per_lot": 1488.5,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23627.1,
       "breakeven_move_pct": 8.721049276594107,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -110,7 +110,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -146,18 +146,18 @@
       "iv": 0.1807397370189428,
       "atm_iv": 0.1398739893909544,
       "skew": 4.086574762798839,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 227240.0,
       "volume": 3651.0,
       "cost_per_lot": 1553.5,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23676.1,
       "breakeven_move_pct": 8.531746798276966,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -171,7 +171,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -207,18 +207,18 @@
       "iv": 0.1826026801846921,
       "atm_iv": 0.1398739893909544,
       "skew": 4.27286907937377,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 1209130.0,
       "volume": 15638.0,
       "cost_per_lot": 1352.0,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23579.2,
       "breakeven_move_pct": 8.906102107438812,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -232,7 +232,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -268,18 +268,18 @@
       "iv": 0.1776382527325302,
       "atm_iv": 0.1398739893909544,
       "skew": 3.776426334157579,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 83460.0,
       "volume": 1069.0,
       "cost_per_lot": 1894.75,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23820.85,
       "breakeven_move_pct": 7.972531824064601,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -293,7 +293,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -329,18 +329,18 @@
       "iv": 0.16523981258366258,
       "atm_iv": 0.1398739893909544,
       "skew": 2.5365823192708166,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 573105.0,
       "volume": 6468.0,
       "cost_per_lot": 3799.25,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24341.55,
       "breakeven_move_pct": 5.960903243253687,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -354,7 +354,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -390,18 +390,18 @@
       "iv": 0.1867851662158966,
       "atm_iv": 0.1398739893909544,
       "skew": 4.69111768249422,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 2390700.0,
       "volume": 18869.0,
       "cost_per_lot": 1261.0,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23480.6,
       "breakeven_move_pct": 9.287025053603514,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -415,7 +415,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -451,18 +451,18 @@
       "iv": 0.19453655798509717,
       "atm_iv": 0.1398739893909544,
       "skew": 5.466256859414276,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 157365.0,
       "volume": 2080.0,
       "cost_per_lot": 1082.25,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23283.35,
       "breakeven_move_pct": 10.049064111727102,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -476,7 +476,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -512,18 +512,18 @@
       "iv": 0.18054926673546434,
       "atm_iv": 0.1398739893909544,
       "skew": 4.067527734450993,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 47710.0,
       "volume": 442.0,
       "cost_per_lot": 1699.75,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23723.85,
       "breakeven_move_pct": 8.347273464814856,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -537,7 +537,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -573,18 +573,18 @@
       "iv": 0.17041129684261974,
       "atm_iv": 0.1398739893909544,
       "skew": 3.0537307451665328,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 66495.0,
       "volume": 654.0,
       "cost_per_lot": 2739.75,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24107.85,
       "breakeven_move_pct": 6.863760165349926,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -598,7 +598,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -634,18 +634,18 @@
       "iv": 0.1662599908675998,
       "atm_iv": 0.1398739893909544,
       "skew": 2.638600147664538,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 54795.0,
       "volume": 445.0,
       "cost_per_lot": 3558.75,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24295.25,
       "breakeven_move_pct": 6.139774768683962,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -659,7 +659,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -695,18 +695,18 @@
       "iv": 0.1712307511866093,
       "atm_iv": 0.1398739893909544,
       "skew": 3.135676179565489,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 245505.0,
       "volume": 4465.0,
       "cost_per_lot": 2551.25,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24060.75,
       "breakeven_move_pct": 7.045722343487415,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -720,7 +720,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -756,18 +756,18 @@
       "iv": 0.1682025605209172,
       "atm_iv": 0.1398739893909544,
       "skew": 2.8328571129962787,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 49920.0,
       "volume": 624.0,
       "cost_per_lot": 3113.5,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24202.1,
       "breakeven_move_pct": 6.499642643280733,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -781,7 +781,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -817,18 +817,18 @@
       "iv": 0.17375292716510587,
       "atm_iv": 0.1398739893909544,
       "skew": 3.3878937774151465,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 4594945.0,
       "volume": 41934.0,
       "cost_per_lot": 2262.0,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23965.2,
       "breakeven_move_pct": 7.414862176205835,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -842,7 +842,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -878,18 +878,18 @@
       "iv": 0.17279856413118538,
       "atm_iv": 0.1398739893909544,
       "skew": 3.292457474023097,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 39780.0,
       "volume": 543.0,
       "cost_per_lot": 2421.25,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24012.75,
       "breakeven_move_pct": 7.231161505920531,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -903,7 +903,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -939,18 +939,18 @@
       "iv": 0.16289964133575557,
       "atm_iv": 0.1398739893909544,
       "skew": 2.302565194480116,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 2726750.0,
       "volume": 42878.0,
       "cost_per_lot": 4299.75,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24433.85,
       "breakeven_move_pct": 5.604319187158343,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -964,7 +964,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1000,18 +1000,18 @@
       "iv": 0.17869086833298203,
       "atm_iv": 0.1398739893909544,
       "skew": 3.881687894202762,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 278395.0,
       "volume": 3582.0,
       "cost_per_lot": 1774.5,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23772.7,
       "breakeven_move_pct": 8.158550483880312,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1025,7 +1025,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1061,18 +1061,18 @@
       "iv": 0.16232157166209069,
       "atm_iv": 0.1398739893909544,
       "skew": 2.2447582271136275,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 96590.0,
       "volume": 998.0,
       "cost_per_lot": 4631.25,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24478.75,
       "breakeven_move_pct": 5.430856303965694,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1086,7 +1086,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1122,18 +1122,18 @@
       "iv": 0.19329032429382204,
       "atm_iv": 0.1398739893909544,
       "skew": 5.341633490286762,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 29770.0,
       "volume": 417.0,
       "cost_per_lot": 1147.25,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23332.35,
       "breakeven_move_pct": 9.859761633409962,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1147,7 +1147,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1183,18 +1183,18 @@
       "iv": 0.1640459274873137,
       "atm_iv": 0.1398739893909544,
       "skew": 2.4171938096359287,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 205790.0,
       "volume": 620.0,
       "cost_per_lot": 4039.75,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24387.85,
       "breakeven_move_pct": 5.782031717823413,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1208,7 +1208,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1244,18 +1244,18 @@
       "iv": 0.16692618983387947,
       "atm_iv": 0.1398739893909544,
       "skew": 2.7052200442925054,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 441610.0,
       "volume": 5796.0,
       "cost_per_lot": 3305.25,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24249.15,
       "breakeven_move_pct": 6.317873630937428,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1269,7 +1269,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1305,18 +1305,18 @@
       "iv": 0.1685887350160628,
       "atm_iv": 0.1398739893909544,
       "skew": 2.8714745625108398,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 534300.0,
       "volume": 8552.0,
       "cost_per_lot": 2869.75,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 24155.85,
       "breakeven_move_pct": 6.678321002916809,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1330,7 +1330,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1366,18 +1366,18 @@
       "iv": 0.17493201384171841,
       "atm_iv": 0.1398739893909544,
       "skew": 3.5058024450764003,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 42705.0,
       "volume": 550.0,
       "cost_per_lot": 2125.5,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23917.3,
       "breakeven_move_pct": 7.599915007050554,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1391,7 +1391,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1427,18 +1427,18 @@
       "iv": 0.1758372040271759,
       "atm_iv": 0.1398739893909544,
       "skew": 3.5963214636221483,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 263185.0,
       "volume": 3377.0,
       "cost_per_lot": 1982.5,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23869.5,
       "breakeven_move_pct": 7.784581506306863,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1452,7 +1452,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1488,18 +1488,18 @@
       "iv": 0.18547102184072134,
       "atm_iv": 0.1398739893909544,
       "skew": 4.559703244976693,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 57135.0,
       "volume": 565.0,
       "cost_per_lot": 1335.75,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23529.45,
       "breakeven_move_pct": 9.09830207266897,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1513,7 +1513,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1549,18 +1549,18 @@
       "iv": 0.18980013236552476,
       "atm_iv": 0.1398739893909544,
       "skew": 4.992614297457035,
-      "iv_rv_ratio": 0.9171664817739851,
+      "iv_rv_ratio": 0.9189134198765848,
       "open_interest": 461240.0,
       "volume": 2797.0,
       "cost_per_lot": 1137.5,
-      "vix_percentile": 80.48780487804878,
+      "vix_percentile": 75.7085020242915,
       "breakeven": 23382.5,
       "breakeven_move_pct": 9.66601634182619,
       "gates": [
         {
           "name": "vix_percentile",
           "passed": false,
-          "value": 80.48780487804878,
+          "value": 75.7085020242915,
           "threshold": 30.0,
           "detail": "VIX must sit in the calmer part of its 1-year range"
         },
@@ -1574,7 +1574,7 @@
         {
           "name": "iv_rv_ratio",
           "passed": true,
-          "value": 0.9171664817739851,
+          "value": 0.9189134198765848,
           "threshold": 1.3,
           "detail": "Reject options rich in implied vs realized volatility"
         },
@@ -1605,7 +1605,7 @@
   ],
   "atm_iv": 0.1398739893909544,
   "atm_strike": 25900.0,
-  "vrp": -1.2632662531616823,
+  "vrp": -1.2342733496540554,
   "skew_curve": [
     {
       "strike": 20750.0,
